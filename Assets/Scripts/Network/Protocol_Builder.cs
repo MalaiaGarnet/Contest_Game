@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Network.Data
+{
+    /// <summary>
+    /// 프로토콜
+    /// </summary>
+    public enum PROTOCOL : UInt64
+    {
+        DISCONNECT  = 0xFFFFFFFFFFFFFFFF,
+        GLOBAL      = 0x0001000000000000,
+        MNG_LOGIN   = 0x0002000000000000,
+        MNG_INGAME  = 0x0004000000000000
+    }
+
+    public enum PROTOCOL_GLOBAL : UInt64
+    {
+        // 서브 프로토콜
+        HEART_BEAT      = 0x0000000100000000,
+        ENCRYPTION_KEY  = 0x0000000200000000,
+    };
+
+    public enum PROTOCOL_LOGIN : UInt64
+    {
+        // 서브 프로토콜
+        LOGIN       = 0x0000000100000000, // 로그인
+        LOGOUT      = 0x0000000200000000, // 로그아웃
+        REGISTER    = 0x0000000400000000, // 회원가입
+        MATCHED     = 0x0000000800000000, // 매치 성사됨 -> 인게임으로 넘어갈 것
+
+        // 디테일 프로토콜
+        SUCCESS     = 0x0000000000010000, // 무언가에 대한 긍정적인 반응 
+        FAILED      = 0x0000000000020000, // 부정적인 반응
+    };
+
+    public enum PROTOCOL_INGAME : UInt64
+    {
+        // 서브 프로토콜
+        READY       = 0x0000000100000000, // 준비됐다
+
+        // 디테일 프로토콜
+    };
+}
