@@ -7,6 +7,9 @@ using UnityEngine.Events;
 
 namespace Network.Data
 {
+    // 디버그
+    public class Event_Debug : UnityEvent { };
+
     // 글로벌
     public class Event_Disconnected : UnityEvent { };
     public class Protocol_Recv_Event : UnityEvent<PROTOCOL> { };

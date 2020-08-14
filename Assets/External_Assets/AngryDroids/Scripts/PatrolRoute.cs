@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using GravityBox.AngryDroids;
-// TODO: Wait for this - will work in 3.3
 //import System.Collections.Generic;
 
 //[RequireComponent (typeof(Collider))]
