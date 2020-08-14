@@ -1,0 +1,17 @@
+
+
+싱글톤 패턴을 쓰는 오브젝트들은 어지간한 거 아닌 이상 Master 프리팹에 붙여놓기
+
+디버깅을 할 때 임시로 쓰고 지울거면 Debug.Log 그냥 쓰고,
+그게 아니라 개발 내내 계속 체크해가면서 봐야 하는 문제라면 담당 매니저에 요로케 작성해서 쓰기
+---
+public static bool Debug_Toggle = true; // 디버그 로거 표현 여부
+public static void Log(string _msg) // 로그 쓰기
+{
+    if (Debug_Toggle)
+    {
+        string name = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
+        Debug.Log("[" + name + "] " +_msg);
+    }
+}
+---
