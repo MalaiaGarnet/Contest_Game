@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace Network.Data
 {
     /// <summary>
-    /// 버퍼
+    /// 버퍼 데이터
     /// </summary>
     public class Task
     {
@@ -31,15 +31,15 @@ namespace Network.Data
             // 암호화 한 것을 버퍼로 다시 옮기기
             Buffer.BlockCopy(encrypted, 0, buffer, 4, datasize - 4);
 
-            UnityEngine.Debug.Log("암호화 된 버퍼 크기 = " + datasize);
-            UnityEngine.Debug.Log("암호화 수행");
+            Manager_Network.Log("암호화 된 버퍼 크기 = " + datasize);
+            Manager_Network.Log("암호화 수행");
         }
         public void Decrypt(KJH_Crypto _decryptor)
         {
             if (_decryptor == null)
                 return;
 
-            UnityEngine.Debug.Log("복호화 수행 크기 = " + datasize);
+            Manager_Network.Log("복호화 수행 크기 = " + datasize);
 
             // 버퍼의 내용에서 사이즈 빼서 옮겨 담기
             byte[] temp_byte = new byte[datasize];
@@ -254,9 +254,9 @@ namespace Network.Data
             Task task = new Task();
             UInt64 protocol = (UInt64)PROTOCOL.GLOBAL | (UInt64)PROTOCOL_GLOBAL.HEART_BEAT;
             task.buffer = Packer.PackPacket(ref task.datasize, protocol, "");
-            // task.Encrypt(NetworkManager.Instance.m_Encryptor);
+            // task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
-            UnityEngine.Debug.Log("buffer size = " + task.datasize);
+            Manager_Network.Log("buffer size = " + task.datasize);
 
             Manager_Packet.Instance.SendEnqueue(task);
         }
@@ -269,16 +269,16 @@ namespace Network.Data
             Task task = new Task();
             task.buffer = Packer.PackPacket(ref task.datasize, _protocol, _data);
 
-            task.Encrypt(NetworkManager.Instance.m_Encryptor);
+            task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
             /*
             Task dummy = new Task();
             dummy.buffer = Packer.PackPacket(ref dummy.datasize, _protocol, _data);
-            UnityEngine.Debug.Log("before encrypted = " + BitConverter.ToString(dummy.buffer));
-            dummy.Encrypt(NetworkManager.Instance.m_Encryptor);
-            UnityEngine.Debug.Log("after encrypted = " + BitConverter.ToString(dummy.buffer));
-            dummy.Decrypt(NetworkManager.Instance.m_Encryptor);
-            UnityEngine.Debug.Log("after decrypted = " + BitConverter.ToString(dummy.buffer));
+            Manager_Network.Log("before encrypted = " + BitConverter.ToString(dummy.buffer));
+            dummy.Encrypt(Manager_Network.Instance.m_Encryptor);
+            Manager_Network.Log("after encrypted = " + BitConverter.ToString(dummy.buffer));
+            dummy.Decrypt(Manager_Network.Instance.m_Encryptor);
+            Manager_Network.Log("after decrypted = " + BitConverter.ToString(dummy.buffer));
             */
             Manager_Packet.Instance.SendEnqueue(task);
         }
@@ -291,7 +291,7 @@ namespace Network.Data
             Task task = new Task();
             UInt64 protocol = (UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.READY;
             task.buffer = Packer.PackPacket(ref task.datasize, protocol, "");
-            task.Encrypt(NetworkManager.Instance.m_Encryptor);
+            task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
             Manager_Packet.Instance.SendEnqueue(task);
         }

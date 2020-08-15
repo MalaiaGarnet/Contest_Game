@@ -1,45 +1,51 @@
 ﻿using System;
 using System.Threading;
-using System.Net;
 using System.Net.Sockets;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using Network.Data;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 /// <summary>
 /// 네트워크 관리자
 /// </summary>
-public class NetworkManager : MonoBehaviour
+public class Manager_Network : MonoBehaviour
 {
-    public static NetworkManager Instance;
+    public static Manager_Network Instance;
+
     
-    public TcpClient m_Client = null; // TCP소켓
-    public Protocol_Recv_Event e_ProtocolRecv = new Protocol_Recv_Event(); // 프로토콜 겟또다제 이벤트
+    public bool m_Connected { get; private set; } // 서버 연결 상태
+    
+    public TcpClient m_Socket = null; // TCP소켓
+    public KJH_Crypto m_Encryptor = null; // 암호화
 
-    public KJH_Crypto m_Encryptor = null;
-
-    public bool m_Connected = false; // 서버 연결 상태
-    public UInt16 m_Client_Position; // 자신이 1번인가 2번인가
-    public UInt64 m_Client_CharacterIndex; // 자신 캐릭터 인덱스(1~3)
-    public UInt64 m_OtherPlayer_CharacterIndex; // 상대 플레이어 캐릭터 인덱스(1~3)
-
-    #region 이벤트들
-
-    // global
-    public Event_Disconnected e_Disconnected = new Event_Disconnected();
-
-    // login
-    public Event_Login_Result e_LoginResult = new Event_Login_Result();
-    public Event_Register_Result e_RegisterResult = new Event_Register_Result();
-
-    #endregion
-
-
+    // 멤버
     Manager_Packet m_Packet;
 
-    // Start is called before the first frame update
+
+    // 이벤트
+
+    // global
+    public Event_Disconnected e_Disconnected = new Event_Disconnected(); // 연결 끊어짐
+    public Protocol_Recv_Event e_ProtocolRecv = new Protocol_Recv_Event(); // 프로토콜 겟또다제 
+
+    // login
+    public Event_Login_Result e_LoginResult = new Event_Login_Result(); // 로그인 시도 시 결과값
+    public Event_Register_Result e_RegisterResult = new Event_Register_Result(); // 회원가입 시도 시 결과값
+
+
+
+    public static bool Debug_Toggle = false; // 디버그 로거 표현 여부
+    public static void Log(string _msg) // 로그 쓰기
+    {
+        if (Debug_Toggle)
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
+            Debug.Log("[" + name + "] " +_msg);
+        }
+    }
+
     void Awake()
     {
         if(Instance != null)
@@ -50,42 +56,21 @@ public class NetworkManager : MonoBehaviour
 
         Instance = this;
         m_Packet = new Manager_Packet(this);
-        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.C)) // 디버그 - 연결
-        {
-            Debug.Log("Connect to Server...");
-            Connect_To_Server();
-        }
-        else if (Input.GetKeyDown(KeyCode.D)) // 디버그 - 연결해제
-        {
-            Debug.Log("Disconnect to Server...");
-            DIsconnect();
-        }
-
-        if (m_Connected) // 연결이 된 경우
-            m_Packet?.Update();
-    }
-
-    #region CONNECT
-    
     public void Connect_To_Server(string _ip = "127.0.0.1", string _port = "9000")
     {
-        if (m_Client != null)
+        if (m_Socket != null)
         {
-            m_Client.GetStream().Close();
-            m_Client.Close();
+            m_Socket.GetStream().Close();
+            m_Socket.Close();
         }
-        m_Client = new TcpClient();
+        m_Socket = new TcpClient();
         
         try
         {
             // 연결 시도, 실패시 SocketException
-            m_Client.Connect(_ip, int.Parse(_port));
+            m_Socket.Connect(_ip, int.Parse(_port));
             m_Connected = true;
 
             // 패킷 핸들러 오브젝트 초기화
@@ -93,30 +78,78 @@ public class NetworkManager : MonoBehaviour
 
             // 연결 됐으면 ACK 보내기
             Sender.Send_Heartbeat();
-
         }
         catch (SocketException e)
         {
-            Debug.Log(e.Message);
+            Log(e.Message);
             e_Disconnected.Invoke();
         }
     }
 
-    public void DIsconnect()
+    public void Disconnect()
     {
-        if (m_Client != null)
+        if (m_Socket != null)
         {
             m_Packet.End_Thread();
-            Debug.Log("close...");
-            m_Client.Close();
-            Debug.Log("dispose...");
-            m_Client.Dispose();
+            Log("close...");
+            m_Socket.Close();
+            Log("dispose...");
+            m_Socket.Dispose();
         }
-        m_Client = null;
+        m_Socket = null;
         m_Connected = false;
     }
 
-    #endregion
+
+    /// <summary>
+    /// 로그인 시도
+    /// </summary>
+    /// <returns>실패 시 false</returns>
+    public bool Login(string _id, string _pw)
+    {
+        // 서버 연결
+        if (!m_Connected)
+            Connect_To_Server();
+
+        // ID와 PW 안 적거나 짧은 경우를 처리
+        if (_id.Length < 3 || _pw.Length < 3)
+            return false; // TODO 팝업 윈도우로 오류 알려준다던지
+
+        // TODO 로그인 패킷 전송
+
+        return false;
+    }
+    /// <summary>
+    /// 회원가입 시도
+    /// </summary>
+    /// <returns>실패 시 false</returns>
+    public bool Register(string _id, string _pw, string _nickname)
+    {
+        // 서버 연결
+        if (!m_Connected)
+            Connect_To_Server();
+
+        // ID와 PW, 닉네임 안 적거나 짧은 경우를 처리
+        if (_id.Length < 3 || _pw.Length < 3 || _nickname.Length < 3)
+            return false; // TODO 팝업 윈도우로 오류 알려준다던지
+
+        // TODO 회원가입 패킷 전송
+
+        return true;
+    }
+    /// <summary>
+    /// 로그아웃 및 연결 끊기
+    /// </summary>
+    public void Logout()
+    {
+        if (!m_Connected)
+            return;
+
+        // TODO 디스커넥트 패킷 전송
+
+        Disconnect();
+    }
+
 }
 
 /// <summary>
@@ -131,11 +164,11 @@ public class Manager_Packet
     public Queue<Task> m_SendQueue; // 서버에게 보내는 패킷 모음, 선입 선출
     public Queue<Task> m_RecvQueue; // 서버에게서 받는 패킷 모음, 선입 선출
 
-    NetworkManager m_NetworkManager; // 모체
+    Manager_Network m_NetworkManager; // 모체
     Task_Handler m_Task_Handler;
     Thread t_Receiver;
 
-    public Manager_Packet(NetworkManager _network)
+    public Manager_Packet(Manager_Network _network)
     {
         Instance = this;
         m_NetworkManager = _network;
@@ -208,7 +241,7 @@ public class Manager_Packet
     {
         NetworkStream ns;
 
-        ns = m_NetworkManager.m_Client.GetStream();
+        ns = m_NetworkManager.m_Socket.GetStream();
 
         ns.Write(_task.buffer, 0, _task.datasize);
     }
@@ -231,12 +264,12 @@ public class Manager_Packet
                 task = m_SendQueue.Dequeue();
 
                 PacketSend(task);
-                Debug.Log("Sended.");
+                Manager_Network.Log("Sended.");
             }
         }
         catch(Exception e)
         {
-            Debug.Log("send error.");
+            Manager_Network.Log("send error.");
             m_NetworkManager.e_Disconnected.Invoke();
         }
     }
@@ -250,11 +283,11 @@ public class Manager_Packet
     {
         byte[] size = new byte[4];
 
-        NetworkStream ns = m_NetworkManager.m_Client.GetStream();
+        NetworkStream ns = m_NetworkManager.m_Socket.GetStream();
 
         int recv = ns.Read(size, 0, 4);
         _size = BitConverter.ToInt16(size, 0);
-        Debug.Log("target size = " + _size);
+        Manager_Network.Log("target size = " + _size);
 
         recv = ns.Read(_buf, 0, _size);
     }
@@ -270,7 +303,7 @@ public class Manager_Packet
 
                 task = m_RecvQueue.Dequeue();
 
-                Debug.Log("Received...");
+                Manager_Network.Log("Received...");
                 m_Task_Handler.Perform_Task(m_NetworkManager, task); // 받은 패킷과 프로토콜을 전달, 인게임 요소들에 반영
             }
         }
