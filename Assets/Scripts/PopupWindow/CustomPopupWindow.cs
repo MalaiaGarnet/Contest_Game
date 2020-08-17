@@ -86,12 +86,16 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
     }
     void ShowOnly(string _Title, string _Desc)
     {
+        BG_Button.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         Title.text = _Title;
         Desc.text = _Desc;       
     }
     void ShowOnly(string _Title, string _Desc, params ButtonEventInfo[] _ButtonEvent)
     {
         int index = 0;
+        BG_Button.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         Title.text = _Title;
         Desc.text = _Desc;
         foreach (var item in _ButtonEvent)

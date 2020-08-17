@@ -6,6 +6,7 @@ using UnityEngine;
 using Network.Data;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using System.Collections;
 
 /// <summary>
 /// 네트워크 관리자
@@ -118,10 +119,6 @@ public class Manager_Network : MonoBehaviour
         if (!m_Connected)
             Connect_To_Server();
 
-        // ID와 PW 안 적거나 짧은 경우를 처리
-        if (_id.Length < 3 || _pw.Length < 3)
-            return false; //  TODO 팝업 윈도우로 오류 알려준다던지
-
         // 로그인 패킷 전송
         UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.LOGIN;
         Userdata data = new Userdata(_id, _pw, "");
@@ -139,17 +136,23 @@ public class Manager_Network : MonoBehaviour
         if (!m_Connected)
             Connect_To_Server();
 
-        // ID와 PW, 닉네임 안 적거나 짧은 경우를 처리
-        if (_id.Length < 3 || _pw.Length < 3 || _nickname.Length < 3)
-            return false; // TODO 팝업 윈도우로 오류 알려준다던지
+        StartCoroutine(Register_Process(_id, _pw, _nickname));
+        return true;
+    }
+
+    IEnumerator Register_Process(string _id, string _pw, string _nickname)
+    {
+        while (m_Encryptor == null)
+            yield return new WaitForEndOfFrame();
 
         // 회원가입 패킷 전송
         UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.REGISTER;
         Userdata data = new Userdata(_id, _pw, _nickname);
         Sender.Send_Userdata(protocol, data);
 
-        return true;
+        yield return null;
     }
+
     /// <summary>
     /// 로그아웃 및 연결 끊기
     /// </summary>

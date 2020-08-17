@@ -1472,19 +1472,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2473651892968866269, guid: cc697483586e3ce478a7e28ec1b98bf4, type: 3}
       propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2473651892968866269, guid: cc697483586e3ce478a7e28ec1b98bf4, type: 3}
-      propertyPath: m_Colors.m_DisabledColor.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2473651892968866269, guid: cc697483586e3ce478a7e28ec1b98bf4, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473651892968866269, guid: cc697483586e3ce478a7e28ec1b98bf4, type: 3}
       propertyPath: m_Colors.m_DisabledColor.g
-      value: 0
+      value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 2473651892968866269, guid: cc697483586e3ce478a7e28ec1b98bf4, type: 3}
       propertyPath: m_Colors.m_DisabledColor.b
-      value: 0
+      value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 5916951135134951161, guid: cc697483586e3ce478a7e28ec1b98bf4, type: 3}
       propertyPath: m_LocalPosition.x

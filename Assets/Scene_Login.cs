@@ -102,12 +102,13 @@ public class Scene_Login : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(1.0f);
         StartCoroutine(Flickering_Text("connect to server", true));
-        yield return new WaitForSecondsRealtime(1.0f);
+        yield return new WaitForSecondsRealtime(2.0f);
 
         Manager_Network.Instance.Connect_To_Server();
 
         if (!Manager_Network.Instance.m_Connected)
         {
+            m_Loading_Text.color = new Color(0.5f, 0f, 0f, 1f);
             StartCoroutine(Flickering_Text("aborted\nclosed server", false));
             yield return new WaitForSecondsRealtime(2.0f);
             m_Activated = false;
