@@ -262,6 +262,18 @@ namespace Network.Data
         }
 
         /// <summary>
+        /// 프로토콜 보내기
+        /// </summary>
+        public static void Send_Protocol(UInt64 _protocol)
+        {
+            Task task = new Task();
+            task.buffer = Packer.PackPacket(ref task.datasize, _protocol, "");
+
+            task.Encrypt(Manager_Network.Instance.m_Encryptor);
+            Manager_Packet.Instance.SendEnqueue(task);
+        }
+
+        /// <summary>
         /// 로그인 & 회원가입시의 유저데이터 보내기
         /// </summary>
         public static void Send_Userdata(UInt64 _protocol, Userdata _data)
@@ -270,16 +282,6 @@ namespace Network.Data
             task.buffer = Packer.PackPacket(ref task.datasize, _protocol, _data);
 
             task.Encrypt(Manager_Network.Instance.m_Encryptor);
-
-            /*
-            Task dummy = new Task();
-            dummy.buffer = Packer.PackPacket(ref dummy.datasize, _protocol, _data);
-            Manager_Network.Log("before encrypted = " + BitConverter.ToString(dummy.buffer));
-            dummy.Encrypt(Manager_Network.Instance.m_Encryptor);
-            Manager_Network.Log("after encrypted = " + BitConverter.ToString(dummy.buffer));
-            dummy.Decrypt(Manager_Network.Instance.m_Encryptor);
-            Manager_Network.Log("after decrypted = " + BitConverter.ToString(dummy.buffer));
-            */
             Manager_Packet.Instance.SendEnqueue(task);
         }
 
