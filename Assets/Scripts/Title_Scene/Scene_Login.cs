@@ -35,7 +35,7 @@ public class Scene_Login : MonoBehaviour
             Color color = circle_image.color;
             circle_image.color = Color.Lerp(color, new Color(0.2f, 0.2f, 0.2f, m_Activated ? 0.5f : 0.0f), m_Activated ? 0.002f : 0.005f);
 
-            float turning_angle = 0.01f * (i % 2 == 0 ? 1f : -1f);
+            float turning_angle = 0.02f * (i % 2 == 0 ? 1f : -1f);
             Vector3 rot = m_Circles[i].localRotation.eulerAngles;
             m_Circles[i].localRotation = Quaternion.Euler(rot + new Vector3(0f, 0f, turning_angle));
         }
