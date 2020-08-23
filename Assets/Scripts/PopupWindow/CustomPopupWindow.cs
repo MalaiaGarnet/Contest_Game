@@ -127,8 +127,9 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
     // 버튼액션
     void CallBack_Function()
     {
-        gameObject.SetActive(false);
         BG_Button.gameObject.SetActive(false);
+        GetComponent<Small_Window>().Close();
+        // gameObject.SetActive(false);
         CallBackFunc?.Invoke(OutResult);      
     }
 
