@@ -84,8 +84,21 @@ public class Task_Handler
             bool ok = (_protocol & (UInt64)PROTOCOL_LOGIN.SUCCESS) > 0;
             _manager.e_RegisterResult.Invoke(ok);
         }
-        if ((_protocol & (UInt64)PROTOCOL_LOGIN.MATCHED) > 0)
+        if ((_protocol & (UInt64)PROTOCOL_LOGIN.MATCH) > 0)
         {
+            Manager_Network.Log("매치 결과 취득");
+            if ((_protocol & (UInt64)PROTOCOL_LOGIN.STOP) > 0)
+            {
+                Manager_Network.Log("매치 중지");
+                _manager.e_Match_Stopped.Invoke();
+            }
+            if ((_protocol & (UInt64)PROTOCOL_LOGIN.RESULT) > 0)
+            {
+                Manager_Network.Log("매치 완료");
+                User_Profile[] datas = null;
+                User_Profile.UnPackPacket(_task.buffer, ref datas);
+                _manager.e_Matched.Invoke(datas);
+            }
             return;
         }
     }
