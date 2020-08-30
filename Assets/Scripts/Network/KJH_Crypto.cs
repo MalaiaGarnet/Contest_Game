@@ -24,7 +24,6 @@ public class KJH_Crypto
         for (int place = 0; place < _length; place += 8)
         {
             key_index = key_index + 1 >= 32 ? 0 : key_index + 1;
-
             Queue<byte> temp = new Queue<byte>(); // 큐에 데이터 대입
             for (int i = 0; i < 8; i++)
                 temp.Enqueue(_input[place + i]);

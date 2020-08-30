@@ -16,5 +16,7 @@ public class Master : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        Application.targetFrameRate = 59;
     }
 }

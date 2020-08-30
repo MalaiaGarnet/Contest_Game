@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Scene_Lobby : MonoBehaviour
+public class Scene_Lobby : SingleToneMonoBehaviour<Scene_Lobby>
 {
     public Scene_Title s_Title;
 
@@ -20,6 +21,10 @@ public class Scene_Lobby : MonoBehaviour
     {
         m_Animation.clip = m_Animation.GetClip("GUI_Scene_Lobby_Fade_In");
         m_Animation.Play();
+    }
+
+    void Start()
+    {
     }
 
     // Update is called once per frame

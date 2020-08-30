@@ -34,7 +34,12 @@ public class Manager_Network : MonoBehaviour
     // login
     public Event_Login_Result e_LoginResult = new Event_Login_Result(); // 로그인 시도 시 결과값
     public Event_Register_Result e_RegisterResult = new Event_Register_Result(); // 회원가입 시도 시 결과값
+    public Event_Match_Stopped e_Match_Stopped = new Event_Match_Stopped();
+    public Event_Matched e_Matched = new Event_Matched();
 
+    // ingame
+    public Event_HeartBeat e_HeartBeat = new Event_HeartBeat();
+    public Event_Game_Start e_GameStart = new Event_Game_Start();
 
 
     public static bool Debug_Toggle = true; // 디버그 로거 표현 여부
@@ -285,7 +290,7 @@ public class Manager_Packet
                 Manager_Network.Log("Sended.");
             }
         }
-        catch(Exception e)
+        catch(Exception)
         {
             Manager_Network.Log("send error.");
             m_NetworkManager.e_Disconnected.Invoke();
@@ -325,7 +330,7 @@ public class Manager_Packet
                 m_Task_Handler.Perform_Task(m_NetworkManager, task); // 받은 패킷과 프로토콜을 전달, 인게임 요소들에 반영
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             m_NetworkManager.e_Disconnected.Invoke();
         }
