@@ -20,17 +20,20 @@ namespace Network.Data
             if (_encryptor == null)
                 return;
 
+            datasize = (datasize / 8 + 1) * 8;
+
             // 버퍼의 내용에서 사이즈 빼서 옮겨 담기
-            byte[] temp_byte = new byte[datasize - 4];
-            Buffer.BlockCopy(buffer, 4, temp_byte, 0, datasize - 4);
+            byte[] temp_byte = new byte[datasize];
+            Buffer.BlockCopy(buffer, 4, temp_byte, 0, datasize);
 
             // 내용 암호화
             byte[] encrypted = null;
-            _encryptor.Encrypt(ref temp_byte, datasize - 4, ref encrypted);
+            _encryptor.Encrypt(ref temp_byte, datasize, ref encrypted);
 
             // 암호화 한 것을 버퍼로 다시 옮기기
-            Buffer.BlockCopy(encrypted, 0, buffer, 4, datasize - 4);
-
+            Buffer.BlockCopy(encrypted, 0, buffer, 4, datasize);
+            Buffer.BlockCopy(BitConverter.GetBytes(datasize), 0, buffer, 0, sizeof(int));
+            datasize += sizeof(int);
             Manager_Network.Log("암호화 된 버퍼 크기 = " + datasize);
             Manager_Network.Log("암호화 수행");
         }
@@ -77,11 +80,71 @@ namespace Network.Data
         }
     }
 
+    public struct User_Profile
+    {
+        public UInt16 Session_ID;
+        public string ID;
+        public string Nickname;
+        public UInt16 Is_Thief;
+        public bool Is_Ready;
+
+        public static void UnPackPacket(byte[] _data, ref User_Profile[] _datas)
+        {
+            int place = 0;
+            place += sizeof(UInt64); // 프로토콜 점프
+
+            UInt64 array_length = BitConverter.ToUInt64(_data, place); // 배열 길이 취득
+            place += sizeof(int);
+
+            _datas = new User_Profile[array_length];
+            for(uint i = 0; i < array_length; i++)
+            {
+                _datas[i] = new User_Profile();
+                _datas[i].Session_ID = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
+                _datas[i].ID = Encoding.Unicode.GetString(_data, place, 32);
+                place += 32;
+                _datas[i].Nickname = Encoding.Unicode.GetString(_data, place, 32);
+                place += 32;
+                _datas[i].Is_Thief = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
+                _datas[i].Is_Ready = BitConverter.ToBoolean(_data, place);
+                place += sizeof(bool);
+
+                Manager_Network.Log("[ user profile " + i + " ]\n" +
+                    "Session_ID: " + _datas[i].Session_ID + "\n" +
+                    "ID: " + _datas[i].ID + "\n" +
+                    "NickName: " + _datas[i].Nickname + "\n" +
+                    "Is_Thief: " + _datas[i].Is_Thief + "\n" +
+                    "Is_Ready: " + _datas[i].Is_Ready);
+            }
+        }
+    }
+
+
     /// <summary>
     /// 패킷 제작기
     /// </summary>
     public class Packer
     {
+        public static byte[] PackPacket(ref int _size, UInt64 _protocol)
+        {
+            byte[] data = new byte[1024];
+            int place = 0;
+
+            place += sizeof(int);
+
+            Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
+            place += sizeof(UInt64);
+            _size += sizeof(UInt64);
+
+            place = 0;
+            Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
+
+            _size += sizeof(int);
+
+            return data;
+        }
         public static byte[] PackPacket(ref int _size, UInt64 _protocol, string _string)
         {
             byte[] data = new byte[1024];
@@ -154,6 +217,8 @@ namespace Network.Data
             Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
 
             _size += sizeof(int);
+
+            _size = (_size / 8 + 1) * 8;
 
             return data;
         }
@@ -267,7 +332,7 @@ namespace Network.Data
         public static void Send_Protocol(UInt64 _protocol)
         {
             Task task = new Task();
-            task.buffer = Packer.PackPacket(ref task.datasize, _protocol, "");
+            task.buffer = Packer.PackPacket(ref task.datasize, _protocol);
 
             task.Encrypt(Manager_Network.Instance.m_Encryptor);
             Manager_Packet.Instance.SendEnqueue(task);
@@ -282,6 +347,19 @@ namespace Network.Data
             task.buffer = Packer.PackPacket(ref task.datasize, _protocol, _data);
 
             task.Encrypt(Manager_Network.Instance.m_Encryptor);
+            Manager_Packet.Instance.SendEnqueue(task);
+        }
+
+        /// <summary>
+        /// 매칭 프로토콜 보내기
+        /// </summary>
+        public static void Send_Match_Start(UInt16 _Type)
+        {
+            Task task = new Task();
+            UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.MATCH | (UInt64)PROTOCOL_LOGIN.START;
+            task.buffer = Packer.PackPacket(ref task.datasize, protocol, _Type);
+            task.Encrypt(Manager_Network.Instance.m_Encryptor);
+
             Manager_Packet.Instance.SendEnqueue(task);
         }
 
@@ -395,30 +473,6 @@ namespace Network.Data
 
             _is_correct = BitConverter.ToInt16(_data, place) == 1;
             place += sizeof(short);
-        }
-        public static void UnPackPacket(byte[] _data, ref UInt16 _player_index, ref UInt64 _quiz, ref short _tile, ref short _combo, ref UInt64 _total_score, ref float _tile_multiplier)
-        {
-            int place = 0;
-
-            place += sizeof(UInt64);
-
-            _player_index = BitConverter.ToUInt16(_data, place);
-            place += sizeof(UInt16);
-
-            _quiz = BitConverter.ToUInt64(_data, place);
-            place += sizeof(UInt64);
-
-            _tile = (short)BitConverter.ToUInt16(_data, place);
-            place += sizeof(UInt16);
-
-            _combo = (short)BitConverter.ToUInt16(_data, place);
-            place += sizeof(UInt16);
-
-            _total_score = BitConverter.ToUInt64(_data, place);
-            place += sizeof(UInt64);
-
-            _tile_multiplier = BitConverter.ToUInt64(_data, place) / 10.0f;
-            place += sizeof(UInt64);
         }
     }
 

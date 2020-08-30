@@ -17,11 +17,11 @@ namespace Network.Data
     // 로그인 부분
     public class Event_Login_Result : UnityEvent<bool> { };
     public class Event_Register_Result : UnityEvent<bool> { };
+    public class Event_Match_Stopped : UnityEvent { };
+    public class Event_Matched : UnityEvent<User_Profile[]> { };
 
     // 인게임
-    public class Event_Matched : UnityEvent<UInt64> { };
+    public class Event_HeartBeat : UnityEvent<User_Profile[]> { };
     public class Event_Game_Start : UnityEvent<UInt64> { };
-    public class Event_Knockdown : UnityEvent<UInt64> { };
-    public class Event_Game_End : UnityEvent<UInt64> { };
 
 }

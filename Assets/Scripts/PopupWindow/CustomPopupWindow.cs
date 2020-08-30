@@ -69,7 +69,7 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
 
     public Action<PopUpResult> CallBackFunc = null;
 
-    ButtonEventInfo[] ButtonEvent;
+    public ButtonEventInfo[] ButtonEvent;
     public GameObject[] ButtonPrefab;
     #endregion
 

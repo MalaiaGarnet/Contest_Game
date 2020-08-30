@@ -13,8 +13,12 @@ public class Scene_Login : MonoBehaviour
     public Title_RadioCircle m_Circle;
 
     public Text m_Loading_Text;
+    public Image m_Loading_Window;
+    public Image m_Loading_Bar;
 
     string m_ID, m_PW;
+    float m_Loading_Progress;
+    bool m_Activated;
 
     IEnumerator Start()
     {
@@ -24,6 +28,15 @@ public class Scene_Login : MonoBehaviour
         Manager_Network.Instance.e_LoginResult.AddListener(new UnityAction<bool>(When_Get_Login_Result));
 
         yield return null;
+    }
+
+    private void Update()
+    {
+        float alpha = m_Activated ? 1.0f : 0.0f;
+        m_Loading_Window.color = Color.Lerp(m_Loading_Window.color, new Color(0.2f, 0.2f, 0.2f, alpha), 0.05f);
+        m_Loading_Bar.color = Color.Lerp(m_Loading_Bar.color, new Color(0.2f, 0.2f, 0.2f, alpha), 0.05f);
+        Vector3 vec = Vector3.Lerp(m_Loading_Bar.rectTransform.localScale, new Vector3(m_Loading_Progress, 1f, 1f), 0.04f);
+        m_Loading_Bar.rectTransform.localScale = vec;
     }
 
     IEnumerator Flickering_Text(string _text, bool _loading)
@@ -73,6 +86,9 @@ public class Scene_Login : MonoBehaviour
     public void Try_Login(string _id, string _pw)
     {
         m_Circle.Level = 3;
+        m_Activated = true;
+        m_Loading_Progress = 0.0f;
+        m_Loading_Bar.rectTransform.localScale = new Vector3(0f, 1f, 1f);
 
         m_ID = _id;
         m_PW = _pw;
@@ -86,6 +102,7 @@ public class Scene_Login : MonoBehaviour
         yield return new WaitForSecondsRealtime(1.0f);
         StartCoroutine(Flickering_Text("connect to server", true));
         Manager_Network.Instance.Connect_To_Server();
+        m_Loading_Progress = 0.3f;
         yield return new WaitForSecondsRealtime(2.0f);
 
 
@@ -93,6 +110,7 @@ public class Scene_Login : MonoBehaviour
         {
             m_Loading_Text.color = new Color(0.5f, 0f, 0f, 1f);
             StartCoroutine(Flickering_Text("aborted\nclosed server", false));
+            m_Activated = false;
             yield return new WaitForSecondsRealtime(2.0f);
             m_Circle.Level = 0;
             StartCoroutine(Flickering_Text_Remove());
@@ -103,6 +121,7 @@ public class Scene_Login : MonoBehaviour
             yield return null;
         }
 
+        m_Loading_Progress = 0.6f;
         Manager_Network.Instance.Login(m_ID, m_PW);
 
         yield return null;
@@ -123,7 +142,9 @@ public class Scene_Login : MonoBehaviour
         {
             m_Circle.Level = 6;
             StartCoroutine(Flickering_Text("connected", false));
-            yield return new WaitForSecondsRealtime(1.0f);
+            m_Loading_Progress = 1.0f;
+            yield return new WaitForSecondsRealtime(2.0f);
+            m_Activated = false;
             StartCoroutine(Flickering_Text_Remove());
             yield return new WaitForSecondsRealtime(1.0f);
 
@@ -134,6 +155,7 @@ public class Scene_Login : MonoBehaviour
         {
             m_Loading_Text.color = new Color(0.5f, 0f, 0f, 1f);
             StartCoroutine(Flickering_Text("aborted\nillegal data", false));
+            m_Activated = false;
             yield return new WaitForSecondsRealtime(2.0f);
             StartCoroutine(Flickering_Text_Remove());
             m_Circle.Level = 0;
