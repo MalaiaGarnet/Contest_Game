@@ -93,11 +93,6 @@ void Start ()
 
 SCShader = Shader.Find("CameraFilterPack/NightVisionFX");
 
-if(!SystemInfo.supportsImageEffects)
-{
-enabled = false;
-return;
-}
 }
 
 void OnRenderImage (RenderTexture sourceTexture, RenderTexture destTexture)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Scene_Lobby : MonoBehaviour
+public class Scene_Lobby : SingleToneMonoBehaviour<Scene_Lobby>
 {
     public Scene_Title s_Title;
 

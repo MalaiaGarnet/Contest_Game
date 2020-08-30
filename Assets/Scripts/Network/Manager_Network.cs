@@ -290,7 +290,7 @@ public class Manager_Packet
                 Manager_Network.Log("Sended.");
             }
         }
-        catch(Exception e)
+        catch(Exception)
         {
             Manager_Network.Log("send error.");
             m_NetworkManager.e_Disconnected.Invoke();
@@ -330,7 +330,7 @@ public class Manager_Packet
                 m_Task_Handler.Perform_Task(m_NetworkManager, task); // 받은 패킷과 프로토콜을 전달, 인게임 요소들에 반영
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             m_NetworkManager.e_Disconnected.Invoke();
         }

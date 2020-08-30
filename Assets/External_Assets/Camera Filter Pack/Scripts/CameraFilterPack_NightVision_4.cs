@@ -45,12 +45,6 @@ void Start ()
 ChangeFilters ();
 SCShader = Shader.Find(ShaderName);
 
-
-if(!SystemInfo.supportsImageEffects)
-{
-enabled = false;
-return;
-}
 }
 
 void OnRenderImage (RenderTexture sourceTexture, RenderTexture destTexture)

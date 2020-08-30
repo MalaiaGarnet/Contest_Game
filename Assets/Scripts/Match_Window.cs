@@ -74,7 +74,7 @@ public class Match_Window : Small_Window
         m_Desc.text = "finded.";
 
         Manager_Ingame.Instance.Update_Datas(_datas);
-        StartCoroutine(Finded_Process());
+        Manager_Ingame.Instance.StartCoroutine(Finded_Process());
     }
 
     IEnumerator Timer_Process()

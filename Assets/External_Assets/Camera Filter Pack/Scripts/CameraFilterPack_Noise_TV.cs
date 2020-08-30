@@ -45,11 +45,6 @@ void Start ()
 Texture2 = Resources.Load ("CameraFilterPack_TV_Noise") as Texture2D;
 
 SCShader = Shader.Find("CameraFilterPack/Noise_TV");
-if(!SystemInfo.supportsImageEffects)
-{
-enabled = false;
-return;
-}
 }
 
 void OnRenderImage (RenderTexture sourceTexture, RenderTexture destTexture)

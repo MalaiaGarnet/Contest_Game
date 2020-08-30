@@ -35,7 +35,7 @@ public class Scene_Login : MonoBehaviour
         float alpha = m_Activated ? 1.0f : 0.0f;
         m_Loading_Window.color = Color.Lerp(m_Loading_Window.color, new Color(0.2f, 0.2f, 0.2f, alpha), 0.05f);
         m_Loading_Bar.color = Color.Lerp(m_Loading_Bar.color, new Color(0.2f, 0.2f, 0.2f, alpha), 0.05f);
-        Vector3 vec = Vector3.Lerp(m_Loading_Bar.rectTransform.localScale, new Vector3(m_Loading_Progress, 1f, 1f), 0.01f);
+        Vector3 vec = Vector3.Lerp(m_Loading_Bar.rectTransform.localScale, new Vector3(m_Loading_Progress, 1f, 1f), 0.04f);
         m_Loading_Bar.rectTransform.localScale = vec;
     }
 
