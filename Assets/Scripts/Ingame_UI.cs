@@ -21,8 +21,21 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
         gameObject.SetActive(_enable);
     }
 
-    public void Show_Ingame_Scene_Loader(bool _enable)
+    public IEnumerator Show_Ingame_Scene_Loader(bool _enable)
     {
-        m_Ingame_Scene_Loader.SetActive(_enable);
+        string anim_name = "GUI_Scene_Loder_Fade_" + (_enable ? "In" : "Out");
+
+        if(_enable)
+            m_Ingame_Scene_Loader.SetActive(_enable);
+
+        m_Ingame_Scene_Loader.GetComponent<Animation>().Play(anim_name);
+
+        if (!_enable)
+        {
+            while (m_Ingame_Scene_Loader.GetComponent<Animation>().isPlaying)
+                yield return new WaitForEndOfFrame();
+            m_Ingame_Scene_Loader.SetActive(_enable);
+        }
+        yield return null;
     }
 }

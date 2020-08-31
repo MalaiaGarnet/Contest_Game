@@ -37,7 +37,7 @@ namespace Network.Data
         FAILED      = 0x0000000000020000, // 부정적인 반응
         START       = 0x0000000000040000, // 시작
         STOP        = 0x0000000000080000, // 중지
-        RESULT      = 0x00000000000f0000  // 완료
+        RESULT      = 0x0000000000100000  // 완료
     };
 
     public enum PROTOCOL_INGAME : UInt64

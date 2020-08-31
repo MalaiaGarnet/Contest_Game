@@ -28,8 +28,7 @@ public class Match_Window : Small_Window
         gameObject.SetActive(true);
         m_Timer = 0;
         m_Timer_Enable = true;
-        StartCoroutine(Timer_Process());
-        Sender.Send_Match_Start(1);
+        StartCoroutine(Timer_Process(1));
     }
     public void Start_Match_Theft()
     {
@@ -39,8 +38,7 @@ public class Match_Window : Small_Window
         gameObject.SetActive(true);
         m_Timer = 0;
         m_Timer_Enable = true;
-        StartCoroutine(Timer_Process());
-        Sender.Send_Match_Start(2);
+        StartCoroutine(Timer_Process(2));
     }
 
     public void Stop_Match()
@@ -77,10 +75,13 @@ public class Match_Window : Small_Window
         Manager_Ingame.Instance.StartCoroutine(Finded_Process());
     }
 
-    IEnumerator Timer_Process()
+    IEnumerator Timer_Process(UInt16 _Role)
     {
         while (m_Timer_Enable)
         {
+            if(m_Timer == 2)
+                Sender.Send_Match_Start(_Role);
+
             m_Timer += 1;
             int minute = m_Timer / 60;
             int second = m_Timer - minute * 60;
@@ -93,7 +94,8 @@ public class Match_Window : Small_Window
 
     IEnumerator Finded_Process()
     {
-        yield return new WaitForSecondsRealtime(1.0f);
+        yield return new WaitForSecondsRealtime(0.5f);
+        Close();
         Manager_Ingame.Instance.Load_Ingame();
         yield return null;
     }

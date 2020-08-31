@@ -65,7 +65,6 @@ namespace Network.Data
         public string id;
         public string pw;
         public string nickname;
-
         public Userdata(string _id, string _pw, string _nick)
         {
             id = _id;
@@ -80,13 +79,21 @@ namespace Network.Data
         }
     }
 
+    /// <summary>
+    /// 유저 프로필
+    /// </summary>
     public struct User_Profile
     {
         public UInt16 Session_ID;
         public string ID;
         public string Nickname;
-        public UInt16 Is_Thief;
+
+        public UInt16 Role_Index;
         public bool Is_Ready;
+
+        public Vector3 Current_Pos;
+        public Vector3 Current_Rot;
+        public User_Input User_Input;
 
         public static void UnPackPacket(byte[] _data, ref User_Profile[] _datas)
         {
@@ -96,6 +103,7 @@ namespace Network.Data
             UInt64 array_length = BitConverter.ToUInt64(_data, place); // 배열 길이 취득
             place += sizeof(int);
 
+            DebugLogger.Instance.AddText("<array length = " + array_length + " >");
             _datas = new User_Profile[array_length];
             for(uint i = 0; i < array_length; i++)
             {
@@ -103,20 +111,39 @@ namespace Network.Data
                 _datas[i].Session_ID = BitConverter.ToUInt16(_data, place);
                 place += sizeof(UInt16);
                 _datas[i].ID = Encoding.Unicode.GetString(_data, place, 32);
-                place += 32;
+                place += 64;
                 _datas[i].Nickname = Encoding.Unicode.GetString(_data, place, 32);
-                place += 32;
-                _datas[i].Is_Thief = BitConverter.ToUInt16(_data, place);
+                place += 64;
+                _datas[i].Role_Index = BitConverter.ToUInt16(_data, place);
                 place += sizeof(UInt16);
                 _datas[i].Is_Ready = BitConverter.ToBoolean(_data, place);
                 place += sizeof(bool);
 
-                Manager_Network.Log("[ user profile " + i + " ]\n" +
-                    "Session_ID: " + _datas[i].Session_ID + "\n" +
-                    "ID: " + _datas[i].ID + "\n" +
-                    "NickName: " + _datas[i].Nickname + "\n" +
-                    "Is_Thief: " + _datas[i].Is_Thief + "\n" +
-                    "Is_Ready: " + _datas[i].Is_Ready);
+                float x = BitConverter.ToSingle(_data, place);
+                place += sizeof(float);
+                float y = BitConverter.ToSingle(_data, place);
+                place += sizeof(float);
+                float z = BitConverter.ToSingle(_data, place);
+                place += sizeof(float);
+                _datas[i].Current_Pos = new Vector3(x, y, z);
+
+                x = BitConverter.ToSingle(_data, place);
+                place += sizeof(float);
+                y = BitConverter.ToSingle(_data, place);
+                place += sizeof(float);
+                z = BitConverter.ToSingle(_data, place);
+                place += sizeof(float);
+                _datas[i].Current_Rot = new Vector3(x, y, z);
+
+                _datas[i].User_Input.Read_Bytes(_data, ref place);
+
+                DebugLogger.Instance.AddText("[ user profile " + i + " ]");
+                DebugLogger.Instance.AddText("Session_ID: " + _datas[i].Session_ID);
+                DebugLogger.Instance.AddText("NickName: " + _datas[i].Nickname);
+                DebugLogger.Instance.AddText("Role_Index: " + _datas[i].Role_Index);
+                DebugLogger.Instance.AddText("Is_Ready: " + _datas[i].Is_Ready);
+                DebugLogger.Instance.AddText("Current_pos: " + _datas[i].Current_Pos);
+                DebugLogger.Instance.AddText("Current_rot: " + _datas[i].Current_Rot);
             }
         }
     }

@@ -22,6 +22,6 @@ namespace Network.Data
 
     // 인게임
     public class Event_HeartBeat : UnityEvent<User_Profile[]> { };
-    public class Event_Game_Start : UnityEvent<UInt64> { };
+    public class Event_Game_Start : UnityEvent { };
 
 }
