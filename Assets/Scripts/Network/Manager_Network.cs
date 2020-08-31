@@ -231,7 +231,8 @@ public class Manager_Packet
         while (true)
         {
             Task task = new Task(); // 새로운 버퍼를 만들고
-            PacketRecv(ref task.buffer, ref task.datasize); // 받을 준비 하고
+            PacketRecv(ref task.buffer, ref task.datasize); // 받고
+            task.datasize = (task.datasize / 8 + 1) * 8;
             m_RecvQueue.Enqueue(task); // 받으면 받기 큐에 그것을 투입
         }
     }

@@ -27,7 +27,7 @@ public class Task_Handler
 
         _manager.e_ProtocolRecv.Invoke((PROTOCOL)protocol);
 
-        Manager_Network.Log("Main Protocol == " + ((PROTOCOL)protocol).ToString());
+        Manager_Network.Log("Main Protocol == " + string.Format("{0:X}", protocol));
         switch ((PROTOCOL)(protocol & 0xffff000000000000))
         {
             case PROTOCOL.DISCONNECT:

@@ -52,6 +52,8 @@ namespace Network.Data
             byte[] decrypted = null;
             _decryptor.Decrypt(ref temp_byte, datasize, ref decrypted);
 
+            Manager_Network.Log("복호화 완료");
+
             // 복호화 한 것을 버퍼로 다시 옮기기
             Buffer.BlockCopy(decrypted, 0, buffer, 0, datasize);
         }
