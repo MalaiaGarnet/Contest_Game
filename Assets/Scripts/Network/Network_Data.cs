@@ -100,10 +100,11 @@ namespace Network.Data
         public static void UnPackPacket(byte[] _data, ref User_Profile[] _datas)
         {
             int place = 0;
+            UInt16 strlen = 0; 
             place += sizeof(UInt64); // 프로토콜 점프
 
             UInt64 array_length = BitConverter.ToUInt64(_data, place); // 배열 길이 취득
-            place += sizeof(int);
+            place += sizeof(UInt64);
 
             DebugLogger.Instance.AddText("<array length = " + array_length + " >");
             _datas = new User_Profile[array_length];
@@ -112,10 +113,15 @@ namespace Network.Data
                 _datas[i] = new User_Profile();
                 _datas[i].Session_ID = BitConverter.ToUInt16(_data, place);
                 place += sizeof(UInt16);
-                _datas[i].ID = Encoding.Unicode.GetString(_data, place, 32);
-                place += 64;
-                _datas[i].Nickname = Encoding.Unicode.GetString(_data, place, 32);
-                place += 64;
+
+                strlen = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
+                _datas[i].ID = Encoding.Unicode.GetString(_data, place, strlen);
+                place += strlen;
+                strlen = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
+                _datas[i].Nickname = Encoding.Unicode.GetString(_data, place, strlen);
+                place += strlen;
                 _datas[i].Role_Index = BitConverter.ToUInt16(_data, place);
                 place += sizeof(UInt16);
                 _datas[i].Is_Ready = BitConverter.ToBoolean(_data, place);
@@ -146,6 +152,10 @@ namespace Network.Data
                 DebugLogger.Instance.AddText("Is_Ready: " + _datas[i].Is_Ready);
                 DebugLogger.Instance.AddText("Current_pos: " + _datas[i].Current_Pos);
                 DebugLogger.Instance.AddText("Current_rot: " + _datas[i].Current_Rot);
+                DebugLogger.Instance.AddText("User_Input_View x: " + _datas[i].User_Input.View_X+ 
+                                                                "User_Input_View y: "+ _datas[i].User_Input.View_Y);
+                DebugLogger.Instance.AddText("User_Input_Move x: " + _datas[i].User_Input.View_X + 
+                                                "User_Input_Move y: " + _datas[i].User_Input.View_Y);
             }
         }
     }
