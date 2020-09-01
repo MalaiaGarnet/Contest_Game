@@ -27,7 +27,7 @@ public class Task_Handler
 
         _manager.e_ProtocolRecv.Invoke((PROTOCOL)protocol);
 
-        Manager_Network.Log("Main Protocol == " + ((PROTOCOL)protocol).ToString());
+        Manager_Network.Log("Main Protocol == " + string.Format("{0:X}", protocol));
         switch ((PROTOCOL)(protocol & 0xffff000000000000))
         {
             case PROTOCOL.DISCONNECT:
@@ -53,7 +53,7 @@ public class Task_Handler
     {
         if ((_protocol & (UInt64)PROTOCOL_GLOBAL.HEART_BEAT) > 0)
         {
-            Manager_Network.Log("heart beat");
+            Manager_Network.Log("global heart beat");
             return;
         }
         if ((_protocol & (UInt64)PROTOCOL_GLOBAL.ENCRYPTION_KEY) > 0)
@@ -87,11 +87,6 @@ public class Task_Handler
         if ((_protocol & (UInt64)PROTOCOL_LOGIN.MATCH) > 0)
         {
             Manager_Network.Log("매치 결과 취득");
-            if ((_protocol & (UInt64)PROTOCOL_LOGIN.STOP) > 0)
-            {
-                Manager_Network.Log("매치 중지");
-                _manager.e_Match_Stopped.Invoke();
-            }
             if ((_protocol & (UInt64)PROTOCOL_LOGIN.RESULT) > 0)
             {
                 Manager_Network.Log("매치 완료");
@@ -99,12 +94,28 @@ public class Task_Handler
                 User_Profile.UnPackPacket(_task.buffer, ref datas);
                 _manager.e_Matched.Invoke(datas);
             }
+            if ((_protocol & (UInt64)PROTOCOL_LOGIN.STOP) > 0)
+            {
+                Manager_Network.Log("매치 중지");
+                _manager.e_Match_Stopped.Invoke();
+            }
             return;
         }
     }
 
     void Ingame_Process(Manager_Network _manager, Task _task, UInt64 _protocol)
     {
-
+        if ((_protocol & (UInt64)PROTOCOL_INGAME.HEARTBEAT) > 0)
+        {
+            Manager_Network.Log("인게임 하트 비트");
+            User_Profile[] datas = null;
+            User_Profile.UnPackPacket(_task.buffer, ref datas);
+            _manager.e_HeartBeat.Invoke(datas);
+        }
+        if ((_protocol & (UInt64)PROTOCOL_INGAME.START) > 0)
+        {
+            Manager_Network.Log("인게임 시작");
+            _manager.e_GameStart.Invoke();
+        }
     }
 }
