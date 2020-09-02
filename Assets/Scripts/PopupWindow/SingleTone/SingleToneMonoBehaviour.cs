@@ -14,6 +14,7 @@ public class SingleToneMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     /// <param name="_Inst"></param>
     public void SetInstance(T _Inst)
     {
+        // TODO 이미 인스턴스가 있으면 스스로 파.괴.되게 하기
         if (_instance == null)
         {
             _instance = _Inst;

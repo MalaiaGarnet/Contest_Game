@@ -49,7 +49,7 @@ public struct User_Input
     }
 };
 
-public class Manager_Input : MonoBehaviour
+public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 {
     // Start is called before the first frame update
     void Start()

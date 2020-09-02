@@ -10,6 +10,7 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
 
     [Header("센터 오브젝트들")]
     public GameObject m_Ingame_Scene_Loader;
+    public RectTransform m_Circle;
 
     private void Awake()
     {
