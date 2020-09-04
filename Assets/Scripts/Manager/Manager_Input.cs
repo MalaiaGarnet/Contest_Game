@@ -51,6 +51,8 @@ public struct User_Input
 
 public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 {
+    public User_Input m_Player_Input;
+
     // Start is called before the first frame update
     void Start()
     {
