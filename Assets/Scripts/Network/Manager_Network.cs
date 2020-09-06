@@ -15,9 +15,8 @@ public class Manager_Network : MonoBehaviour
 {
     public static Manager_Network Instance;
 
-    
     public bool m_Connected { get; private set; } // 서버 연결 상태
-    
+
     public TcpClient m_Socket = null; // TCP소켓
     public KJH_Crypto m_Encryptor = null; // 암호화
 
@@ -40,9 +39,9 @@ public class Manager_Network : MonoBehaviour
     // ingame
     public Event_HeartBeat e_HeartBeat = new Event_HeartBeat();
     public Event_Game_Start e_GameStart = new Event_Game_Start();
+    public Event_Player_Input e_PlayerInput = new Event_Player_Input();
 
-
-    public static bool Debug_Toggle = true; // 디버그 로거 표현 여부
+    public static bool Debug_Toggle = false; // 디버그 로거 표현 여부
     public static void Log(string _msg) // 로그 쓰기
     {
         if (Debug_Toggle)
@@ -70,6 +69,7 @@ public class Manager_Network : MonoBehaviour
             m_Packet?.Update();
     }
 
+
     public void Connect_To_Server(string _ip = "127.0.0.1", string _port = "9000")
     {
         if (m_Socket != null)
@@ -89,7 +89,7 @@ public class Manager_Network : MonoBehaviour
             m_Packet.Init();
 
             // 연결 됐으면 ACK 보내기
-            Sender.Send_Heartbeat();
+            Packet_Sender.Send_Heartbeat();
         }
         catch (SocketException e)
         {
@@ -98,7 +98,6 @@ public class Manager_Network : MonoBehaviour
             m_Socket = null;
         }
     }
-
     public void Disconnect()
     {
         if (m_Socket != null)
@@ -127,7 +126,7 @@ public class Manager_Network : MonoBehaviour
         // 로그인 패킷 전송
         UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.LOGIN;
         Userdata data = new Userdata(_id, _pw, "");
-        Sender.Send_Userdata(protocol, data);
+        Packet_Sender.Send_Userdata(protocol, data);
 
         return true;
     }
@@ -144,7 +143,6 @@ public class Manager_Network : MonoBehaviour
         StartCoroutine(Register_Process(_id, _pw, _nickname));
         return true;
     }
-
     IEnumerator Register_Process(string _id, string _pw, string _nickname)
     {
         while (m_Encryptor == null)
@@ -153,11 +151,10 @@ public class Manager_Network : MonoBehaviour
         // 회원가입 패킷 전송
         UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.REGISTER;
         Userdata data = new Userdata(_id, _pw, _nickname);
-        Sender.Send_Userdata(protocol, data);
+        Packet_Sender.Send_Userdata(protocol, data);
 
         yield return null;
     }
-
     /// <summary>
     /// 로그아웃 및 연결 끊기
     /// </summary>
@@ -172,6 +169,7 @@ public class Manager_Network : MonoBehaviour
 
         Disconnect();
     }
+
 
 }
 

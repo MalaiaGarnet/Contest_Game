@@ -43,7 +43,7 @@ public class Match_Window : Small_Window
 
     public void Stop_Match()
     {
-        Sender.Send_Protocol((UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.MATCH | (UInt64)PROTOCOL_LOGIN.STOP);
+        Packet_Sender.Send_Protocol((UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.MATCH | (UInt64)PROTOCOL_LOGIN.STOP);
         StartCoroutine(Stop_Process());
     }
 
@@ -80,7 +80,7 @@ public class Match_Window : Small_Window
         while (m_Timer_Enable)
         {
             if(m_Timer == 2)
-                Sender.Send_Match_Start(_Role);
+                Packet_Sender.Send_Match_Start(_Role);
 
             m_Timer += 1;
             int minute = m_Timer / 60;

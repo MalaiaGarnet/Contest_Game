@@ -7,6 +7,10 @@ using UnityEngine.Events;
 using Network.Data;
 using System.Text;
 
+/// <summary>
+/// 일 처리기
+/// 패킷을 받으면 자동적으로 이곳을 통해서 패킷에 대한 처리를 수행함
+/// </summary>
 public class Task_Handler
 {
 
@@ -60,7 +64,7 @@ public class Task_Handler
         {
             Manager_Network.Log("encrypt");
             byte[] code = new byte[32];
-            Unpacker.UnPackPacket(_task.buffer, ref code);
+            Packet_Unpacker.UnPackPacket(_task.buffer, ref code);
 
             Manager_Network.Log("키 대입");
             Manager_Network.Instance.m_Encryptor = new KJH_Crypto(code);
@@ -116,6 +120,13 @@ public class Task_Handler
         {
             Manager_Network.Log("인게임 시작");
             _manager.e_GameStart.Invoke();
+        }
+        if ((_protocol & (UInt64)PROTOCOL_INGAME.INPUT) > 0)
+        {
+            Manager_Network.Log("인게임 인풋");
+            User_Profile[] datas = null;
+            User_Profile.UnPackPacket(_task.buffer, ref datas);
+            _manager.e_PlayerInput.Invoke(datas);
         }
     }
 }
