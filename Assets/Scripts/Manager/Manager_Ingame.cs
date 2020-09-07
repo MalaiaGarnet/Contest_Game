@@ -37,27 +37,57 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     {
         Ingame_UI ui = Ingame_UI.Instance;
         // 로딩창 부르기
-        ui.StartCoroutine(ui.Show_Ingame_Scene_Loader(true));
+        ui.m_Ingame_Scene_Loader.Show(true);
         yield return new WaitForSecondsRealtime(1.0f);
-        ui.m_Header.SetActive(true);
-        ui.m_Footer.SetActive(true);
 
-        // 인게인 씬 로드
+        // 장식용 1
+        ui.m_Ingame_Scene_Loader.Add_Msg("loading process start");
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        // 인게임 씬 로드
         SceneManager.LoadScene("Ingame");
         yield return new WaitForSecondsRealtime(2.0f);
 
+        // hud 생성
+        ui.m_Ingame_Scene_Loader.Add_Msg("create hud");
+        ui.m_Header.SetActive(true);
+        ui.m_Footer.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        // 장식용 2
+        ui.m_Ingame_Scene_Loader.Add_Msg("deploy requested");
+        ui.m_Ingame_Scene_Loader.Add_Msg("waiting for a response from company");
+        yield return new WaitForSecondsRealtime(0.5f);
+        ui.m_Ingame_Scene_Loader.Add_Msg("ok");
+
+        // 장식용 3
+        ui.m_Ingame_Scene_Loader.Add_Msg("connecting to machine");
+        ui.m_Ingame_Scene_Loader.Add_Msg("machine id " + UnityEngine.Random.Range(1, 999999).ToString("D6"));
+        yield return new WaitForSecondsRealtime(0.5f);
+        ui.m_Ingame_Scene_Loader.Add_Msg("ok");
+
         // 로딩 끝난 상태, 다른 이들 로딩 기다리기
+        ui.m_Ingame_Scene_Loader.Add_Msg("waiting for team");
         Packet_Sender.Send_Protocol((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.READY);
+        yield return new WaitForSecondsRealtime(0.5f);
 
         yield return null;
     }
 
     public void Start_Game()
     {
+        StartCoroutine(Start_Game_Process());
+    }
+    IEnumerator Start_Game_Process()
+    { 
         Ingame_UI ui = Ingame_UI.Instance;
         m_Game_Started = true;
 
-        foreach(User_Profile profile in m_Profiles)
+        ui.m_Ingame_Scene_Loader.Add_Msg("ok");
+        yield return new WaitForSecondsRealtime(0.5f);
+        ui.m_Ingame_Scene_Loader.Add_Msg(" ");
+
+        foreach (User_Profile profile in m_Profiles)
         {
             GameObject player_character = Instantiate(profile.Role_Index == 1 ? prefab_Guard : prefab_Thief);
             player_character.transform.position = profile.Current_Pos;
@@ -67,7 +97,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
 
         // 로딩창 지우기
-        ui.StartCoroutine(ui.Show_Ingame_Scene_Loader(false));
+        ui.m_Ingame_Scene_Loader.Show(false);
 
         // 인풋 시작
         StartCoroutine(Input_Send());

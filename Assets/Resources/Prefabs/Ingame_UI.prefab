@@ -625,6 +625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1863007765}
   - component: {fileID: 1863007768}
+  - component: {fileID: 6858775007775624972}
   - component: {fileID: 1863007767}
   - component: {fileID: 1863007766}
   - component: {fileID: 6891889384239318469}
@@ -667,6 +668,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1863007764}
   m_CullTransparentMesh: 0
+--- !u!114 &6858775007775624972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863007764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7451b1ca748a39645b9cbbae91e96ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Circle: {fileID: 1026646570}
+  m_Loading_Text: {fileID: 1894455513}
 --- !u!114 &1863007767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -880,31 +895,24 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'program ready
+  m_Text: 'program load complete
 
-    load datas
+    deploy requested
 
-    resources... 00%
+    waiting for company response
 
-    nickname... 00%
+    ok
 
-    nickname...
-    00%
+    connecting
+    to machine
 
-    nickname... 00%
+    ok
 
-    nickname... 00%
+    waiting for team
 
-    nickname... 00%
+    ok
 
-    nickname...
-    00%
-
-    connect network...
-
-    ready
-
-    start the program'
+    program start'
 --- !u!1 &1928240332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,7 +1730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Header: {fileID: 2420081094293250266}
   m_Footer: {fileID: 2420081094169669028}
-  m_Ingame_Scene_Loader: {fileID: 1863007764}
+  m_Ingame_Scene_Loader: {fileID: 6858775007775624972}
 --- !u!1 &2420081094432486169
 GameObject:
   m_ObjectHideFlags: 0
