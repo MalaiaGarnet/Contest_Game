@@ -1,5 +1,61 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &396093159443961846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 543961277474368387}
+  - component: {fileID: 7031361481819463496}
+  m_Layer: 0
+  m_Name: Input
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &543961277474368387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396093159443961846}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5299774082606053329}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7031361481819463496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396093159443961846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c70633668f365f4285d1914ae4a8ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Player_Input:
+    Move_X: 0
+    Move_Y: 0
+    View_X: 0
+    View_Y: 0
+    Fire: 0
+    Jump: 0
+    Interact: 0
+    Menu: 0
+    Tool_1: 0
+    Tool_2: 0
+    Tool_3: 0
+    Tool_4: 0
 --- !u!1 &1830250788153881869
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,6 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b02e2bb86b96ee498564f2f3bf4b69b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab_Guard: {fileID: 491436525558318007, guid: 7c5a7c5c6afb0a64a9f37e131f90451c, type: 3}
+  prefab_Thief: {fileID: 8286250672296768448, guid: c20eb0463e2958f499269de91c8b4d3a, type: 3}
+  m_Game_Started: 0
+  m_Input_Update_Interval: 0.1
 --- !u!1 &5299774081072030872
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +176,7 @@ Transform:
   m_Children:
   - {fileID: 5299774081072030871}
   - {fileID: 1981412456491388815}
+  - {fileID: 543961277474368387}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

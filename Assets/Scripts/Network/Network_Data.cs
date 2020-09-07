@@ -4,12 +4,14 @@ using System.Drawing;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Network.Data
 {
-    /// <summary>
-    /// 버퍼 데이터
-    /// </summary>
+    /// <summary> 버퍼 데이터 </summary>
     public class Task
     {
         public byte[] buffer = new byte[4096];
@@ -59,9 +61,7 @@ namespace Network.Data
         }
     }
 
-    /// <summary>
-    /// 유저 데이터
-    /// </summary>
+    /// <summary> 유저 데이터 </summary>
     public struct Userdata
     {
         public string id;
@@ -81,9 +81,7 @@ namespace Network.Data
         }
     }
 
-    /// <summary>
-    /// 유저 프로필
-    /// </summary>
+    /// <summary> 유저 프로필 </summary>
     public struct User_Profile
     {
         public UInt16 Session_ID;
@@ -160,359 +158,102 @@ namespace Network.Data
         }
     }
 
-
-    /// <summary>
-    /// 패킷 제작기
-    /// </summary>
-    public class Packer
+    /// <summary> 유저 입력 </summary>
+    [Serializable]
+    public struct User_Input
     {
-        public static byte[] PackPacket(ref int _size, UInt64 _protocol)
+        public float Move_X;
+        public float Move_Y;
+        public float View_X;
+        public float View_Y;
+        public bool Fire;
+        public bool Jump;
+        public bool Interact;
+        public bool Menu;
+        public bool Tool_1;
+        public bool Tool_2;
+        public bool Tool_3;
+        public bool Tool_4;
+
+        public static User_Input Read_Bytes_New(byte[] _data, ref int _place)
         {
-            byte[] data = new byte[1024];
-            int place = 0;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                User_Input ui = new User_Input();
+                BinaryFormatter bf = new BinaryFormatter();
+                int type_size = Marshal.SizeOf(ui.GetType());
 
-            place += sizeof(int);
+                ms.Write(_data, _place, type_size);
+                ms.Seek(0, SeekOrigin.Begin);
 
-            Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            place = 0;
-            Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
-
-            _size += sizeof(int);
-
-            return data;
-        }
-        public static byte[] PackPacket(ref int _size, UInt64 _protocol, string _string)
-        {
-            byte[] data = new byte[1024];
-            int place = 0;
-
-            int NickNamesize = _string.Length * 2;
-
-            place += sizeof(int);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(NickNamesize), 0, data, place, sizeof(int));
-            place += sizeof(int);
-            _size += sizeof(int);
-
-            Buffer.BlockCopy(Encoding.Unicode.GetBytes(_string), 0, data, place, _string.Length * 2);
-            place += NickNamesize;
-            _size += NickNamesize;
-
-            place = 0;
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
-
-            _size += sizeof(int);
-
-            return data;
-        }
-        public static byte[] PackPacket(ref int _size, UInt64 _protocol, UInt64 _data)
-        {
-            byte[] data = new byte[1024];
-            int place = 0;
-
-            place += sizeof(int);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_data), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            place = 0;
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
-
-            _size += sizeof(int);
-
-            return data;
-        }
-        public static byte[] PackPacket(ref int _size, UInt64 _protocol, ushort _data)
-        {
-            byte[] data = new byte[1024];
-            int place = 0;
-
-            place += sizeof(int);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_data), 0, data, place, sizeof(ushort));
-            place += sizeof(ushort);
-            _size += sizeof(ushort);
-
-            place = 0;
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
-
-            _size += sizeof(int);
-
-            _size = (_size / 8 + 1) * 8;
-
-            return data;
-        }
-        public static byte[] PackPacket(ref int _size, UInt64 _protocol, UInt64 _x, UInt64 _y)
-        {
-            byte[] data = new byte[1024];
-            int place = 0;
-
-            place += sizeof(int);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_x), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_y), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            place = 0;
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
-
-            _size += sizeof(int);
-
-            return data;
-        }
-        public static byte[] PackPacket(ref int _size, UInt64 _protocol, Int16 _x, Int16 _y)
-        {
-            byte[] data = new byte[1024];
-            int place = 0;
-
-            place += sizeof(int);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_x), 0, data, place, sizeof(Int16));
-            place += sizeof(Int16);
-            _size += sizeof(Int16);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_y), 0, data, place, sizeof(Int16));
-            place += sizeof(Int16);
-            _size += sizeof(Int16);
-
-            place = 0;
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
-
-            _size += sizeof(int);
-
-            return data;
-        }
-        public static byte[] PackPacket(ref int _size, UInt64 _protocol, Userdata _data)
-        {
-            byte[] data = new byte[1024];
-            int place = 0;
-
-            place += sizeof(int);
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
-            place += sizeof(UInt64);
-            _size += sizeof(UInt64);
-
-            Buffer.BlockCopy(Encoding.Unicode.GetBytes(_data.id), 0, data, place, 64);
-            place += 64;
-            _size += 64;
-
-            Buffer.BlockCopy(Encoding.Unicode.GetBytes(_data.pw), 0, data, place, 64);
-            place += 64;
-            _size += 64;
-
-            Buffer.BlockCopy(Encoding.Unicode.GetBytes(_data.nickname), 0, data, place, 64);
-            place += 64;
-            _size += 64;
-
-            place = 0;
-
-            Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
-
-            _size += sizeof(int);
-
-            return data;
-        }
-    }
-
-    public class Sender
-    {
-        /// <summary>
-        /// 나 살아있다고 알리기
-        /// </summary>
-        public static void Send_Heartbeat()
-        {
-            Task task = new Task();
-            UInt64 protocol = (UInt64)PROTOCOL.GLOBAL | (UInt64)PROTOCOL_GLOBAL.HEART_BEAT;
-            task.buffer = Packer.PackPacket(ref task.datasize, protocol, "");
-            // task.Encrypt(Manager_Network.Instance.m_Encryptor);
-
-            Manager_Network.Log("buffer size = " + task.datasize);
-
-            Manager_Packet.Instance.SendEnqueue(task);
+                return (User_Input)bf.Deserialize(ms);
+            }
         }
 
-        /// <summary>
-        /// 프로토콜 보내기
-        /// </summary>
-        public static void Send_Protocol(UInt64 _protocol)
+        public void Read_Bytes(byte[] _data, ref int _place)
         {
-            Task task = new Task();
-            task.buffer = Packer.PackPacket(ref task.datasize, _protocol);
+            Move_X = BitConverter.ToSingle(_data, _place);
+            _place += sizeof(float);
+            Move_Y = BitConverter.ToSingle(_data, _place);
+            _place += sizeof(float);
+            View_X = BitConverter.ToSingle(_data, _place);
+            _place += sizeof(float);
+            View_Y = BitConverter.ToSingle(_data, _place);
+            _place += sizeof(float);
 
-            task.Encrypt(Manager_Network.Instance.m_Encryptor);
-            Manager_Packet.Instance.SendEnqueue(task);
+            Fire = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
+            Jump = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
+            Interact = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
+            Menu = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
+            Tool_1 = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
+            Tool_2 = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
+            Tool_3 = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
+            Tool_4 = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
         }
-
-        /// <summary>
-        /// 로그인 & 회원가입시의 유저데이터 보내기
-        /// </summary>
-        public static void Send_Userdata(UInt64 _protocol, Userdata _data)
+        public void Write_Bytes(ref byte[] _data, ref int _place, ref int _size)
         {
-            Task task = new Task();
-            task.buffer = Packer.PackPacket(ref task.datasize, _protocol, _data);
+            BinaryFormatter bf = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, this);
+                int type_size = Marshal.SizeOf(GetType());
+                Buffer.BlockCopy(ms.ToArray(), 0, _data, _place, type_size);
+                _place += type_size; _size += type_size;
+            }
 
-            task.Encrypt(Manager_Network.Instance.m_Encryptor);
-            Manager_Packet.Instance.SendEnqueue(task);
+            Buffer.BlockCopy(BitConverter.GetBytes(Move_X), 0, _data, _place, sizeof(float));
+            _place += sizeof(float); _size += sizeof(float);
+            Buffer.BlockCopy(BitConverter.GetBytes(Move_Y), 0, _data, _place, sizeof(float));
+            _place += sizeof(float); _size += sizeof(float);
+            Buffer.BlockCopy(BitConverter.GetBytes(View_X), 0, _data, _place, sizeof(float));
+            _place += sizeof(float); _size += sizeof(float);
+            Buffer.BlockCopy(BitConverter.GetBytes(View_Y), 0, _data, _place, sizeof(float));
+            _place += sizeof(float); _size += sizeof(float);
+
+            Buffer.BlockCopy(BitConverter.GetBytes(Fire), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Jump), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Interact), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Menu), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Tool_1), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Tool_2), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Tool_3), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Tool_4), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
         }
-
-        /// <summary>
-        /// 매칭 프로토콜 보내기
-        /// </summary>
-        public static void Send_Match_Start(UInt16 _Type)
-        {
-            Task task = new Task();
-            UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.MATCH | (UInt64)PROTOCOL_LOGIN.START;
-            task.buffer = Packer.PackPacket(ref task.datasize, protocol, _Type);
-            task.Encrypt(Manager_Network.Instance.m_Encryptor);
-
-            Manager_Packet.Instance.SendEnqueue(task);
-        }
-
-        /// <summary>
-        /// 인게임 씬 준비 완료했다고 알리기
-        /// </summary>
-        public static void Send_Ready()
-        {
-            Task task = new Task();
-            UInt64 protocol = (UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.READY;
-            task.buffer = Packer.PackPacket(ref task.datasize, protocol, "");
-            task.Encrypt(Manager_Network.Instance.m_Encryptor);
-
-            Manager_Packet.Instance.SendEnqueue(task);
-        }
-    }
-
-    /// <summary>
-    /// 패킷 분해기
-    /// </summary>
-    public class Unpacker
-    {
-        public static void UnPackPacket(byte[] _data, ref string _msg)
-        {
-            int msgSize = 0;
-
-            int place = 0;
-
-            place += sizeof(UInt64);
-
-            msgSize = BitConverter.ToInt32(_data, place);
-            place += sizeof(int);
-
-            _msg = Encoding.Unicode.GetString(_data, place, msgSize);
-            place += msgSize;
-        }
-        public static void UnPackPacket(byte[] _data, ref byte[] _bytecode)
-        {
-            int place = sizeof(UInt64);
-
-            _bytecode = new byte[32];
-            for(int i = 0; i < 32; i++)
-                _bytecode[i] = _data[place + i];
-        }
-
-        public static void UnPackPacket(byte[] _data, ref UInt16 _short)
-        {
-            int place = 0;
-
-            place += sizeof(UInt16);
-
-            _short = BitConverter.ToUInt16(_data, place);
-            place += sizeof(UInt16);
-        }
-        public static void UnPackPacket(byte[] _data, ref UInt64 _int)
-        {
-            int place = 0;
-
-            place += sizeof(UInt64);
-
-            _int = BitConverter.ToUInt64(_data, place);
-            place += sizeof(UInt64);
-        }
-        public static void UnPackPacket(byte[] _data, ref UInt16 _short, ref UInt64 _int)
-        {
-            int place = 0;
-
-            place += sizeof(UInt64);
-
-            _short = BitConverter.ToUInt16(_data, place);
-            place += sizeof(UInt16);
-
-            _int = BitConverter.ToUInt64(_data, place);
-            place += sizeof(UInt64);
-        }
-        public static void UnPackPacket(byte[] _data, ref UInt16 _tile_key, ref UInt16 _player_index)
-        {
-            int place = 0;
-
-            place += sizeof(UInt64);
-
-            _tile_key = BitConverter.ToUInt16(_data, place);
-            place += sizeof(UInt16);
-
-            _player_index = BitConverter.ToUInt16(_data, place);
-            place += sizeof(UInt16);
-        }
-        public static void UnPackPacket(byte[] _data, ref UInt16 _player_index, ref UInt64 _x, ref UInt64 _y)
-        {
-            int place = 0;
-
-            place += sizeof(UInt64);
-
-            _player_index = BitConverter.ToUInt16(_data, place);
-            place += sizeof(UInt16);
-
-            _x = BitConverter.ToUInt64(_data, place);
-            place += sizeof(UInt64);
-
-            _y = BitConverter.ToUInt64(_data, place);
-            place += sizeof(UInt64);
-        }
-        public static void UnPackPacket(byte[] _data, ref bool _is_client, ref bool _is_correct)
-        {
-            int place = 0;
-
-            place += sizeof(UInt64);
-
-            _is_client = BitConverter.ToInt16(_data, place) == 1;
-            place += sizeof(short);
-
-            _is_correct = BitConverter.ToInt16(_data, place) == 1;
-            place += sizeof(short);
-        }
-    }
-
+    };
 }
