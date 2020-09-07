@@ -1,6 +1,6 @@
 ﻿using Network.Data;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 class PlayerController : MonoBehaviour
 {
@@ -14,7 +14,8 @@ class PlayerController : MonoBehaviour
     public  User_Input       m_Output;
 
     [Header("네트워크/프로필")]
-    private User_Profile[]    m_UserProfile;
+    private User_Profile                 m_MyProfile;
+    private UnityAction<User_Profile[]>  m_PlayerInputEvts;
 
     [Header("캐릭터 스탯")]
     private short           m_Index;
@@ -31,14 +32,22 @@ class PlayerController : MonoBehaviour
         Manager_Input.Instance.PlayerRigidbody = playerRigidbody;
         Manager_Input.Instance.MainCamera = mainCamera;
         m_RayCastDir = new Vector3(0, 0, 0);
+
+        m_PlayerInputEvts = new UnityAction<User_Profile[]>(ReciveUserMoveMent);
+        Manager_Network.Instance.e_PlayerInput.AddListener(ReciveUserMoveMent);
     }
 
-    void ReciveUserMoveMent()
+    void ReciveUserMoveMent(User_Profile[] _Profiles)
     {
-        Manager_Input.Instance.recvInputEvent.Invoke(m_UserProfile);
-        m_Output.Move_X = m_UserProfile[m_Index].User_Input.Move_X;
-        m_Output.Move_Y = m_UserProfile[m_Index].User_Input.Move_Y;
-
+        for(int index = 0; index < _Profiles.Length; index++)
+        {
+            if(m_MyProfile.ID == _Profiles[index].ID)
+            {
+                m_Output.Move_X = m_MyProfile.User_Input.Move_X;
+                m_Output.Move_Y = m_MyProfile.User_Input.Move_Y;
+                m_NowPos = m_MyProfile.Current_Pos;
+            }
+        }
         Manager_Input.Instance.InputDirection = new Vector3(m_Output.Move_X, 0, m_Output.Move_Y);
     }
     /// <summary>
@@ -61,14 +70,11 @@ class PlayerController : MonoBehaviour
         // 총합 방향값
         float dir_rad = /*view_rad + */stick_rad;
 
-        // float zxDirRadian = transform.forward.z + Mathf.Atan2(transform.forward.z, transform.forward.x);
-        // float xzDirRadian = transform.forward.x + Mathf.Atan2(transform.forward.x, transform.forward.z);
-
         m_RayCastDir.x = Mathf.Cos(dir_rad);
         m_RayCastDir.y = 0f;
         m_RayCastDir.z = Mathf.Sin(dir_rad);
 
-        float dist = collider.radius + moveSpeed * (Manager_Input.Instance.TimeStamp * 10);
+        float dist = collider.radius + moveSpeed * Manager_Input.Instance.TimeStamp;
         // 반지름 + 1.5(이동속도) * 0.1(타임스탬프)
         RaycastHit hit;
 
@@ -88,6 +94,7 @@ class PlayerController : MonoBehaviour
             {
                 m_hitPos = hit.collider.transform.position; // 충돌 좌표를 저장
                 Debug.Log("충돌된 좌표 : " + m_hitPos + " 충돌 오브젝트 타입 : " + hit.collider.ToString());
+                m_MyProfile.Current_Pos = m_hitPos;
                 return true;
             }
         }
@@ -97,6 +104,7 @@ class PlayerController : MonoBehaviour
     void UpdatePosition()
     {
         m_NowPos = gameObject.transform.position;
+        m_MyProfile.Current_Pos = m_NowPos;
     }
 
     void FixedUpdate()

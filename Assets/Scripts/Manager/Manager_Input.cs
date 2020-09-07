@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,8 +21,6 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     private Vector3 smoothDirection;
     private Vector3 movement;
 
-    public Event_Player_Input sendInputEvent;
-    public Event_Player_Input recvInputEvent;
 
     public PressInteraction pressEvent;
 
@@ -38,32 +36,41 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 
     void Start()
     {
-        if (InputActions == null)
+        if (Manager_Ingame.Instance.m_Game_Started)
         {
-            InputActions = new PlayerInputAction();
-            InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
+            if (InputActions == null)
+            {
+                InputActions = new PlayerInputAction();
+                InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (InputDirection == Vector3.zero)
+        if (Manager_Ingame.Instance.m_Game_Started)
         {
-            IsMoving = false;
-        }
-        else if (InputDirection != Vector3.zero)
-        {
-            IsMoving = true;
+            if (InputDirection == Vector3.zero)
+            {
+                IsMoving = false;
+            }
+            else if (InputDirection != Vector3.zero)
+            {
+                IsMoving = true;
+            }
         }
     }
 
     void FixedUpdate()
     {
-        CalculateDesiredDirection();
-        ConvertDirectionFromRawToSmooth();
-        MoveThePlayer();
-        TurnThePlayer();
+        if (Manager_Ingame.Instance.m_Game_Started)
+        {
+            CalculateDesiredDirection();
+            ConvertDirectionFromRawToSmooth();
+            MoveThePlayer();
+            TurnThePlayer();
+        }
     }
 
     void CalculateDesiredDirection()
@@ -110,24 +117,25 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 
     }
 
+
+    /* void OnPlayerMoving(InputValue _Input)
+     {
+         // 인풋값 대입
+         m_Player_Input.Move_X = _Input.Get<Vector2>().x;
+         m_Player_Input.Move_Y = _Input.Get<Vector2>().y;
+
+         InputDirection = new Vector3(m_Player_Input.Move_X, 0.0f, m_Player_Input.Move_Y);
+         if(_Input.isPressed)
+         {
+             InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
+         }
+
+     } // 이곳에 충돌체크와 타임스팸프 갱신이 들어가야됨*/
+
     /// <summary>
     /// 이동 콜백
     /// </summary>
-    /// <param name="_Input"> 인풋값</param>    
-   /* void OnPlayerMoving(InputValue _Input)
-    {
-        // 인풋값 대입
-        m_Player_Input.Move_X = _Input.Get<Vector2>().x;
-        m_Player_Input.Move_Y = _Input.Get<Vector2>().y;
-
-        InputDirection = new Vector3(m_Player_Input.Move_X, 0.0f, m_Player_Input.Move_Y);
-        if(_Input.isPressed)
-        {
-            InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
-        }
-        
-    } // 이곳에 충돌체크와 타임스팸프 갱신이 들어가야됨*/
-
+    /// <param name="_Input"> 인풋값</param> 
     public void OnPlayerMoving(InputAction.CallbackContext obj)
     {
         m_Player_Input.Move_X = obj.ReadValue<Vector2>().x;
@@ -137,7 +145,7 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         if (obj.interaction is PressInteraction)
         {
             float chkIndex = 0;
-            chkIndex += Time.deltaTime;
+            chkIndex++;
             if (pressEvent == null)
             {
                 pressEvent = new PressInteraction();
@@ -148,7 +156,7 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
             }
             else
             {
-               // Debug.Log("N인풋 : " + "{" + m_Player_Input.Move_X + "," + m_Player_Input.Move_Y + "}" + "좌표 : " + transform.position);
+                // Debug.Log("N인풋 : " + "{" + m_Player_Input.Move_X + "," + m_Player_Input.Move_Y + "}" + "좌표 : " + transform.position);
             }
         }
     }
@@ -193,5 +201,4 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     {
         return m_Player_Input;
     }
-
 }
