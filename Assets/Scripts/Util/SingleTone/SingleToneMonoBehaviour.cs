@@ -19,6 +19,11 @@ public class SingleToneMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
         {
             _instance = _Inst;
         }
+        else // 만약에 이미 있다면 스스로 파괴
+        {
+            Destroy(_instance);
+            return;
+        }
     }
     public static T Instance
     {

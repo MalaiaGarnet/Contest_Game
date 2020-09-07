@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -129,7 +126,6 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
     {
         BG_Button.gameObject.SetActive(false);
         GetComponent<Small_Window>().Close();
-        // gameObject.SetActive(false);
         CallBackFunc?.Invoke(OutResult);      
     }
 
@@ -151,11 +147,12 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
     #endregion
 
     void Awake()
-    {     
+    {             
         InitButtonConfig();
-        gameObject.SetActive(false);
+        transform.gameObject.SetActive(false);
         BG_Button.gameObject.SetActive(false);
-        SetInstance(this);      
+        SetInstance(this);
+       
     }
  
     #endregion
