@@ -6,12 +6,12 @@
             "id": "ba66d8d4-394d-49c0-a9d1-2ad513337dbe",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "Button",
+                    "name": "PlayerMoving",
+                    "type": "Value",
                     "id": "ae3d3fc3-5c6b-4bd3-9ef1-704e8a7e14a1",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "Hold,Press"
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -19,10 +19,10 @@
                     "name": "Moving",
                     "id": "cbaab4a1-7af7-4080-970d-aba85c037688",
                     "path": "2DVector",
-                    "interactions": "",
+                    "interactions": "Press(pressPoint=0.1,behavior=2)",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "PlayerMoving",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -33,7 +33,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Move",
+                    "action": "PlayerMoving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -44,7 +44,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Move",
+                    "action": "PlayerMoving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -55,7 +55,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Move",
+                    "action": "PlayerMoving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -66,7 +66,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Move",
+                    "action": "PlayerMoving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

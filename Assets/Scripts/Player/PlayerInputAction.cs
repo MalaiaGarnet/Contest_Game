@@ -19,12 +19,12 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
             ""id"": ""ba66d8d4-394d-49c0-a9d1-2ad513337dbe"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""Button"",
+                    ""name"": ""PlayerMoving"",
+                    ""type"": ""Value"",
                     ""id"": ""ae3d3fc3-5c6b-4bd3-9ef1-704e8a7e14a1"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": ""Hold,Press""
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -32,10 +32,10 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""name"": ""Moving"",
                     ""id"": ""cbaab4a1-7af7-4080-970d-aba85c037688"",
                     ""path"": ""2DVector"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(pressPoint=0.1,behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""PlayerMoving"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -46,7 +46,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
+                    ""action"": ""PlayerMoving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -57,7 +57,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
+                    ""action"": ""PlayerMoving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -68,7 +68,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
+                    ""action"": ""PlayerMoving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -79,7 +79,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
+                    ""action"": ""PlayerMoving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -102,7 +102,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
 }");
         // PlayerMoves
         m_PlayerMoves = asset.FindActionMap("PlayerMoves", throwIfNotFound: true);
-        m_PlayerMoves_Move = m_PlayerMoves.FindAction("Move", throwIfNotFound: true);
+        m_PlayerMoves_PlayerMoving = m_PlayerMoves.FindAction("PlayerMoving", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -152,12 +152,12 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     // PlayerMoves
     private readonly InputActionMap m_PlayerMoves;
     private IPlayerMovesActions m_PlayerMovesActionsCallbackInterface;
-    private readonly InputAction m_PlayerMoves_Move;
+    private readonly InputAction m_PlayerMoves_PlayerMoving;
     public struct PlayerMovesActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerMovesActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_PlayerMoves_Move;
+        public InputAction @PlayerMoving => m_Wrapper.m_PlayerMoves_PlayerMoving;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMoves; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -167,16 +167,16 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_PlayerMovesActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_PlayerMovesActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_PlayerMovesActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_PlayerMovesActionsCallbackInterface.OnMove;
+                @PlayerMoving.started -= m_Wrapper.m_PlayerMovesActionsCallbackInterface.OnPlayerMoving;
+                @PlayerMoving.performed -= m_Wrapper.m_PlayerMovesActionsCallbackInterface.OnPlayerMoving;
+                @PlayerMoving.canceled -= m_Wrapper.m_PlayerMovesActionsCallbackInterface.OnPlayerMoving;
             }
             m_Wrapper.m_PlayerMovesActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
+                @PlayerMoving.started += instance.OnPlayerMoving;
+                @PlayerMoving.performed += instance.OnPlayerMoving;
+                @PlayerMoving.canceled += instance.OnPlayerMoving;
             }
         }
     }
@@ -192,6 +192,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     }
     public interface IPlayerMovesActions
     {
-        void OnMove(InputAction.CallbackContext context);
+        void OnPlayerMoving(InputAction.CallbackContext context);
     }
 }
