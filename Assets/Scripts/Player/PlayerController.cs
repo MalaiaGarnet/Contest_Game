@@ -10,8 +10,8 @@ class PlayerController : MonoBehaviour
     public Rigidbody        playerRigidbody;
 
     [Header("입출력")]
-    private Manager_Input    m_PlayerInputs;
-    public  User_Input       m_Output;
+    private  Manager_Input    m_PlayerInputs;
+    private  User_Input       m_Output;
 
     [Header("네트워크/프로필")]
     private User_Profile                 m_MyProfile;
