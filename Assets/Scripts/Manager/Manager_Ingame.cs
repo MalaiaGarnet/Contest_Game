@@ -94,8 +94,10 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             PlayerController pc = player_character.GetComponent<PlayerController>();
             if (pc != null)
             {
-                // TODO 프로필 심기
+                // 프로필 심기
+                pc.m_MyProfile = profile;
             }
+            player_character.transform.position = pc.m_MyProfile.Current_Pos;
         }
 
         // TODO 카메라 자신의 캐릭터 찾아가기
@@ -115,6 +117,8 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         while(m_Game_Started)
         {
             // 입력값 보내기
+            Debug.Log("입력 = " + Manager_Input.Instance.m_Player_Input.Move_X + ", "
+                + Manager_Input.Instance.m_Player_Input.Move_Y);
             Packet_Sender.Send_Input((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.INPUT,
                 Manager_Input.Instance.m_Player_Input,
                 Manager_Input.Instance.m_Pre_Position);

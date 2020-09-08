@@ -18,6 +18,11 @@ public class Scene_Loader : MonoBehaviour
         StartCoroutine(Show_Ingame_Scene_Loader(_enable));
     }
 
+    private void Update()
+    {
+        m_Circle.localRotation = Quaternion.Euler(m_Circle.localRotation.eulerAngles + new Vector3(0f, 0f, 16f * Time.deltaTime));
+    }
+
     public IEnumerator Show_Ingame_Scene_Loader(bool _enable)
     {
         string anim_name = "GUI_Scene_Loder_Fade_" + (_enable ? "In" : "Out");
@@ -34,6 +39,6 @@ public class Scene_Loader : MonoBehaviour
 
     public void Add_Msg(string _msg)
     {
-        m_Loading_Text.text = _msg + "\n";
+        m_Loading_Text.text += "\n" + _msg;
     }
 }

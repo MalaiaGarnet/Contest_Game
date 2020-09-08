@@ -58,16 +58,21 @@ class PlayerController : MonoBehaviour
 
     void ReciveUserMoveMent(User_Profile[] _Profiles)
     {
-        for(int index = 0; index < _Profiles.Length; index++)
+        Debug.Log("무브먼트 발현");
+        for (int index = 0; index < _Profiles.Length; index++)
         {
-            if(m_MyProfile.ID == _Profiles[index].ID)
+            Debug.Log(m_MyProfile.Session_ID + " == " + _Profiles[index].Session_ID);
+            if (m_MyProfile.Session_ID == _Profiles[index].Session_ID)
             {
+                m_MyProfile = _Profiles[index];
                 m_Output.Move_X = m_MyProfile.User_Input.Move_X;
                 m_Output.Move_Y = m_MyProfile.User_Input.Move_Y;
                 m_NowPos = m_MyProfile.Current_Pos;
+                UpdatePosition();
+                CheckCollision();
             }
         }
-        playerInputs.InputDirection = new Vector3(m_Output.Move_X, 0, m_Output.Move_Y);
+        // playerInputs.InputDirection = new Vector3(m_Output.Move_X, 0, m_Output.Move_Y);
     }
     /// <summary>
     /// 충돌 처리를 합니다!
@@ -76,8 +81,8 @@ class PlayerController : MonoBehaviour
     bool CheckCollision()
     {
         // 무입력 처리
-        if(playerInputs.m_Player_Input.Move_X.Equals(0.0f) &&
-            playerInputs.m_Player_Input.Move_Y.Equals(0.0f))
+        if(m_Output.Move_X.Equals(0.0f) &&
+            m_Output.Move_Y.Equals(0.0f))
             return false;
 
         CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
@@ -85,7 +90,7 @@ class PlayerController : MonoBehaviour
         // 시점 방향값 => 카메라의 rotation.eulerangle.y * mathf.deg2rad 로 라디안 구해서 해보셈
         // float view_rad = Mathf.Atan2(transform.forward.z, transform.forward.x);
         // 스틱 방향값
-        float stick_rad = Mathf.Atan2(playerInputs.m_Player_Input.Move_Y, playerInputs.m_Player_Input.Move_X);
+        float stick_rad = Mathf.Atan2(m_Output.Move_Y, m_Output.Move_X);
         // 총합 방향값
         float dir_rad = /*view_rad + */stick_rad;
 
@@ -93,10 +98,12 @@ class PlayerController : MonoBehaviour
         m_RayCastDir.y = 0f;
         m_RayCastDir.z = Mathf.Sin(dir_rad);
 
-        float dist = collider.radius + moveSpeed * playerInputs.TimeStamp;
         // 반지름 + 1.5(이동속도) * 0.1(타임스탬프)
-        RaycastHit hit;
+        float dist = collider.radius + moveSpeed * playerInputs.TimeStamp;
 
+        MoveThePlayer(m_RayCastDir, 1.5f);
+
+        RaycastHit hit;
         Ray ray = new Ray(m_NowPos + new Vector3(0f, 0.2f, 0f) + m_RayCastDir * collider.radius, m_RayCastDir);
         // Ray ray = new Ray(m_NowPos + new Vector3(0f, 0.2f, 0f), m_RayCastDir);
         Debug.DrawRay(ray.origin, ray.direction, Color.red, 1.0f);
@@ -128,9 +135,18 @@ class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        UpdatePosition();
-        CheckCollision();
+        // UpdatePosition();
+        // CheckCollision();
     }
 
+    void TurnThePlayer()
+    {
+    }
+
+    void MoveThePlayer(Vector3 _dir, float _speed_per_sec)
+    {
+        Vector3 movement = _dir.normalized * _speed_per_sec * Manager_Ingame.Instance.m_Input_Update_Interval;
+        GetComponent<Rigidbody>().MovePosition(transform.position + movement);
+    }
 
 }
