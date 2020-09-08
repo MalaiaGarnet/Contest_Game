@@ -33,6 +33,7 @@ public enum PopUpResult
 /// </summary>
 public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
 {
+   
     public static void Show(string _Title, string _Desc, Action<PopUpResult> _CallFunc)
     {
         Instance.ShowOnly(_Title, _Desc, _CallFunc);

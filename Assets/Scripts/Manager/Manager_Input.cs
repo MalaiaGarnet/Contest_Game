@@ -6,11 +6,17 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.Networking;
 using Network.Data;
+using UnityEngine.Rendering;
 
 public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 {
     #region  필드와 프로퍼티
 
+    [Header("유저프로팹, 카메라")]
+    public GameObject playerPrefab;
+    //public Camera MainCamera;
+
+    [Header("디버그로 확인")]
     public User_Input m_Player_Input;
     public Vector3 m_Pre_Position; // 현재 위치
 
@@ -21,7 +27,6 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     private Vector3 smoothDirection;
     private Vector3 movement;
 
-
     public PressInteraction pressEvent;
 
     public float TimeStamp { get; set; } = 0.100f; // 타임스팸프
@@ -29,9 +34,10 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     public bool IsMoving { get; set; } = false; // 이동중인지
     public Vector3 InputDirection { get; set; } // 입력 방향
     public PlayerInputAction InputActions { get; set; } // 인풋액션
-    public GameObject ActorObj { get; set; } // 플레이어오브젝트
     public Rigidbody PlayerRigidbody { get; set; } // 리지드바디
-    public Camera MainCamera { get; set; } // 메인카메라
+
+    public Camera MainCamera { get; set; }
+
     #endregion
 
     void Start()
@@ -40,32 +46,51 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         {
             if (InputActions == null)
             {
-                InputActions = new PlayerInputAction();
-                InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
+                InputActions = new PlayerInputAction();             
             }
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Initialized()
     {
-        if (Manager_Ingame.Instance.m_Game_Started)
+        if (MainCamera == null)
         {
-            if (InputDirection == Vector3.zero)
-            {
-                IsMoving = false;
-            }
-            else if (InputDirection != Vector3.zero)
-            {
-                IsMoving = true;
-            }
+            MainCamera = Camera.main;
         }
+        PlayerRigidbody = playerPrefab.GetComponent<Rigidbody>();
+        rawDirection = Vector3.zero;
+        smoothDirection = Vector3.zero;
+        movement = Vector3.zero;
     }
+
+    public void CreateMovingAction()
+    {
+        if(InputActions != null)
+            InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
+    }
+
+
+    bool IsMovingThePlayer()
+    {
+        if (InputDirection == Vector3.zero)
+        {
+            IsMoving = false;
+            return false;
+        }
+        else if (InputDirection != Vector3.zero)
+        {
+            IsMoving = true;
+            return true;
+        }
+        return false;
+    }
+
 
     void FixedUpdate()
     {
         if (Manager_Ingame.Instance.m_Game_Started)
         {
+            IsMovingThePlayer();
             CalculateDesiredDirection();
             ConvertDirectionFromRawToSmooth();
             MoveThePlayer();

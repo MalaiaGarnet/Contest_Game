@@ -1,20 +1,17 @@
 ﻿using Network.Data;
+using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
 class PlayerController : MonoBehaviour
 {
-    [Header("카메라")]
-    public Camera           mainCamera;
-    [Header("물리")]
-    public Rigidbody        playerRigidbody;
-
     [Header("입출력")]
-    private  Manager_Input    m_PlayerInputs;
+    protected Manager_Input playerInputs;
     private  User_Input       m_Output;
 
     [Header("네트워크/프로필")]
-    private User_Profile                 m_MyProfile;
+    public User_Profile                  m_MyProfile;
     private UnityAction<User_Profile[]>  m_PlayerInputEvts;
 
     [Header("캐릭터 스탯")]
@@ -27,14 +24,36 @@ class PlayerController : MonoBehaviour
     private Vector3         m_NowPos;
     private Vector3         m_hitPos;
     private Vector3         m_RayCastDir;
+
+
     void Start()
     {
-        Manager_Input.Instance.PlayerRigidbody = playerRigidbody;
-        Manager_Input.Instance.MainCamera = mainCamera;
-        m_RayCastDir = new Vector3(0, 0, 0);
+        InitializePlayer();
+    }
 
-        m_PlayerInputEvts = new UnityAction<User_Profile[]>(ReciveUserMoveMent);
-        Manager_Network.Instance.e_PlayerInput.AddListener(ReciveUserMoveMent);
+    void InitializePlayer()
+    {
+        playerInputs = Manager_Input.Instance;
+        playerInputs.Initialized();
+        m_NowPos = Vector3.zero;
+        m_hitPos = Vector3.zero;
+        m_RayCastDir = Vector3.zero;
+
+        if (m_PlayerInputEvts == null)
+        {
+            m_PlayerInputEvts = new UnityAction<User_Profile[]>(ReciveUserMoveMent);
+            Manager_Network.Instance.e_PlayerInput.AddListener(ReciveUserMoveMent);
+        }
+        else if(m_PlayerInputEvts != null)
+        {
+            if(Manager_Network.Instance.e_PlayerInput.GetPersistentEventCount() != 0)
+                Manager_Network.Instance.e_PlayerInput.RemoveAllListeners();
+        }
+    }
+
+    public void CallPlayerMoveMent()
+    {
+        playerInputs.CreateMovingAction();
     }
 
     void ReciveUserMoveMent(User_Profile[] _Profiles)
@@ -48,7 +67,7 @@ class PlayerController : MonoBehaviour
                 m_NowPos = m_MyProfile.Current_Pos;
             }
         }
-        Manager_Input.Instance.InputDirection = new Vector3(m_Output.Move_X, 0, m_Output.Move_Y);
+        playerInputs.InputDirection = new Vector3(m_Output.Move_X, 0, m_Output.Move_Y);
     }
     /// <summary>
     /// 충돌 처리를 합니다!
@@ -57,8 +76,8 @@ class PlayerController : MonoBehaviour
     bool CheckCollision()
     {
         // 무입력 처리
-        if(Manager_Input.Instance.m_Player_Input.Move_X.Equals(0.0f) &&
-            Manager_Input.Instance.m_Player_Input.Move_Y.Equals(0.0f))
+        if(playerInputs.m_Player_Input.Move_X.Equals(0.0f) &&
+            playerInputs.m_Player_Input.Move_Y.Equals(0.0f))
             return false;
 
         CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
@@ -66,7 +85,7 @@ class PlayerController : MonoBehaviour
         // 시점 방향값 => 카메라의 rotation.eulerangle.y * mathf.deg2rad 로 라디안 구해서 해보셈
         // float view_rad = Mathf.Atan2(transform.forward.z, transform.forward.x);
         // 스틱 방향값
-        float stick_rad = Mathf.Atan2(Manager_Input.Instance.m_Player_Input.Move_Y, Manager_Input.Instance.m_Player_Input.Move_X);
+        float stick_rad = Mathf.Atan2(playerInputs.m_Player_Input.Move_Y, playerInputs.m_Player_Input.Move_X);
         // 총합 방향값
         float dir_rad = /*view_rad + */stick_rad;
 
@@ -74,7 +93,7 @@ class PlayerController : MonoBehaviour
         m_RayCastDir.y = 0f;
         m_RayCastDir.z = Mathf.Sin(dir_rad);
 
-        float dist = collider.radius + moveSpeed * Manager_Input.Instance.TimeStamp;
+        float dist = collider.radius + moveSpeed * playerInputs.TimeStamp;
         // 반지름 + 1.5(이동속도) * 0.1(타임스탬프)
         RaycastHit hit;
 
