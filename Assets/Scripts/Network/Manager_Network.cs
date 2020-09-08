@@ -23,8 +23,8 @@ public class Manager_Network : MonoBehaviour
     // 멤버
     Manager_Packet m_Packet;
 
-
     // 이벤트
+
 
     // global
     public Event_Disconnected e_Disconnected = new Event_Disconnected(); // 연결 끊어짐

@@ -17,6 +17,7 @@ public class DebugLogger : SingleToneMonoBehaviour<DebugLogger>
 
     private void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.F1))
             m_Contents.SetActive(!m_Contents.activeSelf);
         if (Input.GetKeyDown(KeyCode.F2))
@@ -24,6 +25,7 @@ public class DebugLogger : SingleToneMonoBehaviour<DebugLogger>
             texts = new Queue<string>();
             m_DebugText.text = "";
         }
+        */
     }
 
     public void AddText(string _text)
