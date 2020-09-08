@@ -91,6 +91,11 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         {
             GameObject player_character = Instantiate(profile.Role_Index == 1 ? prefab_Guard : prefab_Thief);
             player_character.transform.position = profile.Current_Pos;
+            PlayerController pc = player_character.GetComponent<PlayerController>();
+            if (pc != null)
+            {
+                // TODO 프로필 심기
+            }
         }
 
         // TODO 카메라 자신의 캐릭터 찾아가기

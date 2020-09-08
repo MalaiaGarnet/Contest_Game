@@ -76,6 +76,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     void CalculateDesiredDirection()
     {
         //Camera Direction
+        if (MainCamera == null)
+            MainCamera = Camera.main;
         var cameraForward = MainCamera.transform.forward;
         var cameraRight = MainCamera.transform.right;
 
