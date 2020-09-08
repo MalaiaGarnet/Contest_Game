@@ -25,7 +25,6 @@ public class Manager_Network : MonoBehaviour
 
     // 이벤트
 
-
     // global
     public Event_Disconnected e_Disconnected = new Event_Disconnected(); // 연결 끊어짐
     public Protocol_Recv_Event e_ProtocolRecv = new Protocol_Recv_Event(); // 프로토콜 겟또다제 
@@ -121,7 +120,7 @@ public class Manager_Network : MonoBehaviour
     {
         // 서버 연결
         if (!m_Connected)
-            Connect_To_Server("112.155.214.80");
+            Connect_To_Server("127.0.0.1");
 
         // 로그인 패킷 전송
         UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.LOGIN;
@@ -138,7 +137,7 @@ public class Manager_Network : MonoBehaviour
     {
         // 서버 연결
         if (!m_Connected)
-            Connect_To_Server("112.155.214.80");
+            Connect_To_Server("127.0.0.1");
 
         StartCoroutine(Register_Process(_id, _pw, _nickname));
         return true;
