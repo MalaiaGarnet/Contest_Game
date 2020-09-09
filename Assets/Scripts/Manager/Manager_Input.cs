@@ -33,7 +33,7 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 
     public bool IsMoving { get; set; } = false; // 이동중인지
     public Vector3 InputDirection { get; set; } // 입력 방향
-    public PlayerInputAction InputActions { get; set; } // 인풋액션
+    public PlayerInputAction InputActions; // 인풋액션
     public Rigidbody PlayerRigidbody { get; set; } // 리지드바디
 
     public Camera MainCamera { get; set; }
@@ -42,13 +42,11 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 
     void Start()
     {
-        if (Manager_Ingame.Instance.m_Game_Started)
+        if (InputActions == null)
         {
-            if (InputActions == null)
-            {
-                InputActions = new PlayerInputAction();             
-            }
+            InputActions = new PlayerInputAction();             
         }
+        CreateMovingAction();
     }
 
     public void Initialized()
@@ -57,7 +55,7 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         {
             MainCamera = Camera.main;
         }
-        PlayerRigidbody = playerPrefab.GetComponent<Rigidbody>();
+        // PlayerRigidbody = playerPrefab.GetComponent<Rigidbody>();
         rawDirection = Vector3.zero;
         smoothDirection = Vector3.zero;
         movement = Vector3.zero;
@@ -65,8 +63,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 
     public void CreateMovingAction()
     {
-        if(InputActions != null)
-            InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
+        // if(InputActions != null)
+        //    InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
     }
 
 
@@ -93,8 +91,10 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
             IsMovingThePlayer();
             CalculateDesiredDirection();
             ConvertDirectionFromRawToSmooth();
+            /*
             MoveThePlayer();
             TurnThePlayer();
+            */
         }
     }
 
@@ -124,6 +124,7 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         }
 
     }
+    /*
     void TurnThePlayer()
     {
         if (IsMoving == true)
@@ -143,9 +144,10 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         }
 
     }
+    */
 
 
-    /* void OnPlayerMoving(InputValue _Input)
+    void OnPlayerMoving(InputValue _Input)
      {
          // 인풋값 대입
          m_Player_Input.Move_X = _Input.Get<Vector2>().x;
@@ -154,17 +156,18 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
          InputDirection = new Vector3(m_Player_Input.Move_X, 0.0f, m_Player_Input.Move_Y);
          if(_Input.isPressed)
          {
-             InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
+             // InputActions.PlayerMoves.PlayerMoving.performed += obj => OnPlayerMoving(obj);
          }
 
-     } // 이곳에 충돌체크와 타임스팸프 갱신이 들어가야됨*/
-
+     } // 이곳에 충돌체크와 타임스팸프 갱신이 들어가야됨
+    /*
     /// <summary>
     /// 이동 콜백
     /// </summary>
     /// <param name="_Input"> 인풋값</param> 
     public void OnPlayerMoving(InputAction.CallbackContext obj)
     {
+        Debug.Log("인풋 : " + "{" + m_Player_Input.Move_X + "," + m_Player_Input.Move_Y + "}" + "좌표 : " + transform.position);
         m_Player_Input.Move_X = obj.ReadValue<Vector2>().x;
         m_Player_Input.Move_Y = obj.ReadValue<Vector2>().y;
         InputDirection = new Vector3(m_Player_Input.Move_X, 0.0f, m_Player_Input.Move_Y);
@@ -187,6 +190,7 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
             }
         }
     }
+    */
 
     public bool GetButtonDown()
     {

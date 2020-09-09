@@ -24,7 +24,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""id"": ""ae3d3fc3-5c6b-4bd3-9ef1-704e8a7e14a1"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Hold""
                 }
             ],
             ""bindings"": [

@@ -220,6 +220,7 @@ namespace Network.Data
         }
         public void Write_Bytes(ref byte[] _data, ref int _place, ref int _size)
         {
+            /*
             BinaryFormatter bf = new BinaryFormatter();
             using (MemoryStream ms = new MemoryStream())
             {
@@ -227,7 +228,7 @@ namespace Network.Data
                 int type_size = Marshal.SizeOf(GetType());
                 Buffer.BlockCopy(ms.ToArray(), 0, _data, _place, type_size);
                 _place += type_size; _size += type_size;
-            }
+            }*/
 
             Buffer.BlockCopy(BitConverter.GetBytes(Move_X), 0, _data, _place, sizeof(float));
             _place += sizeof(float); _size += sizeof(float);
