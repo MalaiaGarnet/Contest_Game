@@ -62,7 +62,8 @@ namespace Network.Data
     }
 
     /// <summary> 유저 데이터 </summary>
-    public struct Userdata
+    [Serializable]
+    public class Userdata
     {
         public string id;
         public string pw;
@@ -82,7 +83,8 @@ namespace Network.Data
     }
 
     /// <summary> 유저 프로필 </summary>
-    public struct User_Profile
+    [Serializable]
+    public class User_Profile
     {
         public UInt16 Session_ID;
         public string ID;

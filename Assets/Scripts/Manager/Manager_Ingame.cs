@@ -8,6 +8,9 @@ using System;
 
 public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 {
+    public float m_Input_Update_Interval = 0.050f; // 인풋 보내는 속도
+
+    public User_Profile m_Client_Profile = new User_Profile();
     public List<User_Profile> m_Profiles = new List<User_Profile>();
 
     public GameObject prefab_Guard;
@@ -15,8 +18,33 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
     public bool m_Game_Started = false;
 
+    [Header("디버그 옵션")]
+    public bool m_DebugMode = false;
+    public Event_Player_Input e_FakeInput = new Event_Player_Input();
+
     IEnumerator Start()
     {
+        if (m_DebugMode)
+        {
+            User_Profile up = new User_Profile();
+            up.ID = "1";
+            up.Session_ID = 0;
+            up.Role_Index = 1;
+            up.Current_Pos = new Vector3(2.0f, 2.0f, 0.0f);
+            m_Profiles.Add(up);
+            m_Client_Profile = up;
+
+            up = new User_Profile();
+            up.ID = "2";
+            up.Session_ID = 1;
+            up.Role_Index = 2;
+            up.Current_Pos = new Vector3(-2.0f, 2.0f, 0.0f);
+            m_Profiles.Add(up);
+
+            Start_Game();
+            yield return null;
+        }
+
         while (Manager_Network.Instance == null)
             yield return new WaitForEndOfFrame();
 
@@ -89,42 +117,57 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
         foreach (User_Profile profile in m_Profiles)
         {
+            if (profile.ID.Equals(m_Client_Profile.ID))
+                m_Client_Profile = profile;
+
             GameObject player_character = Instantiate(profile.Role_Index == 1 ? prefab_Guard : prefab_Thief);
             player_character.transform.position = profile.Current_Pos;
-            PlayerController pc = player_character.GetComponent<PlayerController>();
+            CharacterController pc = player_character.GetComponent<CharacterController>();
             if (pc != null)
             {
                 // 프로필 심기
                 pc.m_MyProfile = profile;
+
+                // 카메라 자신의 캐릭터 찾아가기
+                if (profile.Session_ID == m_Client_Profile.Session_ID)
+                    pc.Fix_Camera();
             }
             player_character.transform.position = pc.m_MyProfile.Current_Pos;
         }
 
-        // TODO 카메라 자신의 캐릭터 찾아가기
-
-
         // 로딩창 지우기
         ui.m_Ingame_Scene_Loader.Show(false);
+        ui.Lock_Cursor(true);
 
         // 인풋 시작
         StartCoroutine(Input_Send());
     }
 
-    public float m_Input_Update_Interval = 0.100f; // 인풋 보내는 속도
     IEnumerator Input_Send()
     {
         WaitForSecondsRealtime wfsr = new WaitForSecondsRealtime(m_Input_Update_Interval);
         while(m_Game_Started)
         {
+            if (m_DebugMode)
+            {
+                for (int i = 0; i < m_Profiles.Count; i++)
+                {
+                    User_Profile up = m_Profiles[i];
+                    if (up.Session_ID == m_Client_Profile.Session_ID)
+                        m_Profiles[i].User_Input = Manager_Input.Instance.m_Player_Input;
+                }
+                e_FakeInput.Invoke(m_Profiles.ToArray());
+                yield return wfsr;
+                continue;
+            }
             // 입력값 보내기
-            Debug.Log("입력 = " + Manager_Input.Instance.m_Player_Input.Move_X + ", "
-                + Manager_Input.Instance.m_Player_Input.Move_Y);
+            // Debug.Log("입력 = " + Manager_Input.Instance.m_Player_Input.Move_X + ", "
+            //    + Manager_Input.Instance.m_Player_Input.Move_Y);
             Packet_Sender.Send_Input((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.INPUT,
                 Manager_Input.Instance.m_Player_Input,
                 Manager_Input.Instance.m_Pre_Position);
             yield return wfsr;
         }
-
         yield return null;
     }
 }
