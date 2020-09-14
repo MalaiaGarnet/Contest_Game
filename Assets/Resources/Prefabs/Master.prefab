@@ -59,10 +59,10 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5098983536196723701, guid: c20eb0463e2958f499269de91c8b4d3a, type: 3}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: CallPlayerMoveMent
-        m_Mode: 1
+      - m_Target: {fileID: 7031361481819463496}
+        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
+        m_MethodName: onMove
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -73,9 +73,29 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ae3d3fc3-5c6b-4bd3-9ef1-704e8a7e14a1
     m_ActionName: PlayerMoves/PlayerMoving[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 23781dfb-f8d0-4184-b4de-5d7ed0f6635d
+    m_ActionName: CharacterControl/View_Control_X[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/Mouse/delta/y,/Mouse/delta/y,/Mouse/delta/x,/Mouse/delta/x]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
+        m_MethodName: onInteract
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a811d55b-bb9a-4fee-8edb-f46643a4ce90
+    m_ActionName: CharacterControl/Interact[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Keyboard
-  m_DefaultActionMap: PlayerMoves
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: CharacterControl
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &7031361481819463496
@@ -90,7 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c70633668f365f4285d1914ae4a8ce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
   m_Player_Input:
     Move_X: 0
     Move_Y: 0
@@ -105,8 +124,6 @@ MonoBehaviour:
     Tool_3: 0
     Tool_4: 0
   m_Pre_Position: {x: 0, y: 0, z: 0}
-  movementSpeed: 3
-  smoothingSpeed: 1
 --- !u!1 &1830250788153881869
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,10 +167,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b02e2bb86b96ee498564f2f3bf4b69b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab_Guard: {fileID: 491436525558318007, guid: 7c5a7c5c6afb0a64a9f37e131f90451c, type: 3}
-  prefab_Thief: {fileID: 8286250672296768448, guid: c20eb0463e2958f499269de91c8b4d3a, type: 3}
-  m_Game_Started: 0
   m_Input_Update_Interval: 0.1
+  m_Client_Profile:
+    Session_ID: 0
+    ID: 
+    Nickname: 
+    Role_Index: 0
+    Is_Ready: 0
+    Current_Pos: {x: 0, y: 0, z: 0}
+    Current_Rot: {x: 0, y: 0, z: 0}
+    User_Input:
+      Move_X: 0
+      Move_Y: 0
+      View_X: 0
+      View_Y: 0
+      Fire: 0
+      Jump: 0
+      Interact: 0
+      Menu: 0
+      Tool_1: 0
+      Tool_2: 0
+      Tool_3: 0
+      Tool_4: 0
+  m_Profiles: []
+  prefab_Guard: {fileID: 7696638750962336851, guid: 7c5a7c5c6afb0a64a9f37e131f90451c, type: 3}
+  prefab_Thief: {fileID: 5394443342023781533, guid: c20eb0463e2958f499269de91c8b4d3a, type: 3}
+  m_Game_Started: 0
+  m_DebugMode: 0
 --- !u!1 &5299774081072030872
 GameObject:
   m_ObjectHideFlags: 0

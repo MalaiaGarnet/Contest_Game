@@ -127,6 +127,8 @@ public class Manager_Network : MonoBehaviour
         Userdata data = new Userdata(_id, _pw, "");
         Packet_Sender.Send_Userdata(protocol, data);
 
+        Manager_Ingame.Instance.m_Client_Profile.ID = _id;
+
         return true;
     }
     /// <summary>

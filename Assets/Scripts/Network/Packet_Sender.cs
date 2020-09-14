@@ -15,7 +15,6 @@ public class Packet_Sender
         // task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
         Manager_Network.Log("buffer size = " + task.datasize);
-
         Manager_Packet.Instance.SendEnqueue(task);
     }
 

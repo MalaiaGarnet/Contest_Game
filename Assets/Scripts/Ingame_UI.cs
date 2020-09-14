@@ -21,4 +21,10 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
     {
         gameObject.SetActive(_enable);
     }
+
+    public void Lock_Cursor(bool _enable)
+    {
+        Cursor.lockState = _enable ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !_enable;
+    }
 }
