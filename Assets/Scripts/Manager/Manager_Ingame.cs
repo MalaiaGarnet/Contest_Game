@@ -16,6 +16,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     public GameObject prefab_Guard;
     public GameObject prefab_Thief;
 
+    public float m_Heartbeat_Wait = 0f;
     public bool m_Game_Started = false;
 
     [Header("디버그 옵션")]
@@ -52,8 +53,32 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         Manager_Network.Instance.e_GameStart.AddListener(new UnityAction(Start_Game));
     }
 
+    private void FixedUpdate()
+    {
+        if (m_DebugMode)
+            return;
+
+        if (m_Game_Started)
+        {
+            m_Heartbeat_Wait += Time.fixedDeltaTime;
+            if (m_Heartbeat_Wait > 5.0) // 하트비트가 너무 안 오면 타이틀로
+            {
+                Ingame_UI.Instance.Lock_Cursor(false);
+                Destroy(Ingame_UI.Instance.gameObject);
+                m_Game_Started = false;
+                Manager_Network.Instance.Disconnect();
+                SceneManager.LoadScene("Title");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 하트비트 받을 때
+    /// </summary>
+    /// <param name="_datas"></param>
     public void Update_Datas(User_Profile[] _datas)
     {
+        m_Heartbeat_Wait = 0;
         m_Profiles = new List<User_Profile>(_datas);
     }
 
