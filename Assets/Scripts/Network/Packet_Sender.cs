@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Network.Data;
 using UnityEngine;
 
@@ -76,6 +77,9 @@ public class Packet_Sender
         Task task = new Task();
         task.buffer = Packet_Packer.PackPacket(ref task.datasize, _protocol, _input, _pre_pos);
         task.Encrypt(Manager_Network.Instance.m_Encryptor);
+
+        Manager_Network.Log("첫 여덟 바이트 = " + BitConverter.ToString(task.buffer));
+
         Manager_Packet.Instance.SendEnqueue(task);
     }
 }

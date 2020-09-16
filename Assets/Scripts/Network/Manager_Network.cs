@@ -282,13 +282,11 @@ public class Manager_Packet
         {
             while (m_SendQueue.Count > 0)
             {
-                Task task = new Task();
-
-                task = m_SendQueue.Dequeue();
-
+                Task task = m_SendQueue.Dequeue();
                 PacketSend(task);
-                Manager_Network.Log("Sended.");
-            }
+                
+                Manager_Network.Log("Sended - " + task.buffer[0] + "/" + task.buffer[1] + "/" + task.buffer[2] + "/" + task.buffer[3]);
+            } 
         }
         catch(Exception)
         {
