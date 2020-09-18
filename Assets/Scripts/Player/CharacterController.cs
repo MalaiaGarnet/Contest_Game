@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// 200913 주현킴
@@ -25,12 +26,15 @@ class CharacterController : MonoBehaviour
     public  int             battery = 10000;
     public  float           moveSpeed;
 
+    [Header("캐릭터 물리메테리얼")]
+    public PhysicMaterial   noFriction;     //프릭션 X
+    public PhysicMaterial   fullFriction; // 프릭션 O
+
     [Header("캐릭터 무기")]
 
     [Header("캐릭터 좌표")]
     public Transform m_CameraAxis;
     public const float ASCENDING_LIMIT = 0.25f;
-
 
     IEnumerator Start()
     {
@@ -59,7 +63,12 @@ class CharacterController : MonoBehaviour
     {
         // 등록된 이벤트 떼기
         if (Manager_Network.Instance == null)
-            Manager_Ingame.Instance.e_FakeInput.RemoveListener(m_PlayerInputEvts);
+        {
+            if (Manager_Ingame.Instance != null) // 아직 인게임 인스턴스가 파괴되지않았을때만
+            {
+                Manager_Ingame.Instance.e_FakeInput.RemoveListener(m_PlayerInputEvts);
+            }
+        }
         else
         {
             Manager_Network.Instance.e_PlayerInput.RemoveListener(m_PlayerInputEvts);
@@ -71,8 +80,10 @@ class CharacterController : MonoBehaviour
     {
         // 시선 처리
         if (m_MyProfile.Session_ID == Manager_Ingame.Instance.m_Client_Profile.Session_ID)
+        {
             m_CameraAxis.localRotation = Quaternion.Euler(
                 new Vector3(InputManager.m_Player_Input.View_X, InputManager.m_Player_Input.View_Y, 0f));
+        }
         else
         {
             m_CameraAxis.localRotation = Quaternion.Euler(new Vector3(m_Output.View_X, m_Output.View_Y, 0f));
@@ -157,6 +168,16 @@ class CharacterController : MonoBehaviour
 
     void Move()
     {
+        // 만약에 이동하지 않을때
+        if(m_Output.Move_X == 0 && m_Output.Move_Y == 0)
+        {
+            GetComponentInChildren<CapsuleCollider>().sharedMaterial = fullFriction;
+        }
+        else // 이동중일때
+        {
+            GetComponentInChildren<CapsuleCollider>().sharedMaterial = noFriction;
+        }
+
         Vector2 dist = new Vector2(m_Output.Move_X, m_Output.Move_Y);
         if (dist.magnitude <= 0.1f)
             return;
@@ -165,12 +186,16 @@ class CharacterController : MonoBehaviour
         Vector3 final_pos = transform.position + movement;
 
         // 충돌 체크 시작 (아랫 방향)
-        Ray ray = new Ray(final_pos + new Vector3(0f, ASCENDING_LIMIT, 0f), new Vector3(0f, -1f, 0f));
+        //Ray ray = new Ray(final_pos + new Vector3(0f, ASCENDING_LIMIT, 0f), new Vector3(0f, -1f, 0f));      
+        Ray ray = new Ray(transform.position, dir.normalized);      
+
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, ASCENDING_LIMIT * 2f))
             final_pos = hit.point;
 
-        GetComponent<Rigidbody>().MovePosition(final_pos);
+        //GetComponent<Rigidbody>().MovePosition(final_pos);
+        Vector3 vector3 = new Vector3(movement.x, GetComponent<Rigidbody>().velocity.y, movement.z);
+        GetComponent<Rigidbody>().velocity = vector3;
     }
 
     /// <summary>
@@ -183,7 +208,9 @@ class CharacterController : MonoBehaviour
             return transform.position;
 
         // 캐릭터 콜라이더 취득
-        CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
+        //CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
+        // TODO : 모델을 따라가는 콜라이더를 취득.
+        CapsuleCollider collider = gameObject.GetComponentInChildren<CapsuleCollider>();
 
         // 방향 계산
         Vector3 dir = Calculate_Direction();
@@ -194,7 +221,7 @@ class CharacterController : MonoBehaviour
         // Physics.CapsuleCast  ==> 원래 해야하는 충돌체크
         Ray ray = new Ray(transform.position + new Vector3(0f, ASCENDING_LIMIT, 0f) + dir * collider.radius, dir);
         RaycastHit hit;
-        Vector3 final_pos = new Vector3();
+        Vector3 final_pos;
         int mask = LayerMask.NameToLayer("Player");
 
         if (Physics.Raycast(ray, out hit, dist, ~mask))
