@@ -153,9 +153,13 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
                 // 프로필 심기
                 pc.m_MyProfile = profile;
 
+
                 // 카메라 자신의 캐릭터 찾아가기
                 if (profile.Session_ID == m_Client_Profile.Session_ID)
+                {
                     pc.Fix_Camera();
+                    Ingame_UI.Instance.Set_Player(pc);
+                }
             }
             player_character.transform.position = pc.m_MyProfile.Current_Pos;
         }
