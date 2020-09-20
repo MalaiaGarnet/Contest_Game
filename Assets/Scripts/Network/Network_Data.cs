@@ -86,16 +86,25 @@ namespace Network.Data
     [Serializable]
     public class User_Profile
     {
+        // 핵심
         public UInt16 Session_ID;
+
         public string ID;
         public string Nickname;
 
         public UInt16 Role_Index;
         public bool Is_Ready;
 
+        // 인게임
         public Vector3 Current_Pos;
         public Vector3 Current_Rot;
         public User_Input User_Input;
+
+        public UInt16 Current_Tool; // 현재 몇 번 무기를 들고 있나
+        public UInt16 Tool_1;
+        public UInt16 Tool_2;
+        public UInt16 Tool_3;
+        public UInt16 Tool_4;
 
         public static void UnPackPacket(byte[] _data, ref User_Profile[] _datas)
         {
@@ -127,6 +136,7 @@ namespace Network.Data
                 _datas[i].Is_Ready = BitConverter.ToBoolean(_data, place);
                 place += sizeof(bool);
 
+                // 포지션
                 float x = BitConverter.ToSingle(_data, place);
                 place += sizeof(float);
                 float y = BitConverter.ToSingle(_data, place);
@@ -135,6 +145,7 @@ namespace Network.Data
                 place += sizeof(float);
                 _datas[i].Current_Pos = new Vector3(x, y, z);
 
+                // 로테이션
                 x = BitConverter.ToSingle(_data, place);
                 place += sizeof(float);
                 y = BitConverter.ToSingle(_data, place);
@@ -143,7 +154,20 @@ namespace Network.Data
                 place += sizeof(float);
                 _datas[i].Current_Rot = new Vector3(x, y, z);
 
+                // 인풋
                 _datas[i].User_Input.Read_Bytes(_data, ref place);
+
+                // 툴
+                _datas[i].Current_Tool = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
+                _datas[i].Tool_1 = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
+                _datas[i].Tool_2 = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
+                _datas[i].Tool_3 = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
+                _datas[i].Tool_4 = BitConverter.ToUInt16(_data, place);
+                place += sizeof(UInt16);
 
                 DebugLogger.Instance.AddText("[ user profile " + i + " ]");
                 DebugLogger.Instance.AddText("Session_ID: " + _datas[i].Session_ID);

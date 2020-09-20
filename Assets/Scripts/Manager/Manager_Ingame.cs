@@ -32,6 +32,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             up.Session_ID = 0;
             up.Role_Index = 1;
             up.Current_Pos = new Vector3(2.0f, 2.0f, 0.0f);
+            up.Tool_1 = 4001;
             m_Profiles.Add(up);
             m_Client_Profile = up;
 
@@ -39,6 +40,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             up.ID = "2";
             up.Session_ID = 1;
             up.Role_Index = 2;
+            up.Tool_1 = 5001;
             up.Current_Pos = new Vector3(-2.0f, 2.0f, 0.0f);
             m_Profiles.Add(up);
 

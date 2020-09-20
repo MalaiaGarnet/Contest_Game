@@ -58,12 +58,21 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         m_Player_Input.View_Y = m_Player_Input.View_Y + _view.y;
     }
 
+    public void onTool_1(CallbackContext _context)
+    { m_Player_Input.Tool_1 = _context.ReadValueAsButton(); }
+    public void onTool_2(CallbackContext _context)
+    { m_Player_Input.Tool_2 = _context.ReadValueAsButton(); }
+    public void onTool_3(CallbackContext _context)
+    { m_Player_Input.Tool_3 = _context.ReadValueAsButton(); }
+    public void onTool_4(CallbackContext _context)
+    { m_Player_Input.Tool_4 = _context.ReadValueAsButton(); }
+
     /// <summary>
     /// 상호작용
     /// </summary>
     /// <param name="_context"></param>
     public void onInteract(CallbackContext _context)
     {
-        m_Player_Input.Interact = _context.ReadValue<bool>();
+        m_Player_Input.Interact = _context.ReadValueAsButton();
     }
 }

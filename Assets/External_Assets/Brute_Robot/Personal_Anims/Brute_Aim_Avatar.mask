@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Brute_Aim_Avatar
+  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Arm1
+    m_Weight: 1
+  - m_Path: Arm2
+    m_Weight: 1
+  - m_Path: Body1
+    m_Weight: 1
+  - m_Path: Body2
+    m_Weight: 1
+  - m_Path: Foot1
+    m_Weight: 0
+  - m_Path: Foot2
+    m_Weight: 0
+  - m_Path: Head
+    m_Weight: 1
+  - m_Path: Legs1
+    m_Weight: 1
+  - m_Path: Legs2
+    m_Weight: 1
+  - m_Path: Robot_Hips
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_LeftUpLeg
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_LeftUpLeg/Robot_LeftLeg
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_LeftUpLeg/Robot_LeftLeg/Robot_LeftFoot
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_LeftUpLeg/Robot_LeftLeg/Robot_LeftFoot/Robot_LeftToeBase
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_LeftUpLeg/Robot_LeftLeg/Robot_LeftFoot/Robot_LeftToeBase/Robot_LeftToe_End
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_RightUpLeg
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_RightUpLeg/Robot_RightLeg
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_RightUpLeg/Robot_RightLeg/Robot_RightFoot
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_RightUpLeg/Robot_RightLeg/Robot_RightFoot/Robot_RightToeBase
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_RightUpLeg/Robot_RightLeg/Robot_RightFoot/Robot_RightToeBase/Robot_RightToe_End
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_LeftShoulder
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_LeftShoulder/Robot_LeftArm
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_LeftShoulder/Robot_LeftArm/Robot_LeftForeArm
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_LeftShoulder/Robot_LeftArm/Robot_LeftForeArm/Robot_LeftHand
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_LeftShoulder/Robot_LeftArm/Robot_LeftForeArm/Robot_LeftHand/Robot_LeftClaw1
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_LeftShoulder/Robot_LeftArm/Robot_LeftForeArm/Robot_LeftHand/Robot_LeftClaw2
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_LeftShoulder/Robot_LeftArm/Robot_LeftForeArm/Robot_LeftHand/Robot_LeftClaw3
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_Neck
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_Neck/Robot_Head
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_Neck/Robot_Head/Robot_HeadTop_End
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_RightShoulder
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_RightShoulder/Robot_RightArm
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_RightShoulder/Robot_RightArm/Robot_RightForeArm
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_RightShoulder/Robot_RightArm/Robot_RightForeArm/Robot_RightHand
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_RightShoulder/Robot_RightArm/Robot_RightForeArm/Robot_RightHand/Robot_RightClaw1
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_RightShoulder/Robot_RightArm/Robot_RightForeArm/Robot_RightHand/Robot_RightClaw2
+    m_Weight: 1
+  - m_Path: Robot_Hips/Robot_Spine/Robot_Spine1/Robot_Spine2/Robot_RightShoulder/Robot_RightArm/Robot_RightForeArm/Robot_RightHand/Robot_RightClaw3
+    m_Weight: 1

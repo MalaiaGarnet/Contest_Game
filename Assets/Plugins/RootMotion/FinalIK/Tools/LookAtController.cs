@@ -6,6 +6,7 @@ namespace RootMotion.FinalIK {
 	public class LookAtController : MonoBehaviour {
 
 		public LookAtIK ik;
+		public Transform rootModel;
 
 		[Header("Target Smoothing")]
 
@@ -143,7 +144,7 @@ namespace RootMotion.FinalIK {
 					rotation = angle + max;
 				}
 
-				ik.transform.rotation = Quaternion.AngleAxis(rotation, ik.transform.up) * ik.transform.rotation;		
+				rootModel.transform.rotation = Quaternion.AngleAxis(rotation, ik.transform.up) * ik.transform.rotation;		
 			}
 		}
 	}
