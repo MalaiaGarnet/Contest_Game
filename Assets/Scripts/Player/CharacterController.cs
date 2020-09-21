@@ -75,6 +75,7 @@ public class CharacterController : MonoBehaviour
         m_Tools[1] = MakeTool(m_MyProfile.Tool_2);
         m_Tools[2] = MakeTool(m_MyProfile.Tool_3);
         m_Tools[3] = MakeTool(m_MyProfile.Tool_4);
+        ChangeTool(1);
     }
 
     void OnDestroy()
@@ -162,6 +163,9 @@ public class CharacterController : MonoBehaviour
         // 발싸!
         if (m_Output.Fire != _new_profile.User_Input.Fire)
             e_Triggered.Invoke("Fire", _new_profile.User_Input.Fire);
+        // 킹호작용!
+        if (m_Output.Interact != _new_profile.User_Input.Interact)
+            e_Triggered.Invoke("Interact", _new_profile.User_Input.Interact);
 
         bool debug_tool_change = false;
         if (Manager_Ingame.Instance.m_DebugMode)
@@ -316,7 +320,12 @@ public class CharacterController : MonoBehaviour
         {
             if (m_Tools[i] != null)
             {
-                m_Tools[i].gameObject.SetActive(i + 1 == _index);
+                bool enable = i + 1 == _index;
+                m_Tools[i].gameObject.SetActive(enable);
+                if (enable)
+                    m_Tools[i].Register(e_Triggered);
+                else
+                    m_Tools[i].Unregister();
             }
         }
     }

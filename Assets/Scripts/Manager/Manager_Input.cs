@@ -75,4 +75,12 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     {
         m_Player_Input.Interact = _context.ReadValueAsButton();
     }
+    /// <summary>
+    /// 발사
+    /// </summary>
+    /// <param name="_context"></param>
+    public void onFire(CallbackContext _context)
+    {
+        m_Player_Input.Fire = _context.ReadValueAsButton();
+    }
 }

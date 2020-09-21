@@ -81,6 +81,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""79f3bb17-97be-44fa-b3cb-efb3e3e01503"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -380,6 +388,17 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""View_Control"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6fe7ddad-daa1-47ea-ba33-fe89beeed9f8"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -424,6 +443,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_CharacterControl_Tool_3 = m_CharacterControl.FindAction("Tool_3", throwIfNotFound: true);
         m_CharacterControl_Tool_4 = m_CharacterControl.FindAction("Tool_4", throwIfNotFound: true);
         m_CharacterControl_Call_Menu = m_CharacterControl.FindAction("Call_Menu", throwIfNotFound: true);
+        m_CharacterControl_Fire = m_CharacterControl.FindAction("Fire", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -481,6 +501,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_CharacterControl_Tool_3;
     private readonly InputAction m_CharacterControl_Tool_4;
     private readonly InputAction m_CharacterControl_Call_Menu;
+    private readonly InputAction m_CharacterControl_Fire;
     public struct CharacterControlActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -493,6 +514,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @Tool_3 => m_Wrapper.m_CharacterControl_Tool_3;
         public InputAction @Tool_4 => m_Wrapper.m_CharacterControl_Tool_4;
         public InputAction @Call_Menu => m_Wrapper.m_CharacterControl_Call_Menu;
+        public InputAction @Fire => m_Wrapper.m_CharacterControl_Fire;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -526,6 +548,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Call_Menu.started -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnCall_Menu;
                 @Call_Menu.performed -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnCall_Menu;
                 @Call_Menu.canceled -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnCall_Menu;
+                @Fire.started -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnFire;
+                @Fire.performed -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnFire;
+                @Fire.canceled -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnFire;
             }
             m_Wrapper.m_CharacterControlActionsCallbackInterface = instance;
             if (instance != null)
@@ -554,6 +579,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Call_Menu.started += instance.OnCall_Menu;
                 @Call_Menu.performed += instance.OnCall_Menu;
                 @Call_Menu.canceled += instance.OnCall_Menu;
+                @Fire.started += instance.OnFire;
+                @Fire.performed += instance.OnFire;
+                @Fire.canceled += instance.OnFire;
             }
         }
     }
@@ -586,5 +614,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnTool_3(InputAction.CallbackContext context);
         void OnTool_4(InputAction.CallbackContext context);
         void OnCall_Menu(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
     }
 }

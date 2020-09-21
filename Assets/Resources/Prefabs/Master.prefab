@@ -74,10 +74,6 @@ MonoBehaviour:
     m_ActionId: ae3d3fc3-5c6b-4bd3-9ef1-704e8a7e14a1
     m_ActionName: PlayerMoves/PlayerMoving[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 23781dfb-f8d0-4184-b4de-5d7ed0f6635d
-    m_ActionName: CharacterControl/View_Control_X[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/Mouse/delta/y,/Mouse/delta/y,/Mouse/delta/x,/Mouse/delta/x]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
         m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
@@ -93,6 +89,94 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: a811d55b-bb9a-4fee-8edb-f46643a4ce90
     m_ActionName: CharacterControl/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b12a2de8-bbf9-4420-9027-87c93fc606ff
+    m_ActionName: CharacterControl/View_Control
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
+        m_MethodName: onTool_1
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2bf63dca-6188-4452-af81-ff027e892d64
+    m_ActionName: CharacterControl/Tool_1[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
+        m_MethodName: onTool_2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: dc3aea2c-8fee-413b-9e95-ad86fea2fc61
+    m_ActionName: CharacterControl/Tool_2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
+        m_MethodName: onTool_3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 271283bb-4344-420e-81f8-c2bf2d4d389d
+    m_ActionName: CharacterControl/Tool_3[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
+        m_MethodName: onTool_4
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6b37dc3f-ed3d-408b-9865-dcb58bf60c8c
+    m_ActionName: CharacterControl/Tool_4[/Keyboard/4]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 082bdf7a-e309-4ed4-9b3e-37e911af8a93
+    m_ActionName: CharacterControl/Call_Menu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
+        m_MethodName: onFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 79f3bb17-97be-44fa-b3cb-efb3e3e01503
+    m_ActionName: CharacterControl/Fire[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CharacterControl
@@ -189,9 +273,15 @@ MonoBehaviour:
       Tool_2: 0
       Tool_3: 0
       Tool_4: 0
+    Current_Tool: 0
+    Tool_1: 0
+    Tool_2: 0
+    Tool_3: 0
+    Tool_4: 0
   m_Profiles: []
   prefab_Guard: {fileID: 7696638750962336851, guid: 7c5a7c5c6afb0a64a9f37e131f90451c, type: 3}
   prefab_Thief: {fileID: 5394443342023781533, guid: c20eb0463e2958f499269de91c8b4d3a, type: 3}
+  m_Heartbeat_Wait: 0
   m_Game_Started: 0
   m_DebugMode: 0
 --- !u!1 &5299774081072030872

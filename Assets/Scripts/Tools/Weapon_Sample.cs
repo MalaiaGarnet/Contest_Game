@@ -17,6 +17,7 @@ public class Weapon_Sample : Tool, I_IK_Shotable
     [Header("원하는 거 구현하기")]
     public int m_ID; // 지워도 됨
 
+
     public AnimationClip Get_Aim_Anim()
     {
         return m_Aim_Anim;
@@ -32,8 +33,13 @@ public class Weapon_Sample : Tool, I_IK_Shotable
         return m_Gun_Muzzle.transform;
     }
 
-    public override void Use()
+    public override void onFire(bool _pressed)
     {
-        Debug.Log(gameObject.name + " 사용됨!");
+        Debug.Log(gameObject.name + " 발싸 - " + _pressed);
+    }
+
+    public override void onInteract(bool _pressed)
+    {
+        Debug.Log(gameObject.name + " 사용 - " + _pressed);
     }
 }
