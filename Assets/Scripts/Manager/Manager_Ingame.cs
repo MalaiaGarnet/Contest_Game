@@ -8,7 +8,7 @@ using System;
 
 public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 {
-    public float m_Input_Update_Interval = 0.050f; // 인풋 보내는 속도
+    public float m_Input_Update_Interval = 0.025f; // 인풋 보내는 속도
 
     public User_Profile m_Client_Profile = new User_Profile();
     public List<User_Profile> m_Profiles = new List<User_Profile>();
