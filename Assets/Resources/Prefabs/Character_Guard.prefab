@@ -2406,6 +2406,9 @@ MonoBehaviour:
     Nickname: 
     Role_Index: 0
     Is_Ready: 0
+    HP: 0
+    Battery: 0
+    Score: 0
     Current_Pos: {x: 0, y: 0, z: 0}
     Current_Rot: {x: 0, y: 0, z: 0}
     User_Input:
@@ -2427,7 +2430,7 @@ MonoBehaviour:
     Tool_3: 0
     Tool_4: 0
   battery: 10000
-  moveSpeed: 200
+  moveSpeed: 4
   noFriction: {fileID: 13400000, guid: a5e1118bfb4b5dd4798c61111d7dca4b, type: 2}
   fullFriction: {fileID: 13400000, guid: ad2f621b7880b8340aad442108c08b77, type: 2}
   m_ToolAxis: {fileID: 6342442364443394187}

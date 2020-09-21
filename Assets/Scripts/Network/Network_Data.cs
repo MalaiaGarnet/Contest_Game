@@ -96,6 +96,10 @@ namespace Network.Data
         public bool Is_Ready;
 
         // 인게임
+        public ushort HP;       // HP
+        public ushort Battery;  // 배터리
+        public ushort Score;    // 점수
+
         public Vector3 Current_Pos;
         public Vector3 Current_Rot;
         public User_Input User_Input;
@@ -105,6 +109,7 @@ namespace Network.Data
         public UInt16 Tool_2;
         public UInt16 Tool_3;
         public UInt16 Tool_4;
+
 
         public static void UnPackPacket(byte[] _data, ref User_Profile[] _datas)
         {
@@ -135,6 +140,14 @@ namespace Network.Data
                 place += sizeof(UInt16);
                 _datas[i].Is_Ready = BitConverter.ToBoolean(_data, place);
                 place += sizeof(bool);
+
+                // HP, Battery, Score
+                _datas[i].HP = BitConverter.ToUInt16(_data, place);
+                place += sizeof(ushort);
+                _datas[i].Battery = BitConverter.ToUInt16(_data, place);
+                place += sizeof(ushort);
+                _datas[i].Score = BitConverter.ToUInt16(_data, place);
+                place += sizeof(ushort);
 
                 // 포지션
                 float x = BitConverter.ToSingle(_data, place);
@@ -174,6 +187,9 @@ namespace Network.Data
                 DebugLogger.Instance.AddText("NickName: " + _datas[i].Nickname);
                 DebugLogger.Instance.AddText("Role_Index: " + _datas[i].Role_Index);
                 DebugLogger.Instance.AddText("Is_Ready: " + _datas[i].Is_Ready);
+                DebugLogger.Instance.AddText("HP: " + _datas[i].HP);
+                DebugLogger.Instance.AddText("Battery: " + _datas[i].Battery);
+                DebugLogger.Instance.AddText("Score: " + _datas[i].Score);
                 DebugLogger.Instance.AddText("Current_pos: " + _datas[i].Current_Pos);
                 DebugLogger.Instance.AddText("Current_rot: " + _datas[i].Current_Rot);
                 DebugLogger.Instance.AddText("User_Input_View x: " + _datas[i].User_Input.View_X+ 

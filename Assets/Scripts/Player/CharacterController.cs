@@ -228,7 +228,7 @@ public class CharacterController : MonoBehaviour
         if (dist.magnitude <= 0.1f)
             return;
         Vector3 dir = Calculate_Direction();
-        Vector3 movement = dir * moveSpeed * Time.fixedDeltaTime;
+        Vector3 movement = dir * moveSpeed * 100f * Time.fixedDeltaTime;
         Vector3 final_pos = transform.position + movement;
 
         // 충돌 체크 시작 (아랫 방향)
