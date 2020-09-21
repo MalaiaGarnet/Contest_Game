@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Network.Data;
 using UnityEngine;
@@ -79,6 +80,18 @@ public class Packet_Sender
         task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
         Manager_Network.Log("첫 여덟 바이트 = " + BitConverter.ToString(task.buffer));
+
+        Manager_Packet.Instance.SendEnqueue(task);
+    }
+
+    /// <summary>
+    /// 사격 데이터 보내기
+    /// </summary>
+    public static void Send_Shot_Fire(UInt64 _protocol, List<UInt16> _ids, List<Vector3> _impact_pos)
+    {
+        Task task = new Task();
+        task.buffer = Packet_Packer.PackPacket(ref task.datasize, _protocol, _ids, _impact_pos);
+        task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
         Manager_Packet.Instance.SendEnqueue(task);
     }
