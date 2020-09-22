@@ -39,6 +39,7 @@ public class Manager_Network : MonoBehaviour
     public Event_HeartBeat e_HeartBeat = new Event_HeartBeat();
     public Event_Game_Start e_GameStart = new Event_Game_Start();
     public Event_Player_Input e_PlayerInput = new Event_Player_Input();
+    public Event_Player_Hit e_PlayerHit = new Event_Player_Hit();
 
     public static bool Debug_Toggle = false; // 디버그 로거 표현 여부
     public static void Log(string _msg) // 로그 쓰기

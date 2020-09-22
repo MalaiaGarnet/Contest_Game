@@ -2716,6 +2716,9 @@ MonoBehaviour:
     Nickname: 
     Role_Index: 0
     Is_Ready: 0
+    HP: 0
+    Battery: 0
+    Score: 0
     Current_Pos: {x: 0, y: 0, z: 0}
     Current_Rot: {x: 0, y: 0, z: 0}
     User_Input:
@@ -2747,6 +2750,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_CameraAxis: {fileID: 5870439392837528170}
+  m_Before_Position: {x: 0, y: 0, z: 0}
 --- !u!114 &5394443342023781532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2763,6 +2767,8 @@ MonoBehaviour:
   IK_LookMode: {fileID: 3916744620813032032}
   m_StickValue: {x: 0, y: 0}
   m_LastValue: {x: 0, y: 0}
+  m_LiveModel: {fileID: 815687957390683128}
+  prefab_DeadEffect: {fileID: 2488525614444690760, guid: 17645a00b365a2c4f957d6c861db0b70, type: 3}
 --- !u!1 &5870439392097707752
 GameObject:
   m_ObjectHideFlags: 0

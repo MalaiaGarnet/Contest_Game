@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 8248394010474033556}
   - component: {fileID: 6631883491179286070}
   m_Layer: 0
-  m_Name: Weapon_Shotgun
+  m_Name: Tool_4001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Aim_Anim: {fileID: -203655887218126122, guid: 949ec001016931940953eec810d33adc, type: 3}
   m_Gun_LeftGrip: {fileID: 3132289675022897962}
   m_Gun_Muzzle: {fileID: 2931362692719102802}
+  prefab_Bullet: {fileID: 8272969770508415240, guid: 1cddb8f2574df3842aee32297e664284, type: 3}
   m_ID: 0
 --- !u!1 &1433145787696777884
 GameObject:
@@ -186,7 +187,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2931362692719102802}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: 0.05000001, z: 0}
+  m_LocalPosition: {x: 0, y: 0.05, z: 0.604}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4297187544789440132}

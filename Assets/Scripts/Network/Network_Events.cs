@@ -23,6 +23,6 @@ namespace Network.Data
     // 인게임
     public class Event_HeartBeat : UnityEvent<User_Profile[]> { };
     public class Event_Game_Start : UnityEvent { };
-    public class Event_Player_Input: UnityEvent<User_Profile[]> { };
-
+    public class Event_Player_Input : UnityEvent<User_Profile[]> { };
+    public class Event_Player_Hit : UnityEvent<UInt16, UInt16> { };
 }

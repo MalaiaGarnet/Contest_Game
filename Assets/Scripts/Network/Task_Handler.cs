@@ -128,5 +128,15 @@ public class Task_Handler
             User_Profile.UnPackPacket(_task.buffer, ref datas);
             _manager.e_PlayerInput.Invoke(datas);
         }
+        if ((_protocol & (UInt64)PROTOCOL_INGAME.SHOT) > 0)
+        {
+            if ((_protocol & (UInt64)PROTOCOL_INGAME.SHOT_HIT) > 0)
+            {
+                Manager_Network.Log("인게임 사격 - 맞음");
+                UInt16 id = 0, damage = 0;
+                Packet_Unpacker.UnPackPacket(_task.buffer, ref id, ref damage);
+                _manager.e_PlayerHit.Invoke(id, damage);
+            }
+        }
     }
 }

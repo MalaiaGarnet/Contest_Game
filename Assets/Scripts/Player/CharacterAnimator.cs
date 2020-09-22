@@ -17,6 +17,10 @@ public class CharacterAnimator : MonoBehaviour
     public Vector2 m_StickValue;
     public Vector2 m_LastValue;
 
+    [Header("로그 특수")]
+    public GameObject m_LiveModel;
+    public GameObject prefab_DeadEffect;
+
     CharacterController pc;
     Animator m_Anim;
 
@@ -26,6 +30,9 @@ public class CharacterAnimator : MonoBehaviour
         m_Anim = GetComponentInChildren<Animator>();
 
         pc.e_ToolChanged.AddListener(When_Tool_Changed);
+
+        if(pc.m_MyProfile.Role_Index == 2) 
+            pc.e_Damaged.AddListener(When_Damaged);
     }
 
     void FixedUpdate()
@@ -66,5 +73,18 @@ public class CharacterAnimator : MonoBehaviour
         IK_AimMode.SetActive(shotable != null);
         m_Anim.SetBool("is_Aiming", shotable != null);
         IK_LookMode.SetActive(shotable == null);
+    }
+
+    void When_Damaged(int _damage)
+    {
+        int hp = pc.m_MyProfile.HP;
+        Debug.Log("으앙 아픔 - " + hp);
+        if (hp == 0)
+        {
+            Debug.Log("으앙 진짜 아픔;");
+            m_LiveModel.SetActive(false);
+            GameObject eff = Instantiate(prefab_DeadEffect);
+            eff.transform.position = transform.position;
+        }
     }
 }

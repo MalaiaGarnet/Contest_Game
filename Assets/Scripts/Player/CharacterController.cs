@@ -10,6 +10,8 @@ using Random = UnityEngine.Random;
 public class Event_Button_Triggered : UnityEvent<string, bool> { }
 /// <summary>툴 변경 이벤트(변경한 툴 인덱스)</summary>
 public class Event_Tool_Changed : UnityEvent<int> { }
+/// <summary>피해 이벤트</summary>
+public class Event_Damaged : UnityEvent<int> { }
 
 /// <summary>
 /// 200913 주현킴
@@ -26,10 +28,12 @@ public class CharacterController : MonoBehaviour
     private User_Profile                 m_Profile_Before; // 이전 입력값
     private UnityAction<User_Profile[]>  m_PlayerInputEvts; // 입력 수신 이벤트
     private UnityAction<User_Profile[]>  m_PlayerUpdatePosEvts; // 위치 갱신 이벤트
+    private UnityAction<UInt16, UInt16> m_PlayerDamageEvts; // 위치 갱신 이벤트
 
     [Header("이벤트")]
     public Event_Button_Triggered e_Triggered = new Event_Button_Triggered();
     public Event_Tool_Changed e_ToolChanged = new Event_Tool_Changed();
+    public Event_Damaged e_Damaged = new Event_Damaged();
 
     [Header("캐릭터 스탯")]
     private short           m_Index;
@@ -46,6 +50,7 @@ public class CharacterController : MonoBehaviour
 
     [Header("캐릭터 좌표")]
     public Transform m_CameraAxis;
+    public Vector3 m_Before_Position;
     public const float ASCENDING_LIMIT = 0.25f;
 
     IEnumerator Start()
@@ -58,6 +63,7 @@ public class CharacterController : MonoBehaviour
         // 입력 이벤트 등록
         m_PlayerInputEvts = new UnityAction<User_Profile[]>(When_Player_Input);
         m_PlayerUpdatePosEvts = new UnityAction<User_Profile[]>(When_Player_UpdatePosition);
+        m_PlayerDamageEvts = new UnityAction<ushort, ushort>(Damage);
         if (Manager_Network.Instance == null)
         {
             // 네트워크 매니저 없음 -> 로컬 디버그 모드
@@ -68,6 +74,7 @@ public class CharacterController : MonoBehaviour
             // 네트워크 매니저 있음 -> 서버 거쳐서 인풋 받기
             Manager_Network.Instance.e_PlayerInput.AddListener(m_PlayerInputEvts);
             Manager_Network.Instance.e_HeartBeat.AddListener(m_PlayerUpdatePosEvts);
+            Manager_Network.Instance.e_PlayerHit.AddListener(m_PlayerDamageEvts);
         }
 
         // 프로필에 해당하는 툴 등록
@@ -92,6 +99,7 @@ public class CharacterController : MonoBehaviour
         {
             Manager_Network.Instance.e_PlayerInput.RemoveListener(m_PlayerInputEvts);
             Manager_Network.Instance.e_HeartBeat.RemoveListener(m_PlayerUpdatePosEvts);
+            Manager_Network.Instance.e_PlayerHit.RemoveListener(m_PlayerDamageEvts);
         }
     }
 
@@ -328,5 +336,13 @@ public class CharacterController : MonoBehaviour
                     m_Tools[i].Unregister();
             }
         }
+    }
+
+    void Damage(UInt16 _id, UInt16 _damage)
+    {
+        int hp = m_MyProfile.HP;
+        hp = Math.Max(0, hp - _damage);
+        m_MyProfile.HP = (UInt16)hp;
+        e_Damaged.Invoke(_damage);
     }
 }
