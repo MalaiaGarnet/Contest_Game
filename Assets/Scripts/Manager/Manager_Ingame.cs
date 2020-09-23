@@ -201,4 +201,5 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         }
         yield return null;
     }
+
 }

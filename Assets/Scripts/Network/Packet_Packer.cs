@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Network.Data;
 using UnityEngine;
@@ -217,5 +218,48 @@ public class Packet_Packer
 
         return data;
     }
+
+    public static byte[] PackPacket(ref int _size, UInt64 _protocol, List<UInt16> _ids, List<Vector3> _impact_pos)
+    {
+        byte[] data = new byte[1024];
+        int place = 0;
+
+        place += sizeof(int);
+
+        // protocol
+        Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
+        place += sizeof(UInt64);
+        _size += sizeof(UInt64);
+
+        // arr size
+        Buffer.BlockCopy(BitConverter.GetBytes(_ids.Count), 0, data, place, sizeof(Int32));
+        place += sizeof(Int32);
+        _size += sizeof(Int32);
+
+        for(int i = 0; i < _ids.Count; i++)
+        {
+            // id
+            Buffer.BlockCopy(BitConverter.GetBytes(_ids[i]), 0, data, place, sizeof(UInt16));
+            place += sizeof(UInt16); _size += sizeof(UInt16);
+
+            // impact pos position
+            Buffer.BlockCopy(BitConverter.GetBytes(_impact_pos[i].x), 0, data, place, sizeof(float));
+            place += sizeof(float); _size += sizeof(float);
+            Buffer.BlockCopy(BitConverter.GetBytes(_impact_pos[i].y), 0, data, place, sizeof(float));
+            place += sizeof(float); _size += sizeof(float);
+            Buffer.BlockCopy(BitConverter.GetBytes(_impact_pos[i].z), 0, data, place, sizeof(float));
+            place += sizeof(float); _size += sizeof(float);
+        }
+
+
+
+        place = 0;
+        Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
+
+        _size += sizeof(int);
+
+        return data;
+    }
+
 }
 

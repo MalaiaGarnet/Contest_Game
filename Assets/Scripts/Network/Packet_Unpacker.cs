@@ -58,16 +58,16 @@ public class Packet_Unpacker
         _int = BitConverter.ToUInt64(_data, place);
         place += sizeof(UInt64);
     }
-    public static void UnPackPacket(byte[] _data, ref UInt16 _tile_key, ref UInt16 _player_index)
+    public static void UnPackPacket(byte[] _data, ref UInt16 _session_id, ref UInt16 _damage)
     {
         int place = 0;
 
         place += sizeof(UInt64);
 
-        _tile_key = BitConverter.ToUInt16(_data, place);
+        _session_id = BitConverter.ToUInt16(_data, place);
         place += sizeof(UInt16);
 
-        _player_index = BitConverter.ToUInt16(_data, place);
+        _damage = BitConverter.ToUInt16(_data, place);
         place += sizeof(UInt16);
     }
     public static void UnPackPacket(byte[] _data, ref UInt16 _player_index, ref UInt64 _x, ref UInt64 _y)
