@@ -24,7 +24,7 @@ public class CharacterController : MonoBehaviour
     private  User_Input     m_Output;       // 서버로부터 받은 입력값
 
     [Header("네트워크/프로필")]
-    public User_Profile                  m_MyProfile;   // 캐릭터 프로필
+    public  User_Profile                  m_MyProfile;   // 캐릭터 프로필
     private User_Profile                 m_Profile_Before; // 이전 입력값
     private UnityAction<User_Profile[]>  m_PlayerInputEvts; // 입력 수신 이벤트
     private UnityAction<User_Profile[]>  m_PlayerUpdatePosEvts; // 위치 갱신 이벤트
