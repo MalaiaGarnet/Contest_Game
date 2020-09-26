@@ -96,9 +96,12 @@ public class Weapon_Sample : Tool, I_IK_Shotable
 
         if (Manager_Ingame.Instance.m_Client_Profile.Session_ID == cc.m_MyProfile.Session_ID)
         {
-            Packet_Sender.Send_Shot_Fire((UInt64)PROTOCOL.MNG_INGAME
-                | (UInt64)PROTOCOL_INGAME.SHOT | (UInt64)PROTOCOL_INGAME.SHOT_FIRE,
-                session_ids, impact_pos);
+            if (Manager_Network.Instance != null)
+            {
+                Packet_Sender.Send_Shot_Fire((UInt64)PROTOCOL.MNG_INGAME
+                    | (UInt64)PROTOCOL_INGAME.SHOT | (UInt64)PROTOCOL_INGAME.SHOT_FIRE,
+                    session_ids, impact_pos);
+            }
         }
     }
 

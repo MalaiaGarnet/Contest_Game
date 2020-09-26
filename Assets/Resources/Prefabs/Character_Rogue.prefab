@@ -2681,9 +2681,9 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.4
-  m_Height: 1.6
-  m_Direction: 1
+  m_Radius: 0.65798926
+  m_Height: 1.384113
+  m_Direction: 0
   m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!65 &6907342873818026741
 BoxCollider:
@@ -2694,7 +2694,7 @@ BoxCollider:
   m_GameObject: {fileID: 5394443342023781533}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.3, z: 0.3}
   m_Center: {x: 0, y: 0.15, z: 0}
@@ -2741,8 +2741,8 @@ MonoBehaviour:
     Tool_4: 0
   battery: 10000
   moveSpeed: 6
-  noFriction: {fileID: 0}
-  fullFriction: {fileID: 0}
+  noFriction: {fileID: 13400000, guid: a5e1118bfb4b5dd4798c61111d7dca4b, type: 2}
+  fullFriction: {fileID: 13400000, guid: ad2f621b7880b8340aad442108c08b77, type: 2}
   m_ToolAxis: {fileID: 3962913494684653333}
   m_Tools:
   - {fileID: 0}
@@ -3108,8 +3108,8 @@ MonoBehaviour:
   - {fileID: 5899614706198840150}
   - {fileID: 161812994855331325}
   - {fileID: 7054459037546085047}
-  pelvis: {fileID: 815687957390405992}
-  characterRoot: {fileID: 815687957390357090}
+  pelvis: {fileID: 815687957390380138}
+  characterRoot: {fileID: 815687957390405992}
   rootRotationWeight: 1
   rootRotationSpeed: 5
   maxRootRotationAngle: 45
