@@ -1,10 +1,8 @@
 ﻿using Network.Data;
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.VFX;
+using Random = UnityEngine.Random;
 
 public class Weapon : Tool, I_IK_Shotable
 {
@@ -30,6 +28,7 @@ public class Weapon : Tool, I_IK_Shotable
     public Transform ownerMuzzle;
 
     private Vector3      m_FOVScreenPos;
+    private Transform    m_CamAxis;
     
     public Vector3[] HitVector
     {
@@ -52,7 +51,7 @@ public class Weapon : Tool, I_IK_Shotable
     // Use this for initialization
     void Start()
     {
-        
+        m_CamAxis = ownerArm.GetComponentInParent<CharacterController>().m_CameraAxis;
     }
     // Update is called once per frame
     void Update()
@@ -63,57 +62,59 @@ public class Weapon : Tool, I_IK_Shotable
     // 여기 조져야됨
     public void Shooting()
     {
-        if(clip <= 0)
-        {
-            Reload();
-        }
-   
         List<Ray> rays = new List<Ray>();
         for(int count = 0; count < pellet.pelletCount; count++)
         {
-            rays.Add(Camera.main.ViewportPointToRay(new Vector3(m_FOVScreenPos.x + Random.Range(-pellet.pelletAccurate, pellet.pelletAccurate),
+            rays.Add(m_CamAxis.GetComponentInParent<Camera>().ScreenPointToRay(new Vector3(m_FOVScreenPos.x + Random.Range(-pellet.pelletAccurate, pellet.pelletAccurate),
                 m_FOVScreenPos.y + Random.Range(-pellet.pelletAccurate, pellet.pelletAccurate), m_FOVScreenPos.z)));
         }
 
         Vector3 muzzleForward = ownerMuzzle.transform.TransformDirection(Vector3.forward) * shotDistance;
 
+        List<UInt16> list_SessionID = new List<UInt16>();
+        List<Vector3> list_vHitPos = new List<Vector3>();  
+
         RaycastHit hitInfo;
 
+        CharacterController victim = this.gameObject.GetComponentInParent<CharacterController>();
+        int index = 0;
         foreach (Ray ray in rays)
         {
+            index++;
+            list_SessionID.Add(0);
+
             if (Physics.Raycast(ray.origin, muzzleForward, out hitInfo, shotDistance))
             {
-                CharacterController victim = hitInfo.collider.gameObject.GetComponent<CharacterController>();
+                victim = hitInfo.collider.gameObject.GetComponent<CharacterController>();
 
                 if (isDrawRay) // 디버그용
                 {
-                    UnityEngine.Debug.DrawLine(ownerMuzzle.position, muzzleForward, Color.blue);
+                    Debug.DrawLine(ownerMuzzle.position, muzzleForward, Color.blue);
                     if (hitInfo.collider.CompareTag("Player"))
-                        UnityEngine.Debug.Log(victim.transform.position);
+                        Debug.Log(victim.transform.position);
                     else
-                        UnityEngine.Debug.Log(hitInfo.collider);
+                        Debug.Log(hitInfo.collider);
                 }
 
-               if(Manager_Ingame.Instance.m_Client_Profile.Session_ID == victim.m_MyProfile.Session_ID)
-               {
-                    //OnTakeDamage(); 이곳에 네트워크 관련 작용
-                    
-               }
+                if(victim != null)
+                {
+                    list_SessionID[index] = victim.m_MyProfile.Session_ID;
+                }
+
+               
 
             }
         }
 
-        clip--;
-    }
-
-    public void Reload()
-    {
-        clip = 1000;
-    }
-
-    public void SetAttacker()
-    {
-        
+        if (Manager_Ingame.Instance.m_Client_Profile.Session_ID == victim.m_MyProfile.Session_ID)
+        {
+            if (Manager_Network.Instance != null)
+            {
+                Packet_Sender.Send_Shot_Fire((UInt64)PROTOCOL.MNG_INGAME
+                    | (UInt64)PROTOCOL_INGAME.SHOT | (UInt64)PROTOCOL_INGAME.SHOT_FIRE,
+                    list_SessionID, list_vHitPos);
+            }
+        }
     }
 
     public ushort GetWeaponID()
@@ -138,7 +139,10 @@ public class Weapon : Tool, I_IK_Shotable
 
     public override void onFire(bool _pressed)
     {
-            Shooting();
+        if (_pressed)
+            return;
+
+       Shooting();
     }
 
     public override void onInteract(bool _pressed)
