@@ -89,6 +89,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Minimap"",
+                    ""type"": ""Button"",
+                    ""id"": ""cfbeb65a-4229-4514-9de0-0b9aa1cd69a9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -148,42 +156,20 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""c802ff0c-4441-4a28-a1d1-0c67f4f92839"",
+                    ""name"": ""PS4"",
+                    ""id"": ""16c7bf2e-7e9e-4723-8acb-186da09145d7"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": ""AxisDeadzone"",
-                    ""groups"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Move_Control"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""c09c1f5e-cfb9-49a5-8dea-3763dfdfe67c"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Move_Control"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""down"",
-                    ""id"": ""e1397cb2-e0bc-489e-be29-88cb8ea8ad28"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Move_Control"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""b4422ac3-f653-44ae-89a8-6c74aa096c85"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""id"": ""86e338b7-a03f-42d1-9e72-308d104fb8a0"",
+                    ""path"": ""<Gamepad>/leftStick/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -193,8 +179,8 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""a0e06c37-4453-4964-bab4-07a014b41d64"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""id"": ""741c4931-7c5a-4fa7-821a-1c4e2498a1d0"",
+                    ""path"": ""<Gamepad>/leftStick/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -390,6 +376,61 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""PS4"",
+                    ""id"": ""8c9e95cd-96ce-4b1e-8c7a-c25998db4a7b"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""View_Control"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""7f45f14e-1248-4079-a2ed-a99ab5218f37"",
+                    ""path"": ""<DualShockGamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""View_Control"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""6fa3fc00-1e61-4cb5-9a97-881ba8ac3858"",
+                    ""path"": ""<DualShockGamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""View_Control"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""6c8abff0-631c-4c8f-b353-1fc9c263fdbe"",
+                    ""path"": ""<DualShockGamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""View_Control"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""928dd404-9304-4393-b6fd-42b73adbd18f"",
+                    ""path"": ""<DualShockGamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""View_Control"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""6fe7ddad-daa1-47ea-ba33-fe89beeed9f8"",
                     ""path"": ""<Mouse>/leftButton"",
@@ -397,6 +438,17 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03221fef-e1e3-4372-b1cd-c57009682821"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Minimap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -426,7 +478,12 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
             ""devices"": [
                 {
                     ""devicePath"": ""<Gamepad>"",
-                    ""isOptional"": false,
+                    ""isOptional"": true,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<DualShockGamepad>"",
+                    ""isOptional"": true,
                     ""isOR"": false
                 }
             ]
@@ -444,6 +501,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_CharacterControl_Tool_4 = m_CharacterControl.FindAction("Tool_4", throwIfNotFound: true);
         m_CharacterControl_Call_Menu = m_CharacterControl.FindAction("Call_Menu", throwIfNotFound: true);
         m_CharacterControl_Fire = m_CharacterControl.FindAction("Fire", throwIfNotFound: true);
+        m_CharacterControl_Minimap = m_CharacterControl.FindAction("Minimap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -502,6 +560,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_CharacterControl_Tool_4;
     private readonly InputAction m_CharacterControl_Call_Menu;
     private readonly InputAction m_CharacterControl_Fire;
+    private readonly InputAction m_CharacterControl_Minimap;
     public struct CharacterControlActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -515,6 +574,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @Tool_4 => m_Wrapper.m_CharacterControl_Tool_4;
         public InputAction @Call_Menu => m_Wrapper.m_CharacterControl_Call_Menu;
         public InputAction @Fire => m_Wrapper.m_CharacterControl_Fire;
+        public InputAction @Minimap => m_Wrapper.m_CharacterControl_Minimap;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -551,6 +611,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Fire.started -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnFire;
+                @Minimap.started -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnMinimap;
+                @Minimap.performed -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnMinimap;
+                @Minimap.canceled -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnMinimap;
             }
             m_Wrapper.m_CharacterControlActionsCallbackInterface = instance;
             if (instance != null)
@@ -582,6 +645,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
+                @Minimap.started += instance.OnMinimap;
+                @Minimap.performed += instance.OnMinimap;
+                @Minimap.canceled += instance.OnMinimap;
             }
         }
     }
@@ -615,5 +681,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnTool_4(InputAction.CallbackContext context);
         void OnCall_Menu(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnMinimap(InputAction.CallbackContext context);
     }
 }

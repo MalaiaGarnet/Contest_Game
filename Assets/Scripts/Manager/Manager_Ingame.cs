@@ -6,22 +6,32 @@ using Network.Data;
 using UnityEngine.SceneManagement;
 using System;
 
+public class Event_RoundUpdate : UnityEvent<GameObject, Minimap> { }
 public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 {
     public float m_Input_Update_Interval = 0.025f; // 인풋 보내는 속도
 
+    [Header("세션 정보")]
+    public Session_RoundData m_RoundData = new Session_RoundData();
     public User_Profile m_Client_Profile = new User_Profile();
     public List<User_Profile> m_Profiles = new List<User_Profile>();
-
-    public GameObject prefab_Guard;
-    public GameObject prefab_Thief;
-
     public float m_Heartbeat_Wait = 0f;
     public bool m_Game_Started = false;
+    public int m_MapID = 0;
+    public int m_Round = 0;
+
+    [Header("프리팹")]
+    public GameObject prefab_Guard;
+    public GameObject prefab_Thief;
+    List<GameObject> m_Round_Objects = new List<GameObject>(); // 라운드 끝나면 사라질 것들
+
+    [Header("이벤트")]
+    public Event_RoundUpdate e_RoundUpdate = new Event_RoundUpdate();
 
     [Header("디버그 옵션")]
     public bool m_DebugMode = false;
     public Event_Player_Input e_FakeInput = new Event_Player_Input();
+    public int m_FakeMap, m_FakeRound;
 
     IEnumerator Start()
     {
@@ -44,15 +54,17 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             up.Current_Pos = new Vector3(-2.0f, 2.0f, 0.0f);
             m_Profiles.Add(up);
 
-            Start_Game();
+            Start_Game(1);
             yield return null;
         }
 
         while (Manager_Network.Instance == null)
             yield return new WaitForEndOfFrame();
 
-        Manager_Network.Instance.e_HeartBeat.AddListener(new UnityAction<User_Profile[]>(Update_Datas));
-        Manager_Network.Instance.e_GameStart.AddListener(new UnityAction(Start_Game));
+        Manager_Network.Instance.e_HeartBeat.AddListener(new UnityAction<Session_RoundData, User_Profile[]>(Update_Datas));
+        Manager_Network.Instance.e_GameStart.AddListener(new UnityAction<int>(Start_Game));
+        Manager_Network.Instance.e_RoundReady.AddListener(new UnityAction<int>(Prepare_Round));
+        Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(Start_Round));
     }
 
     private void FixedUpdate()
@@ -78,12 +90,16 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     /// 하트비트 받을 때
     /// </summary>
     /// <param name="_datas"></param>
-    public void Update_Datas(User_Profile[] _datas)
+    public void Update_Datas(Session_RoundData _round, User_Profile[] _datas)
     {
         m_Heartbeat_Wait = 0;
+        m_RoundData = _round;
         m_Profiles = new List<User_Profile>(_datas);
     }
 
+    /// <summary>
+    /// 인게임 씬 불러오기
+    /// </summary>
     public void Load_Ingame()
     {
         StartCoroutine(Load_Ingame_Process());
@@ -107,6 +123,12 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         ui.m_Ingame_Scene_Loader.Add_Msg("create hud");
         ui.m_Header.SetActive(true);
         ui.m_Footer.SetActive(true);
+        ui.m_LeftSide.SetActive(true);
+        ui.m_RightSide.SetActive(true);
+        GUI_Widget_Projection wp = ui.GetComponentInChildren<GUI_Widget_Projection>(true);
+        if (wp)
+            wp.Initialize();
+
         yield return new WaitForSecondsRealtime(0.5f);
 
         // 장식용 2
@@ -129,19 +151,68 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         yield return null;
     }
 
-    public void Start_Game()
-    {
+    /// <summary>
+    /// 게임의 첫 시작
+    /// </summary>
+    /// <param name="_map_id"></param>
+    public void Start_Game(int _map_id)
+    { 
+        m_MapID = _map_id;
         StartCoroutine(Start_Game_Process());
     }
+
+    /// <summary>
+    /// 게임 라운드 갱신
+    /// </summary>
+    /// <param name="_round"></param>
+    public void Prepare_Round(int _round)
+    {
+        m_Round = _round;
+
+        Ingame_UI ui = Ingame_UI.Instance;
+        if (!ui.m_Ingame_Scene_Loader.gameObject.activeSelf)
+        {
+            ui.m_Ingame_Scene_Loader.Show_Ingame_Scene_Loader(true);
+        }
+        ui.m_Ingame_Scene_Loader.Add_Msg("Loading Next Map...");
+
+        // 기존에 존재하던 오브젝트 다 제거하기
+        Manager_Network.Log("라운드 오브젝트 제거");
+        Clear_Round_Objects();
+
+        // 맵 읽기
+        Manager_Network.Log("맵 로드");
+        Load_Mapdata(m_MapID, m_Round);
+        // 캐릭터 오브젝트 
+        Manager_Network.Log("캐릭터 생성");
+        Create_PlayerCharacters();
+
+        Manager_Network.Log("라운드 로딩 완료 프로토콜 송신");
+        Packet_Sender.Send_Protocol((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.SESSION | (UInt64)PROTOCOL_INGAME.SS_ROUND_READY);
+    }
+
+    public void Start_Round()
+    {
+        StartCoroutine(Start_Round_Process());
+    }
+
     IEnumerator Start_Game_Process()
     { 
         Ingame_UI ui = Ingame_UI.Instance;
-        m_Game_Started = true;
 
+        // 호출했던 씬 로더 문장 갱신
         ui.m_Ingame_Scene_Loader.Add_Msg("ok");
         yield return new WaitForSecondsRealtime(0.5f);
         ui.m_Ingame_Scene_Loader.Add_Msg(" ");
 
+        /*
+        // 맵 읽어오기
+        if (m_DebugMode)
+            Load_Mapdata(m_FakeMap, m_FakeRound);
+        else
+            Load_Mapdata(1, 1);
+
+        // 프로필에 맞춰 캐릭터 오브젝트 생성
         foreach (User_Profile profile in m_Profiles)
         {
             if (profile.ID.Equals(m_Client_Profile.ID))
@@ -155,6 +226,104 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
                 // 프로필 심기
                 pc.m_MyProfile = profile;
 
+                // 카메라 자신의 캐릭터 찾아가기
+                if (profile.Session_ID == m_Client_Profile.Session_ID)
+                {
+                    pc.Fix_Camera();
+                    Ingame_UI.Instance.Set_Player(pc);
+                }
+            }
+            player_character.transform.position = pc.m_MyProfile.Current_Pos;
+            Add_Round_Object(player_character);
+        }
+
+        // 로딩창 지우기
+        ui.m_Ingame_Scene_Loader.Show(false);
+        ui.Lock_Cursor(true);
+        */
+        // 인풋 시작
+        StartCoroutine(Input_Send());
+    }
+
+    IEnumerator Start_Round_Process()
+    {
+        Ingame_UI ui = Ingame_UI.Instance;
+
+        // 로딩창 지우기
+        ui.m_Ingame_Scene_Loader.Show(false);
+        ui.Lock_Cursor(true);
+
+        yield return new WaitForSeconds(2.0f);
+
+        // 라운드 갱신 GUI 표시
+        m_Game_Started = true;
+        ui.m_Ingame_Round_Indicator.Start_Round(m_Round);
+
+        yield return null;
+    }
+
+    IEnumerator Input_Send()
+    {
+        WaitForSecondsRealtime wfsr = new WaitForSecondsRealtime(m_Input_Update_Interval);
+        while (true)
+        {
+            while (m_Game_Started)
+            {
+                if (m_DebugMode)
+                {
+                    for (int i = 0; i < m_Profiles.Count; i++)
+                    {
+                        User_Profile up = m_Profiles[i];
+                        if (up.Session_ID == m_Client_Profile.Session_ID)
+                            m_Profiles[i].User_Input = Manager_Input.Instance.m_Player_Input;
+                    }
+                    e_FakeInput.Invoke(m_Profiles.ToArray());
+                    yield return wfsr;
+                    continue;
+                }
+                // 입력값 보내기
+                // Debug.Log("입력 = " + Manager_Input.Instance.m_Player_Input.Move_X + ", "
+                //    + Manager_Input.Instance.m_Player_Input.Move_Y);
+                Packet_Sender.Send_Input((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.INPUT,
+                    Manager_Input.Instance.m_Player_Input,
+                    Manager_Input.Instance.m_Pre_Position);
+                yield return wfsr;
+            }
+            yield return wfsr;
+        }
+        yield return null;
+    }
+
+    public void Load_Mapdata(int _map, int _round)
+    {
+        GameObject map = Resources.Load<GameObject>("Prefabs/Maps/Map_M" + _map + "_R" + _round);
+        GameObject minimap = Resources.Load<GameObject>("Prefabs/Maps/Map_M" + _map + "_R" + _round + "_Minimap");
+
+        GameObject temp_map = Instantiate(map);
+        GameObject temp_minimap = Instantiate(minimap);
+
+        e_RoundUpdate.Invoke(temp_map, temp_minimap.GetComponent<Minimap>());
+
+        temp_minimap.SetActive(false);
+    }
+
+    public void Create_PlayerCharacters()
+    {
+        // 프로필에 맞춰 캐릭터 오브젝트 생성
+        foreach (User_Profile profile in m_Profiles)
+        {
+            Debug.Log("캐릭터 생성 = " + profile.ID);
+
+            if (profile.ID.Equals(m_Client_Profile.ID))
+                m_Client_Profile = profile;
+
+            GameObject player_character = Instantiate(profile.Role_Index == 1 ? prefab_Guard : prefab_Thief);
+            player_character.transform.position = profile.Current_Pos;
+            CharacterController pc = player_character.GetComponent<CharacterController>();
+            if (pc != null)
+            {
+                // 프로필 심기
+                pc.m_MyProfile = profile;
 
                 // 카메라 자신의 캐릭터 찾아가기
                 if (profile.Session_ID == m_Client_Profile.Session_ID)
@@ -164,42 +333,18 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
                 }
             }
             player_character.transform.position = pc.m_MyProfile.Current_Pos;
+            // Add_Round_Object(player_character);
         }
-
-        // 로딩창 지우기
-        ui.m_Ingame_Scene_Loader.Show(false);
-        ui.Lock_Cursor(true);
-
-        // 인풋 시작
-        StartCoroutine(Input_Send());
     }
 
-    IEnumerator Input_Send()
+    public void Add_Round_Object(GameObject _obj)
     {
-        WaitForSecondsRealtime wfsr = new WaitForSecondsRealtime(m_Input_Update_Interval);
-        while(m_Game_Started)
-        {
-            if (m_DebugMode)
-            {
-                for (int i = 0; i < m_Profiles.Count; i++)
-                {
-                    User_Profile up = m_Profiles[i];
-                    if (up.Session_ID == m_Client_Profile.Session_ID)
-                        m_Profiles[i].User_Input = Manager_Input.Instance.m_Player_Input;
-                }
-                e_FakeInput.Invoke(m_Profiles.ToArray());
-                yield return wfsr;
-                continue;
-            }
-            // 입력값 보내기
-            // Debug.Log("입력 = " + Manager_Input.Instance.m_Player_Input.Move_X + ", "
-            //    + Manager_Input.Instance.m_Player_Input.Move_Y);
-            Packet_Sender.Send_Input((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.INPUT,
-                Manager_Input.Instance.m_Player_Input,
-                Manager_Input.Instance.m_Pre_Position);
-            yield return wfsr;
-        }
-        yield return null;
+        m_Round_Objects.Add(_obj);
     }
-
+    public void Clear_Round_Objects()
+    {
+        foreach (GameObject obj in m_Round_Objects)
+            Destroy(obj);
+        m_Round_Objects.Clear();
+    }
 }

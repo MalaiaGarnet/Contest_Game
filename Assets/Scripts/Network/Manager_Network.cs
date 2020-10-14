@@ -21,6 +21,8 @@ public class Manager_Network : MonoBehaviour
     public KJH_Crypto m_Encryptor = null; // 암호화
 
     // 멤버
+    string m_IP = "127.0.0.1";
+    string m_Port = "9000";
     Manager_Packet m_Packet;
 
     // 이벤트
@@ -37,6 +39,8 @@ public class Manager_Network : MonoBehaviour
 
     // ingame
     public Event_HeartBeat e_HeartBeat = new Event_HeartBeat();
+    public Event_Round_Ready e_RoundReady = new Event_Round_Ready();
+    public Event_Round_Start e_RoundStart = new Event_Round_Start();
     public Event_Game_Start e_GameStart = new Event_Game_Start();
     public Event_Player_Input e_PlayerInput = new Event_Player_Input();
     public Event_Player_Hit e_PlayerHit = new Event_Player_Hit();
@@ -69,8 +73,8 @@ public class Manager_Network : MonoBehaviour
             m_Packet?.Update();
     }
 
-
-    public void Connect_To_Server(string _ip = "127.0.0.1", string _port = "9000")
+    public void Change_IP(string _ip) { m_IP = _ip; }
+    public void Connect_To_Server()
     {
         if (m_Socket != null)
         {
@@ -82,7 +86,7 @@ public class Manager_Network : MonoBehaviour
         try
         {
             // 연결 시도, 실패시 SocketException
-            m_Socket.Connect(_ip, int.Parse(_port));
+            m_Socket.Connect(m_IP, int.Parse(m_Port));
             m_Connected = true;
 
             // 패킷 핸들러 오브젝트 초기화
@@ -121,7 +125,7 @@ public class Manager_Network : MonoBehaviour
     {
         // 서버 연결
         if (!m_Connected)
-            Connect_To_Server("127.0.0.1");
+            Connect_To_Server();
 
         // 로그인 패킷 전송
         UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.LOGIN;
@@ -140,7 +144,7 @@ public class Manager_Network : MonoBehaviour
     {
         // 서버 연결
         if (!m_Connected)
-            Connect_To_Server("127.0.0.1");
+            Connect_To_Server();
 
         StartCoroutine(Register_Process(_id, _pw, _nickname));
         return true;

@@ -95,7 +95,7 @@ public class Task_Handler
             {
                 Manager_Network.Log("매치 완료");
                 User_Profile[] datas = null;
-                User_Profile.UnPackPacket(_task.buffer, ref datas);
+                Packet_Unpacker.UnPackPacket(_task.buffer, ref datas);
                 _manager.e_Matched.Invoke(datas);
             }
             if ((_protocol & (UInt64)PROTOCOL_LOGIN.STOP) > 0)
@@ -112,20 +112,38 @@ public class Task_Handler
         if ((_protocol & (UInt64)PROTOCOL_INGAME.HEARTBEAT) > 0)
         {
             Manager_Network.Log("인게임 하트 비트");
+            Session_RoundData round = new Session_RoundData();
             User_Profile[] datas = null;
-            User_Profile.UnPackPacket(_task.buffer, ref datas);
-            _manager.e_HeartBeat.Invoke(datas);
+            Packet_Unpacker.UnPackPacket(_task.buffer, ref round, ref datas);
+            _manager.e_HeartBeat.Invoke(round, datas);
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.START) > 0)
         {
             Manager_Network.Log("인게임 시작");
-            _manager.e_GameStart.Invoke();
+            _manager.e_GameStart.Invoke(1);
+        }
+        if ((_protocol & (UInt64)PROTOCOL_INGAME.SESSION) > 0) // 세션
+        {
+            if ((_protocol & (UInt64)PROTOCOL_INGAME.SS_ROUND_READY) > 0) // 준비 명령
+            {
+                Manager_Network.Log("인게임 라운드 준비");
+                Session_RoundData roundData = new Session_RoundData();
+                Packet_Unpacker.UnPackPacket(_task.buffer, ref roundData);
+                _manager.e_RoundReady.Invoke(roundData.Current_Round);
+            }
+            if ((_protocol & (UInt64)PROTOCOL_INGAME.SS_ROUND_START) > 0) // 시작 명령
+            {
+                Manager_Network.Log("인게임 라운드 시작"); 
+                UInt16 id = 0, damage = 0;
+                Packet_Unpacker.UnPackPacket(_task.buffer, ref id, ref damage);
+                _manager.e_RoundStart.Invoke();
+            }
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.INPUT) > 0)
         {
             Manager_Network.Log("인게임 인풋");
             User_Profile[] datas = null;
-            User_Profile.UnPackPacket(_task.buffer, ref datas);
+            Packet_Unpacker.UnPackPacket(_task.buffer, ref datas);
             _manager.e_PlayerInput.Invoke(datas);
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.SHOT) > 0)

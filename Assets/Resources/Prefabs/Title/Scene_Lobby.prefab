@@ -562,6 +562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84719c1f88a6084db7399a1e7352952, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_CloseButton: {fileID: 0}
   m_Animator: {fileID: 8267737297253659797}
 --- !u!95 &8267737297253659797
 Animator:
@@ -2728,7 +2729,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 492383464887575672, guid: 74016a0de997a5241bf9c2a7a4be8064, type: 3}
       propertyPath: m_Text
-      value: theft
+      value: Theft
       objectReference: {fileID: 0}
     - target: {fileID: 492383464887575672, guid: 74016a0de997a5241bf9c2a7a4be8064, type: 3}
       propertyPath: m_Color.b
@@ -2737,6 +2738,14 @@ PrefabInstance:
     - target: {fileID: 492383464887575672, guid: 74016a0de997a5241bf9c2a7a4be8064, type: 3}
       propertyPath: m_Color.r
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 492383464887575672, guid: 74016a0de997a5241bf9c2a7a4be8064, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 530cd87c252d5f940a410030c3c5bebf, type: 3}
+    - target: {fileID: 492383464887575672, guid: 74016a0de997a5241bf9c2a7a4be8064, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1123785749918917816, guid: 74016a0de997a5241bf9c2a7a4be8064, type: 3}
       propertyPath: m_Color.b

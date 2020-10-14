@@ -177,6 +177,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 79f3bb17-97be-44fa-b3cb-efb3e3e01503
     m_ActionName: CharacterControl/Fire[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
+        m_MethodName: onProjection
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cfbeb65a-4229-4514-9de0-0b9aa1cd69a9
+    m_ActionName: CharacterControl/Minimap[/Keyboard/m]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CharacterControl
@@ -252,12 +268,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Input_Update_Interval: 0.1
+  m_RoundData:
+    Current_Round: 0
+    Time_Left: 0
   m_Client_Profile:
     Session_ID: 0
     ID: 
     Nickname: 
     Role_Index: 0
     Is_Ready: 0
+    HP: 0
+    Battery: 0
+    Score: 0
     Current_Pos: {x: 0, y: 0, z: 0}
     Current_Rot: {x: 0, y: 0, z: 0}
     User_Input:
@@ -279,11 +301,15 @@ MonoBehaviour:
     Tool_3: 0
     Tool_4: 0
   m_Profiles: []
-  prefab_Guard: {fileID: 7696638750962336851, guid: 7c5a7c5c6afb0a64a9f37e131f90451c, type: 3}
-  prefab_Thief: {fileID: 5394443342023781533, guid: c20eb0463e2958f499269de91c8b4d3a, type: 3}
   m_Heartbeat_Wait: 0
   m_Game_Started: 0
+  m_MapID: 0
+  m_Round: 0
+  prefab_Guard: {fileID: 7696638750962336851, guid: 7c5a7c5c6afb0a64a9f37e131f90451c, type: 3}
+  prefab_Thief: {fileID: 5394443342023781533, guid: c20eb0463e2958f499269de91c8b4d3a, type: 3}
   m_DebugMode: 0
+  m_FakeMap: 0
+  m_FakeRound: 0
 --- !u!1 &5299774081072030872
 GameObject:
   m_ObjectHideFlags: 0
