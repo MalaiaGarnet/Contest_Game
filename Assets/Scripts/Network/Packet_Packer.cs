@@ -251,8 +251,6 @@ public class Packet_Packer
             place += sizeof(float); _size += sizeof(float);
         }
 
-
-
         place = 0;
         Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
 

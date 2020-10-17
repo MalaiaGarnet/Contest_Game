@@ -27,7 +27,7 @@ public class CharacterController : MonoBehaviour
     public  User_Profile                  m_MyProfile;   // 캐릭터 프로필
     private User_Profile                 m_Profile_Before; // 이전 입력값
     private UnityAction<User_Profile[]>  m_PlayerInputEvts; // 입력 수신 이벤트
-    private UnityAction<User_Profile[]>  m_PlayerUpdatePosEvts; // 위치 갱신 이벤트
+    private UnityAction<Session_RoundData, User_Profile[]>  m_PlayerUpdatePosEvts; // 위치 갱신 이벤트
     private UnityAction<UInt16, UInt16> m_PlayerDamageEvts; // 위치 갱신 이벤트
 
     [Header("이벤트")]
@@ -51,7 +51,7 @@ public class CharacterController : MonoBehaviour
     [Header("캐릭터 좌표")]
     public Transform m_CameraAxis;
     public Vector3 m_Before_Position;
-    public const float ASCENDING_LIMIT = 0.25f;
+    public const float ASCENDING_LIMIT = 0.6f;
 
     IEnumerator Start()
     {
@@ -62,7 +62,7 @@ public class CharacterController : MonoBehaviour
 
         // 입력 이벤트 등록
         m_PlayerInputEvts = new UnityAction<User_Profile[]>(When_Player_Input);
-        m_PlayerUpdatePosEvts = new UnityAction<User_Profile[]>(When_Player_UpdatePosition);
+        m_PlayerUpdatePosEvts = new UnityAction<Session_RoundData, User_Profile[]>(When_Player_UpdatePosition);
         m_PlayerDamageEvts = new UnityAction<ushort, ushort>(Damage);
         if (Manager_Network.Instance == null)
         {
@@ -108,6 +108,8 @@ public class CharacterController : MonoBehaviour
         // 시선 처리
         if (m_MyProfile.Session_ID == Manager_Ingame.Instance.m_Client_Profile.Session_ID)
         {
+            if (m_MyProfile.HP <= 0)
+                return;
             m_CameraAxis.localRotation = Quaternion.Euler(
                 new Vector3(InputManager.m_Player_Input.View_X, InputManager.m_Player_Input.View_Y, 0f));
         }
@@ -146,7 +148,7 @@ public class CharacterController : MonoBehaviour
     /// 플레이어 위치 갱신 이벤트
     /// </summary>
     /// <param name="_Profiles"></param>
-    void When_Player_UpdatePosition(User_Profile[] _Profiles)
+    void When_Player_UpdatePosition(Session_RoundData _round, User_Profile[] _Profiles)
     {
         for (int index = 0; index < _Profiles.Length; index++)
         {

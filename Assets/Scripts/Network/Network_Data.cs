@@ -82,6 +82,13 @@ namespace Network.Data
         }
     }
 
+
+    [Serializable]
+    public struct Session_RoundData
+    {
+        public UInt16 Current_Round;
+        public UInt64 Time_Left;
+    }
     /// <summary> 유저 프로필 </summary>
     [Serializable]
     public class User_Profile
@@ -109,95 +116,6 @@ namespace Network.Data
         public UInt16 Tool_2;
         public UInt16 Tool_3;
         public UInt16 Tool_4;
-
-
-        public static void UnPackPacket(byte[] _data, ref User_Profile[] _datas)
-        {
-            int place = 0;
-            UInt16 strlen = 0; 
-            place += sizeof(UInt64); // 프로토콜 점프
-
-            UInt64 array_length = BitConverter.ToUInt64(_data, place); // 배열 길이 취득
-            place += sizeof(UInt64);
-
-            DebugLogger.Instance.AddText("<array length = " + array_length + " >");
-            _datas = new User_Profile[array_length];
-            for(uint i = 0; i < array_length; i++)
-            {
-                _datas[i] = new User_Profile();
-                _datas[i].Session_ID = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-
-                strlen = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-                _datas[i].ID = Encoding.Unicode.GetString(_data, place, strlen);
-                place += strlen;
-                strlen = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-                _datas[i].Nickname = Encoding.Unicode.GetString(_data, place, strlen);
-                place += strlen;
-                _datas[i].Role_Index = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-                _datas[i].Is_Ready = BitConverter.ToBoolean(_data, place);
-                place += sizeof(bool);
-
-                // HP, Battery, Score
-                _datas[i].HP = BitConverter.ToUInt16(_data, place);
-                place += sizeof(ushort);
-                _datas[i].Battery = BitConverter.ToUInt16(_data, place);
-                place += sizeof(ushort);
-                _datas[i].Score = BitConverter.ToUInt16(_data, place);
-                place += sizeof(ushort);
-
-                // 포지션
-                float x = BitConverter.ToSingle(_data, place);
-                place += sizeof(float);
-                float y = BitConverter.ToSingle(_data, place);
-                place += sizeof(float);
-                float z = BitConverter.ToSingle(_data, place);
-                place += sizeof(float);
-                _datas[i].Current_Pos = new Vector3(x, y, z);
-
-                // 로테이션
-                x = BitConverter.ToSingle(_data, place);
-                place += sizeof(float);
-                y = BitConverter.ToSingle(_data, place);
-                place += sizeof(float);
-                z = BitConverter.ToSingle(_data, place);
-                place += sizeof(float);
-                _datas[i].Current_Rot = new Vector3(x, y, z);
-
-                // 인풋
-                _datas[i].User_Input.Read_Bytes(_data, ref place);
-
-                // 툴
-                _datas[i].Current_Tool = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-                _datas[i].Tool_1 = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-                _datas[i].Tool_2 = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-                _datas[i].Tool_3 = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-                _datas[i].Tool_4 = BitConverter.ToUInt16(_data, place);
-                place += sizeof(UInt16);
-
-                DebugLogger.Instance.AddText("[ user profile " + i + " ]");
-                DebugLogger.Instance.AddText("Session_ID: " + _datas[i].Session_ID);
-                DebugLogger.Instance.AddText("NickName: " + _datas[i].Nickname);
-                DebugLogger.Instance.AddText("Role_Index: " + _datas[i].Role_Index);
-                DebugLogger.Instance.AddText("Is_Ready: " + _datas[i].Is_Ready);
-                DebugLogger.Instance.AddText("HP: " + _datas[i].HP);
-                DebugLogger.Instance.AddText("Battery: " + _datas[i].Battery);
-                DebugLogger.Instance.AddText("Score: " + _datas[i].Score);
-                DebugLogger.Instance.AddText("Current_pos: " + _datas[i].Current_Pos);
-                DebugLogger.Instance.AddText("Current_rot: " + _datas[i].Current_Rot);
-                DebugLogger.Instance.AddText("User_Input_View x: " + _datas[i].User_Input.View_X+ 
-                                                                "User_Input_View y: "+ _datas[i].User_Input.View_Y);
-                DebugLogger.Instance.AddText("User_Input_Move x: " + _datas[i].User_Input.View_X + 
-                                                "User_Input_Move y: " + _datas[i].User_Input.View_Y);
-            }
-        }
     }
 
     /// <summary> 유저 입력 </summary>

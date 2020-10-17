@@ -2,20 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Network.Data;
 
 using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.InputSystem;
 
+public class Event_Input_Projection : UnityEvent<bool> { }
 public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 {
     #region  필드와 프로퍼티
 
     const float PITCH_LIMIT = 80f;
 
+    public Event_Input_Projection e_Input_Projection = new Event_Input_Projection();
+
     [Header("디버그로 확인")]
     public User_Input m_Player_Input;   // 클라이언트 최신 인풋
     public Vector3 m_Pre_Position;      // 예측 위치
+
 
     #endregion
 
@@ -82,5 +87,13 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     public void onFire(CallbackContext _context)
     {
         m_Player_Input.Fire = _context.ReadValueAsButton();
+    }
+    /// <summary>
+    /// 후로젝숀
+    /// </summary>
+    /// <param name="_context"></param>
+    public void onProjection(CallbackContext _context)
+    {
+        e_Input_Projection.Invoke(_context.ReadValueAsButton());
     }
 }

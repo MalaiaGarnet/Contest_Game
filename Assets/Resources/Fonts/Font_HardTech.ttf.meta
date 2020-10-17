@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 23b73f689fa4fb94a8d07e01f7836b27
+guid: d5f45009526449f4aa54229e9e4f00d4
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - DungGeunMo
+  - FROSTBITE Narrow
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
