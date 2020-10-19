@@ -64,9 +64,11 @@ public class CharacterAnimator : MonoBehaviour
         {
             shotable = tool as I_IK_Shotable;
             AimIK aim = IK_AimMode.GetComponentInChildren<AimIK>(true);
-            aim.solver.transform = shotable.Get_Muzzle();
+            if (aim)
+                aim.solver.transform = shotable.Get_Muzzle();
             LimbIK limb = IK_AimMode.GetComponentInChildren<LimbIK>(true);
-            limb.solver.target = shotable.Get_Lefthand_Grip();
+            if (limb)
+                limb.solver.target = shotable.Get_Lefthand_Grip();
         }
 
         // 조준 여부에 따른 애니메이션 처리

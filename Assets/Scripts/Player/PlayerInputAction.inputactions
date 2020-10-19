@@ -438,6 +438,28 @@
                     "action": "Minimap",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5cac58e2-928d-414e-872a-246a1c780e1a",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Minimap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8b8e244-f010-4530-9507-dd588f8f700c",
+                    "path": "<DualShockGamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Minimap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
