@@ -31,7 +31,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     [Header("디버그 옵션")]
     public bool m_DebugMode = false;
     public Event_Player_Input e_FakeInput = new Event_Player_Input();
-    public int m_FakeMap, m_FakeRound;
+    public int m_FakeMap = 1, m_FakeRound = 1;
 
     IEnumerator Start()
     {
@@ -43,6 +43,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             up.Role_Index = 1;
             up.Current_Pos = new Vector3(2.0f, 2.0f, 0.0f);
             up.Tool_1 = 4001;
+            up.HP = 2000;
             m_Profiles.Add(up);
             m_Client_Profile = up;
 
@@ -51,6 +52,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             up.Session_ID = 1;
             up.Role_Index = 2;
             up.Tool_1 = 5001;
+            up.HP = 2000;
             up.Current_Pos = new Vector3(-2.0f, 2.0f, 0.0f);
             m_Profiles.Add(up);
 
@@ -187,8 +189,14 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         Manager_Network.Log("캐릭터 생성");
         Create_PlayerCharacters();
 
-        Manager_Network.Log("라운드 로딩 완료 프로토콜 송신");
-        Packet_Sender.Send_Protocol((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.SESSION | (UInt64)PROTOCOL_INGAME.SS_ROUND_READY);
+
+        if (m_DebugMode)
+            Start_Round();
+        else
+        {
+            Manager_Network.Log("라운드 로딩 완료 프로토콜 송신");
+            Packet_Sender.Send_Protocol((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.SESSION | (UInt64)PROTOCOL_INGAME.SS_ROUND_READY);
+        }
     }
 
     public void Start_Round()
@@ -205,42 +213,9 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         yield return new WaitForSecondsRealtime(0.5f);
         ui.m_Ingame_Scene_Loader.Add_Msg(" ");
 
-        /*
-        // 맵 읽어오기
         if (m_DebugMode)
-            Load_Mapdata(m_FakeMap, m_FakeRound);
-        else
-            Load_Mapdata(1, 1);
+            Prepare_Round(m_FakeRound);
 
-        // 프로필에 맞춰 캐릭터 오브젝트 생성
-        foreach (User_Profile profile in m_Profiles)
-        {
-            if (profile.ID.Equals(m_Client_Profile.ID))
-                m_Client_Profile = profile;
-
-            GameObject player_character = Instantiate(profile.Role_Index == 1 ? prefab_Guard : prefab_Thief);
-            player_character.transform.position = profile.Current_Pos;
-            CharacterController pc = player_character.GetComponent<CharacterController>();
-            if (pc != null)
-            {
-                // 프로필 심기
-                pc.m_MyProfile = profile;
-
-                // 카메라 자신의 캐릭터 찾아가기
-                if (profile.Session_ID == m_Client_Profile.Session_ID)
-                {
-                    pc.Fix_Camera();
-                    Ingame_UI.Instance.Set_Player(pc);
-                }
-            }
-            player_character.transform.position = pc.m_MyProfile.Current_Pos;
-            Add_Round_Object(player_character);
-        }
-
-        // 로딩창 지우기
-        ui.m_Ingame_Scene_Loader.Show(false);
-        ui.Lock_Cursor(true);
-        */
         // 인풋 시작
         StartCoroutine(Input_Send());
     }

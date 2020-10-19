@@ -42,13 +42,21 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     }
 
     /// <summary>
-    /// 스틱 좌표 갱신
+    /// 움직임 갱신
     /// </summary>
     /// <param name="_context"></param>
     public void onMove(CallbackContext _context)
     {
         m_Player_Input.Move_X = _context.ReadValue<Vector2>().x;
         m_Player_Input.Move_Y = _context.ReadValue<Vector2>().y;
+    }
+    /// <summary>
+    /// 시점 갱신
+    /// </summary>
+    /// <param name="_context"></param>
+    public void onView(CallbackContext _context)
+    {
+        ChangeView(_context.ReadValue<Vector2>());
     }
 
     /// <summary>

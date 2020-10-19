@@ -10,6 +10,12 @@ public class GUI_Widget_Projection : MonoBehaviour
 
     bool Initialized = false;
 
+    private void Start()
+    {
+        if (Manager_Ingame.Instance.m_DebugMode)
+            Initialize();
+    }
+
     public void Initialize()
     {
         Manager_Ingame.Instance.e_RoundUpdate.AddListener(Update_Map);
