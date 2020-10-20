@@ -126,17 +126,20 @@ public class Task_Handler
         {
             if ((_protocol & (UInt64)PROTOCOL_INGAME.SS_ROUND_READY) > 0) // 준비 명령
             {
-                Manager_Network.Log("인게임 라운드 준비");
+                Debug.Log("인게임 라운드 준비");
                 Session_RoundData roundData = new Session_RoundData();
                 Packet_Unpacker.UnPackPacket(_task.buffer, ref roundData);
                 _manager.e_RoundReady.Invoke(roundData.Current_Round);
             }
             if ((_protocol & (UInt64)PROTOCOL_INGAME.SS_ROUND_START) > 0) // 시작 명령
             {
-                Manager_Network.Log("인게임 라운드 시작"); 
-                UInt16 id = 0, damage = 0;
-                Packet_Unpacker.UnPackPacket(_task.buffer, ref id, ref damage);
+                Debug.Log("인게임 라운드 시작");
                 _manager.e_RoundStart.Invoke();
+            }
+            if ((_protocol & (UInt64)PROTOCOL_INGAME.SS_ROUND_END) > 0) // 시작 명령
+            {
+                Debug.Log("인게임 라운드 종료");
+                _manager.e_RoundEnd.Invoke();
             }
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.INPUT) > 0)

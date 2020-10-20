@@ -41,7 +41,9 @@ public class Manager_Network : MonoBehaviour
     public Event_HeartBeat e_HeartBeat = new Event_HeartBeat();
     public Event_Round_Ready e_RoundReady = new Event_Round_Ready();
     public Event_Round_Start e_RoundStart = new Event_Round_Start();
+    public Event_Round_End e_RoundEnd = new Event_Round_End();
     public Event_Game_Start e_GameStart = new Event_Game_Start();
+    public Event_Game_End e_GameEnd = new Event_Game_End();
     public Event_Player_Input e_PlayerInput = new Event_Player_Input();
     public Event_Player_Hit e_PlayerHit = new Event_Player_Hit();
 

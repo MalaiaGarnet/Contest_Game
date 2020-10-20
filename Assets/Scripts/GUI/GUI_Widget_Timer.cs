@@ -20,6 +20,6 @@ public class GUI_Widget_Timer : GUI_Widget_Base
     {
         ulong minute = _round.Time_Left / 1000 / 60;
         ulong second = _round.Time_Left / 1000 - minute * 60;
-        m_Timer.text = "time left\n" + minute.ToString("00") + ":" + second.ToString("00");
+        m_Timer.text = "time left\n" + minute.ToString() + ":" + second.ToString();
     }
 }

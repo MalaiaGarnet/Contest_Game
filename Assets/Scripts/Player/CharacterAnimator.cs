@@ -86,6 +86,7 @@ public class CharacterAnimator : MonoBehaviour
             Debug.Log("으앙 진짜 아픔;");
             m_LiveModel.SetActive(false);
             GameObject eff = Instantiate(prefab_DeadEffect);
+            Manager_Ingame.Instance.Add_Round_Object(eff);
             eff.transform.position = transform.position;
         }
     }

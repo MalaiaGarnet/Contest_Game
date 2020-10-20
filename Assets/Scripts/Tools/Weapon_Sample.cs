@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -19,10 +20,13 @@ public class Weapon_Sample : Tool, I_IK_Shotable
 
     [Header("원하는 거 구현하기")]
     public GameObject prefab_Bullet;
+    public GameObject effect_Bullet;
+    public AudioSource sfx_Fire;
 
     Vector3 saved_pos;
     public int m_ID; // 지워도 됨
 
+    private bool m_ThiefShotAble = true;
 
     public AnimationClip Get_Aim_Anim()
     {
@@ -39,6 +43,17 @@ public class Weapon_Sample : Tool, I_IK_Shotable
         return m_Gun_Muzzle.transform;
     }
 
+    private void Start()
+    {
+        if (Manager_Network.Instance != null)
+            Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));
+    }
+
+    public void RestoreThiefShotAble()
+    {
+        m_ThiefShotAble = true;
+    }
+
     private void Update()
     {
         Debug.DrawRay(m_Gun_Muzzle.transform.position, Camera.main.transform.forward);
@@ -49,15 +64,20 @@ public class Weapon_Sample : Tool, I_IK_Shotable
     public override void onFire(bool _pressed)
     {
         if (!_pressed)
-            return;
-
-        Debug.Log(gameObject.name + " 발싸 - " + _pressed);
+            return;    
 
         int bullet_count = 5;
         float range = 0.05f;
 
         CharacterController cc = transform.GetComponentInParent<CharacterController>();
+
+        if (!cc.IsGuard() && !m_ThiefShotAble)
+            return;
+
+
+        Debug.Log(gameObject.name + " 발싸 - " + _pressed);
         Vector3 raw_dir = cc.m_CameraAxis.rotation.eulerAngles;
+
         raw_dir.x += Random.Range(-range, range);
         raw_dir.y += Random.Range(-range, range);
         Vector3 dir = cc.m_CameraAxis.forward;
@@ -65,7 +85,9 @@ public class Weapon_Sample : Tool, I_IK_Shotable
         List<UInt16> session_ids = new List<UInt16>();
         List<Vector3> impact_pos = new List<Vector3>();
 
-        for(int i = 0; i < bullet_count; i++)
+        sfx_Fire.PlayOneShot(sfx_Fire.clip);
+
+        for (int i = 0; i < bullet_count; i++)
         {
             Vector3 temp_dir = dir + new Vector3(Random.Range(-range, range),
                 Random.Range(-range, range), Random.Range(-range, range));
@@ -91,7 +113,16 @@ public class Weapon_Sample : Tool, I_IK_Shotable
             LineRenderer lr = bullet.GetComponent<LineRenderer>();
             lr.SetPosition(0, saved_pos);
             lr.SetPosition(1, impact_pos[i]);
-            Destroy(bullet, 5.0f);
+
+            GameObject effect = Instantiate(effect_Bullet);
+
+            effect.transform.position = cc.m_CameraAxis.position;
+
+            if (!cc.IsGuard() && m_ThiefShotAble)
+                m_ThiefShotAble = false;
+
+            Destroy(effect, 1.0f);
+            Destroy(bullet, 1.0f);
         }
 
         if (Manager_Ingame.Instance.m_Client_Profile.Session_ID == cc.m_MyProfile.Session_ID)

@@ -199,6 +199,28 @@ public class CharacterController : MonoBehaviour
         m_Output = _new_profile.User_Input;
     }
 
+    public bool IsPlayerHaveJob(UInt16 _JobIndex)
+    {
+        if(m_MyProfile.Role_Index == _JobIndex)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsGuard()
+    {
+        if(m_MyProfile.Role_Index == 1)
+        {
+            return false;
+        }
+        else if(m_MyProfile.Role_Index == 2)
+        {
+            return true;
+        }
+        return false;
+    }
+
     /// <summary>
     /// 해당 오브젝트에게로 카메라 고정 지시
     /// </summary>

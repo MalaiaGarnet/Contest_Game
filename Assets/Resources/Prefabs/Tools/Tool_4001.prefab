@@ -43,6 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8248394010474033556}
   - component: {fileID: 6631883491179286070}
+  - component: {fileID: 4475346997255325414}
   m_Layer: 0
   m_Name: Tool_4001
   m_TagString: Untagged
@@ -77,11 +78,111 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd02239aa74e314d90c5ca63dc6ba01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Aim_Anim: {fileID: -203655887218126122, guid: 949ec001016931940953eec810d33adc, type: 3}
+  m_Aim_Anim: {fileID: -203655887218126122, guid: 949ec001016931940953eec810d33adc,
+    type: 3}
   m_Gun_LeftGrip: {fileID: 3132289675022897962}
   m_Gun_Muzzle: {fileID: 2931362692719102802}
-  prefab_Bullet: {fileID: 8272969770508415240, guid: 1cddb8f2574df3842aee32297e664284, type: 3}
+  prefab_Bullet: {fileID: 8272969770508415240, guid: 1cddb8f2574df3842aee32297e664284,
+    type: 3}
+  effect_Bullet: {fileID: 100000, guid: 8eaaa4f553116f44b8459bc24201c514, type: 3}
+  sfx_Fire: {fileID: 4475346997255325414}
   m_ID: 0
+--- !u!82 &4475346997255325414
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216642987747593652}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: dd16a0bc01b76054ba18327bc3b2570e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.7
+  m_Pitch: 0.75
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1433145787696777884
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +238,6 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -162,7 +262,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2931362692719102802
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +379,6 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -305,7 +403,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &8604374182881527651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -377,6 +474,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: a66d64962dad7b441b895147b3616981, type: 3}
 --- !u!4 &8604374182881665707 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 402888, guid: a66d64962dad7b441b895147b3616981, type: 3}
+  m_CorrespondingSourceObject: {fileID: 402888, guid: a66d64962dad7b441b895147b3616981,
+    type: 3}
   m_PrefabInstance: {fileID: 8604374182881527651}
   m_PrefabAsset: {fileID: 0}

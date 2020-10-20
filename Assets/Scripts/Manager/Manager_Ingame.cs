@@ -27,6 +27,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
     [Header("이벤트")]
     public Event_RoundUpdate e_RoundUpdate = new Event_RoundUpdate();
+    List<IEnumerator> m_DelayedTaskList = new List<IEnumerator>();
 
     [Header("디버그 옵션")]
     public bool m_DebugMode = false;
@@ -67,6 +68,8 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         Manager_Network.Instance.e_GameStart.AddListener(new UnityAction<int>(Start_Game));
         Manager_Network.Instance.e_RoundReady.AddListener(new UnityAction<int>(Prepare_Round));
         Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(Start_Round));
+        Manager_Network.Instance.e_RoundEnd.AddListener(new UnityAction(End_Round));
+        Manager_Network.Instance.e_GameEnd.AddListener(new UnityAction(End_Game));
     }
 
     private void FixedUpdate()
@@ -97,6 +100,22 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         m_Heartbeat_Wait = 0;
         m_RoundData = _round;
         m_Profiles = new List<User_Profile>(_datas);
+    }
+
+    public void Add_Delayed_Coroutine(IEnumerator _func)
+    {
+        if (m_DelayedTaskList.Count > 0)
+            m_DelayedTaskList.Add(_func);
+        else
+            StartCoroutine(_func);
+    }
+    public void Play_Next_Coroutine()
+    {
+        if (m_DelayedTaskList.Count == 0)
+            return;
+        m_DelayedTaskList.RemoveAt(0);
+        if (m_DelayedTaskList.Count > 0)
+            StartCoroutine(m_DelayedTaskList[0]);
     }
 
     /// <summary>
@@ -162,50 +181,8 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         m_MapID = _map_id;
         StartCoroutine(Start_Game_Process());
     }
-
-    /// <summary>
-    /// 게임 라운드 갱신
-    /// </summary>
-    /// <param name="_round"></param>
-    public void Prepare_Round(int _round)
-    {
-        m_Round = _round;
-
-        Ingame_UI ui = Ingame_UI.Instance;
-        if (!ui.m_Ingame_Scene_Loader.gameObject.activeSelf)
-        {
-            ui.m_Ingame_Scene_Loader.Show_Ingame_Scene_Loader(true);
-        }
-        ui.m_Ingame_Scene_Loader.Add_Msg("Loading Next Map...");
-
-        // 기존에 존재하던 오브젝트 다 제거하기
-        Manager_Network.Log("라운드 오브젝트 제거");
-        Clear_Round_Objects();
-
-        // 맵 읽기
-        Manager_Network.Log("맵 로드");
-        Load_Mapdata(m_MapID, m_Round);
-        // 캐릭터 오브젝트 
-        Manager_Network.Log("캐릭터 생성");
-        Create_PlayerCharacters();
-
-
-        if (m_DebugMode)
-            Start_Round();
-        else
-        {
-            Manager_Network.Log("라운드 로딩 완료 프로토콜 송신");
-            Packet_Sender.Send_Protocol((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.SESSION | (UInt64)PROTOCOL_INGAME.SS_ROUND_READY);
-        }
-    }
-
-    public void Start_Round()
-    {
-        StartCoroutine(Start_Round_Process());
-    }
-
     IEnumerator Start_Game_Process()
-    { 
+    {
         Ingame_UI ui = Ingame_UI.Instance;
 
         // 호출했던 씬 로더 문장 갱신
@@ -220,6 +197,52 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         StartCoroutine(Input_Send());
     }
 
+    /// <summary>
+    /// 게임 라운드 갱신
+    /// </summary>
+    /// <param name="_round"></param>
+    public void Prepare_Round(int _round)
+    {
+        m_Round = _round;
+        Add_Delayed_Coroutine(Prepare_Round_Process());
+    }
+    IEnumerator Prepare_Round_Process()
+    {
+        Ingame_UI ui = Ingame_UI.Instance;
+        ui.m_Ingame_Scene_Loader.Show(true);
+        ui.m_Ingame_Scene_Loader.Add_Msg("Loading Next Map...");
+        yield return new WaitForSeconds(3.0f);
+
+        // 기존에 존재하던 오브젝트 다 제거하기
+        Manager_Network.Log("라운드 오브젝트 제거");
+        Clear_Round_Objects();
+
+        // 맵 읽기
+        Manager_Network.Log("맵 로드");
+        Load_Mapdata(m_MapID, m_Round);
+        // 캐릭터 오브젝트 
+        Manager_Network.Log("캐릭터 생성");
+        Create_PlayerCharacters();
+
+        yield return new WaitForSeconds(2.0f);
+
+        if (m_DebugMode)
+            Start_Round();
+        else
+        {
+            Manager_Network.Log("라운드 로딩 완료 프로토콜 송신");
+            Packet_Sender.Send_Protocol((UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.SESSION | (UInt64)PROTOCOL_INGAME.SS_ROUND_READY);
+        }
+        Play_Next_Coroutine();
+
+        yield return null;
+    }
+
+    public void Start_Round()
+    {
+        m_Game_Started = true;
+        Add_Delayed_Coroutine(Start_Round_Process());
+    }
     IEnumerator Start_Round_Process()
     {
         Ingame_UI ui = Ingame_UI.Instance;
@@ -233,9 +256,42 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         // 라운드 갱신 GUI 표시
         m_Game_Started = true;
         ui.m_Ingame_Round_Indicator.Start_Round(m_Round);
+        Play_Next_Coroutine();
 
         yield return null;
     }
+
+    public void End_Round()
+    {
+        m_Game_Started = false;
+        Add_Delayed_Coroutine(End_Round_Process());
+        // TODO 이후 바로 prepare round 프로토콜 오므로 그에 대한 처리 할 것
+    }
+    IEnumerator End_Round_Process()
+    {
+        Ingame_UI ui = Ingame_UI.Instance;
+        ui.m_Ingame_Round_Indicator.End_Round(m_Round);
+        yield return new WaitForSeconds(3.0f);
+        Play_Next_Coroutine();
+
+        yield return null;
+    }
+    
+    public void End_Game()
+    {
+        Add_Delayed_Coroutine(End_Game_Process());
+        // 터졌으면 터진대로 처리해줄 것
+    }
+    IEnumerator End_Game_Process()
+    {
+        Ingame_UI ui = Ingame_UI.Instance;
+        ui.m_Ingame_Round_Indicator.End_Game();
+        yield return new WaitForSeconds(3.0f);
+        Play_Next_Coroutine();
+
+        yield return null;
+    }
+
 
     IEnumerator Input_Send()
     {
@@ -277,6 +333,9 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         GameObject temp_map = Instantiate(map);
         GameObject temp_minimap = Instantiate(minimap);
 
+        Add_Round_Object(temp_map);
+        Add_Round_Object(temp_minimap);
+
         e_RoundUpdate.Invoke(temp_map, temp_minimap.GetComponent<Minimap>());
 
         temp_minimap.SetActive(false);
@@ -287,8 +346,9 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         // 프로필에 맞춰 캐릭터 오브젝트 생성
         foreach (User_Profile profile in m_Profiles)
         {
-            Debug.Log("캐릭터 생성 = " + profile.ID);
+            Debug.Log("캐릭터 생성 = " + profile.ID + " // 좌표 = " + profile.Current_Pos);
 
+            profile.Round_Init();
             if (profile.ID.Equals(m_Client_Profile.ID))
                 m_Client_Profile = profile;
 
@@ -308,7 +368,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
                 }
             }
             player_character.transform.position = pc.m_MyProfile.Current_Pos;
-            // Add_Round_Object(player_character);
+            Add_Round_Object(player_character);
         }
     }
 

@@ -83,6 +83,20 @@ namespace Network.Data
     }
 
 
+    public enum ROUND_END_REASON : ushort
+    {
+        NOT_ENDED = 0,
+	    TIME_OVER = 1,
+	    ALL_ROGUE_DEAD = 2,
+	    ALL_ROGUE_ESCAPED = 3,
+    };
+    public enum SESSION_END_REASON : ushort
+    {
+        NOT_ENDED = 0,
+	    NORMALLY_END = 1, // 정상 종료
+	    USER_TOO_SHORT = 2, // 누가 나가서 유저가 너무 적어짐
+	    CRITICAL_ERROR = 3, // 치명적인 오류
+    };
     [Serializable]
     public struct Session_RoundData
     {
@@ -116,6 +130,11 @@ namespace Network.Data
         public UInt16 Tool_2;
         public UInt16 Tool_3;
         public UInt16 Tool_4;
+
+        public void Round_Init()
+        {
+            HP = 1000;
+        }
     }
 
     /// <summary> 유저 입력 </summary>
