@@ -10,7 +10,12 @@ public class Scene_Loader : MonoBehaviour
 
     public void Show(bool _enable)
     {
-        if (_enable)
+        if (!gameObject.activeSelf && !_enable)
+            return;
+        if (gameObject.activeSelf && _enable)
+            return;
+
+        if (_enable == true)
         {
             m_Loading_Text.text = "";
             gameObject.SetActive(_enable);

@@ -31,7 +31,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""b12a2de8-bbf9-4420-9027-87c93fc606ff"",
                     ""expectedControlType"": ""Button"",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""interactions"": """"
                 },
                 {
@@ -167,7 +167,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""down"",
+                    ""name"": ""up"",
                     ""id"": ""86e338b7-a03f-42d1-9e72-308d104fb8a0"",
                     ""path"": ""<Gamepad>/leftStick/y"",
                     ""interactions"": """",
@@ -321,64 +321,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""aad7543d-9f94-4a9a-85af-4e6b240b60a7"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""View_Control"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""62650d7d-da50-4963-8532-37547f756c10"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""View_Control"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""203e8263-f26c-4a42-96ca-930d69f971f8"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""View_Control"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""6e78c32f-3751-47d9-9203-0e33cd0853ba"",
-                    ""path"": ""<Gamepad>/rightStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""View_Control"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""1ed1eee1-c79f-4c0a-9b23-8180fb3f7e1c"",
-                    ""path"": ""<Gamepad>/rightStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""View_Control"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""PS4"",
                     ""id"": ""8c9e95cd-96ce-4b1e-8c7a-c25998db4a7b"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -387,31 +332,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""7f45f14e-1248-4079-a2ed-a99ab5218f37"",
-                    ""path"": ""<DualShockGamepad>/rightStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""View_Control"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""down"",
-                    ""id"": ""6fa3fc00-1e61-4cb5-9a97-881ba8ac3858"",
-                    ""path"": ""<DualShockGamepad>/rightStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""View_Control"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""6c8abff0-631c-4c8f-b353-1fc9c263fdbe"",
-                    ""path"": ""<DualShockGamepad>/rightStick/left"",
+                    ""id"": ""7f45f14e-1248-4079-a2ed-a99ab5218f37"",
+                    ""path"": ""<DualShockGamepad>/rightStick/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -422,7 +345,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""928dd404-9304-4393-b6fd-42b73adbd18f"",
-                    ""path"": ""<DualShockGamepad>/rightStick/right"",
+                    ""path"": ""<DualShockGamepad>/rightStick/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",

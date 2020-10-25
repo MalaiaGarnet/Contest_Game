@@ -56,7 +56,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     /// <param name="_context"></param>
     public void onView(CallbackContext _context)
     {
-        ChangeView(_context.ReadValue<Vector2>());
+        Vector2 view = new Vector2(_context.ReadValue<Vector2>().y, _context.ReadValue<Vector2>().x);
+        ChangeView(view);
     }
 
     /// <summary>

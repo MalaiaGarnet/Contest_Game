@@ -40,6 +40,17 @@ public class Weapon_Sample : Tool, I_IK_Shotable
         return m_Gun_Muzzle.transform;
     }
 
+    private void Start()
+    {
+        if (Manager_Network.Instance != null)
+            Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));
+    }
+
+    public void RestoreThiefShotAble()
+    {
+        m_ThiefShotAble = true;
+    }
+
     private void Update()
     {
         Debug.DrawRay(m_Gun_Muzzle.transform.position, Camera.main.transform.forward);
@@ -100,7 +111,7 @@ public class Weapon_Sample : Tool, I_IK_Shotable
 
             effect.transform.SetParent(cc.m_ToolAxis);
             effect.transform.SetPositionAndRotation(cc.m_ToolAxis.position, cc.m_ToolAxis.rotation);
-            
+
             Destroy(effect, 1.0f);
             Destroy(bullet, 1.0f);
         }
