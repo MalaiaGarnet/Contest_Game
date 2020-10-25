@@ -210,11 +210,20 @@ public class CharacterController : MonoBehaviour
 
     public bool IsGuard()
     {
-        if(m_MyProfile.Role_Index == 1)
+        switch(m_MyProfile.Role_Index)
         {
-            return false;
+            case 1:
+                return false;
+            case 2:
+                return true;
+            default:
+                return false;
         }
-        else if(m_MyProfile.Role_Index == 2)
+    }
+
+    public bool IsAlive()
+    {
+        if(m_MyProfile != null && (m_MyProfile.HP > 0))
         {
             return true;
         }

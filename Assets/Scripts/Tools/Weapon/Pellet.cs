@@ -16,13 +16,21 @@ public class Pellet
     public VisualEffect pelletEffect;
     [Tooltip("펠릿 데미지")]
     public float pelletDamage;
-
-    [HideInInspector()]
-    public Vector2[] pelletPoint;
-
+    [Tooltip("펠릿 속도")]
+    public float pelletSpeed;
+    [Tooltip("펠릿 사거리")]
+    public float pelletDist;
+    [Tooltip("펠릿의 관통여부")]
+    public bool  IsPenetrate = false;
+    [Tooltip("관통 가능 인원")]
+    public short penetrateCount;
     [HideInInspector()]
     public Vector3 pelletDest;
-    private float pelletSpeed = 500.0f;
+    
+    public Pellet()
+    {
+
+    }
   
     public Pellet(byte _Count, float _Accurate, float _Damage)
     {

@@ -24,9 +24,6 @@ public class Weapon_Sample : Tool, I_IK_Shotable
     public AudioSource sfx_Fire;
 
     Vector3 saved_pos;
-    public int m_ID; // 지워도 됨
-
-    private bool m_ThiefShotAble = true;
 
     public AnimationClip Get_Aim_Anim()
     {
@@ -71,10 +68,6 @@ public class Weapon_Sample : Tool, I_IK_Shotable
 
         CharacterController cc = transform.GetComponentInParent<CharacterController>();
 
-        if (!cc.IsGuard() && !m_ThiefShotAble)
-            return;
-
-
         Debug.Log(gameObject.name + " 발싸 - " + _pressed);
         Vector3 raw_dir = cc.m_CameraAxis.rotation.eulerAngles;
 
@@ -116,10 +109,8 @@ public class Weapon_Sample : Tool, I_IK_Shotable
 
             GameObject effect = Instantiate(effect_Bullet);
 
-            effect.transform.position = cc.m_CameraAxis.position;
-
-            if (!cc.IsGuard() && m_ThiefShotAble)
-                m_ThiefShotAble = false;
+            effect.transform.SetParent(cc.m_ToolAxis);
+            effect.transform.SetPositionAndRotation(cc.m_ToolAxis.position, cc.m_ToolAxis.rotation);
 
             Destroy(effect, 1.0f);
             Destroy(bullet, 1.0f);

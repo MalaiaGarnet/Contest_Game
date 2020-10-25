@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Weapon_StunGun_AOC
+  m_Controller: {fileID: 9100000, guid: e4ae839d1ecb01942b6869733d3fc562, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 949ec001016931940953eec810d33adc,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: d2f994fdc44439c468ecedfa41a2b421,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: ee7ddfce8efdb39419cc0497e6fa474c,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: ee7ddfce8efdb39419cc0497e6fa474c,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 654b36424e3828a41abf247dd41517aa,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 654b36424e3828a41abf247dd41517aa,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 5d17e53a894e34148ac1dc338c267b67,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 5d17e53a894e34148ac1dc338c267b67,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 1e493e7f73d6fcb4480e5efdf90eccbd,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 1e493e7f73d6fcb4480e5efdf90eccbd,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 145913a71585c5845b9de9ecd67fccc2,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 145913a71585c5845b9de9ecd67fccc2,
+      type: 3}
