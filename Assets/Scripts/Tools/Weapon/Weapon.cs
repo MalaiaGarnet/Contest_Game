@@ -42,7 +42,6 @@ public class Weapon : Tool, I_IK_Shotable
         if (WeaponCategory.eWeaponDetectionType == WeaponDetectionType.HITSCAN)
         {
             //pellet = new Pellet(pellet.pelletCount, pellet.pelletAccurate, pellet.pelletDamage);
-            pellet.pelletPoint = new Vector2[pellet.pelletCount]; // 펠릿의 갯수만큼 
         }
        
     }

@@ -42,10 +42,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8248394010474033556}
-  - component: {fileID: 6631883491179286070}
+  - component: {fileID: 1581647979307722140}
   - component: {fileID: 4475346997255325414}
   m_Layer: 0
-  m_Name: Tool_4001
+  m_Name: Tool_5001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6631883491179286070
+--- !u!114 &1581647979307722140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,18 +75,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1216642987747593652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0dd02239aa74e314d90c5ca63dc6ba01, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d6fd45d3ab63504fad633c73c0f3f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Aim_Anim: {fileID: -203655887218126122, guid: 949ec001016931940953eec810d33adc,
-    type: 3}
-  m_Gun_LeftGrip: {fileID: 3132289675022897962}
-  m_Gun_Muzzle: {fileID: 2931362692719102802}
-  prefab_Bullet: {fileID: 8272969770508415240, guid: 1cddb8f2574df3842aee32297e664284,
-    type: 3}
-  effect_Bullet: {fileID: 100000, guid: 8eaaa4f553116f44b8459bc24201c514, type: 3}
+  animAim: {fileID: -203655887218126122, guid: 949ec001016931940953eec810d33adc, type: 3}
+  gunleftGrip: {fileID: 3896813541901529697}
+  gunMuzzle: {fileID: 5840613055604181460}
+  effect_Fire: {fileID: 100006, guid: 30b4cc2728d8cec499fad63ba93785a4, type: 3}
   sfx_Fire: {fileID: 4475346997255325414}
-  m_ID: 0
+  pelletInfo:
+    pelletCount: 1
+    pelletAccurate: 1
+    pelletEffect: {fileID: 0}
+    pelletDamage: 0
+    pelletSpeed: 10
+    pelletDist: 15
+    pelletDest: {x: 0, y: 0, z: 0}
+  pelletTrail: {fileID: 1503233511255051181, guid: 7b03065b1708a6545956b28d9b0a501d,
+    type: 3}
+  stunDuration: 5
+  m_IsDebug: 0
 --- !u!82 &4475346997255325414
 AudioSource:
   m_ObjectHideFlags: 0
@@ -97,7 +105,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: dd16a0bc01b76054ba18327bc3b2570e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 96898ccafd57cdf4cb114b5d7080c8cc, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.7
   m_Pitch: 0.75
