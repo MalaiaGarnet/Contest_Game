@@ -40,16 +40,6 @@ public class Weapon_Sample : Tool, I_IK_Shotable
         return m_Gun_Muzzle.transform;
     }
 
-    private void Start()
-    {
-        if (Manager_Network.Instance != null)
-            Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));
-    }
-
-    public void RestoreThiefShotAble()
-    {
-        m_ThiefShotAble = true;
-    }
 
     private void Update()
     {
