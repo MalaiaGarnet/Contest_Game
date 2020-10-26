@@ -46,7 +46,6 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             up.Tool_1 = 5001;
             up.HP = 2000;
             m_Profiles.Add(up);
-            m_Client_Profile = up;
 
             up = new User_Profile();
             up.ID = "2";
@@ -56,6 +55,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             up.HP = 2000;
             up.Current_Pos = new Vector3(-2.0f, 2.0f, 0.0f);
             m_Profiles.Add(up);
+            m_Client_Profile = up;
 
             Start_Game(1);
             yield return null;

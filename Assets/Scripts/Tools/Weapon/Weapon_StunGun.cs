@@ -95,7 +95,7 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
                 impact_Pos.Add(hit.point);
 
                 //if (victim.IsAlive()) // 네트워크 준비 (피해자가 살아있을때)
-                    StartCoroutine(StunPlayer(victim, stunDuration));
+                //    StartCoroutine(StunPlayer(victim, stunDuration));
             }
             else
                 impact_Pos.Add(ray.GetPoint(pelletTrail.pellet.pelletDist));

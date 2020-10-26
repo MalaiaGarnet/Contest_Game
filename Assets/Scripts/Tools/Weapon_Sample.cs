@@ -40,16 +40,6 @@ public class Weapon_Sample : Tool, I_IK_Shotable
         return m_Gun_Muzzle.transform;
     }
 
-    private void Start()
-    {
-        if (Manager_Network.Instance != null)
-            Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));
-    }
-
-    public void RestoreThiefShotAble()
-    {
-        m_ThiefShotAble = true;
-    }
 
     private void Update()
     {
@@ -63,8 +53,8 @@ public class Weapon_Sample : Tool, I_IK_Shotable
         if (!_pressed)
             return;    
 
-        int bullet_count = 5;
-        float range = 0.05f;
+        int bullet_count = 8;
+        float range = 0.03f;
 
         CharacterController cc = transform.GetComponentInParent<CharacterController>();
 

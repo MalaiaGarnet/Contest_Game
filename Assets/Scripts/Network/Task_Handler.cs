@@ -119,7 +119,7 @@ public class Task_Handler
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.START) > 0)
         {
-            Manager_Network.Log("인게임 시작");
+            Debug.Log("인게임 시작");
             _manager.e_GameStart.Invoke(1);
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.SESSION) > 0) // 세션
@@ -151,12 +151,24 @@ public class Task_Handler
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.SHOT) > 0)
         {
+            _protocol -= (UInt64)PROTOCOL.MNG_INGAME;
+            _protocol -= (UInt64)PROTOCOL_INGAME.SHOT;
+            Debug.Log("인게임 사격");
             if ((_protocol & (UInt64)PROTOCOL_INGAME.SHOT_HIT) > 0)
             {
-                Manager_Network.Log("인게임 사격 - 맞음");
+                _protocol -= (UInt64)PROTOCOL_INGAME.SHOT_HIT;
+                Debug.Log("프로토콜 확인: " + _protocol);
                 UInt16 id = 0, damage = 0;
                 Packet_Unpacker.UnPackPacket(_task.buffer, ref id, ref damage);
+                Debug.Log("사격 - 피해: " + id + " // " + damage);
                 _manager.e_PlayerHit.Invoke(id, damage);
+            }
+            if ((_protocol & (UInt64)PROTOCOL_INGAME.SHOT_STUN) > 0)
+            {
+                UInt16 id = 0, damage = 0;
+                Packet_Unpacker.UnPackPacket(_task.buffer, ref id, ref damage);
+                Debug.Log("사격 - 스턴: " + id + " // " + damage);
+                _manager.e_PlayerStun.Invoke(id, damage);
             }
         }
     }

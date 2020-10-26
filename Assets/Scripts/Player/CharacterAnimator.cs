@@ -31,7 +31,9 @@ public class CharacterAnimator : MonoBehaviour
 
         pc.e_ToolChanged.AddListener(When_Tool_Changed);
 
-        if(pc.m_MyProfile.Role_Index == 2) 
+        if (pc.m_MyProfile.Role_Index == 1)
+            pc.e_Stunned.AddListener(When_Stunned);
+        if (pc.m_MyProfile.Role_Index == 2)
             pc.e_Damaged.AddListener(When_Damaged);
     }
 
@@ -77,6 +79,10 @@ public class CharacterAnimator : MonoBehaviour
         IK_LookMode.SetActive(shotable == null);
     }
 
+    /// <summary>
+    /// 피해 받았을 때의 애니메이션 처리
+    /// </summary>
+    /// <param name="_damage"></param>
     void When_Damaged(int _damage)
     {
         int hp = pc.m_MyProfile.HP;
@@ -89,5 +95,24 @@ public class CharacterAnimator : MonoBehaviour
             Manager_Ingame.Instance.Add_Round_Object(eff);
             eff.transform.position = transform.position;
         }
+    }
+
+    /// <summary>
+    /// 스턴 당했을 때의 애니메이션 처리
+    /// </summary>
+    /// <param name="_tick"></param>
+    void When_Stunned(int _tick)
+    {
+        StartCoroutine(Stun_Process(_tick));
+    }
+    IEnumerator Stun_Process(int _tick)
+    {
+        m_Anim.SetTrigger("Stun");
+
+        m_Anim.SetBool("is_Stunned", true);
+        yield return new WaitForSecondsRealtime(_tick / 1000f);
+
+        m_Anim.SetBool("is_Stunned", false);
+        yield return null;
     }
 }
