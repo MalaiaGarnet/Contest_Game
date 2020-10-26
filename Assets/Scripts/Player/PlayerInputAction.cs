@@ -398,6 +398,33 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Debug"",
+            ""id"": ""661fbf11-3ea1-419a-a79a-e2f4e1de9712"",
+            ""actions"": [
+                {
+                    ""name"": ""Force_Stun"",
+                    ""type"": ""Button"",
+                    ""id"": ""aac43ac0-0084-4ed4-84c7-db254210dbfd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b4d067a0-53b8-4532-87d5-e5085ee5424e"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Force_Stun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -447,6 +474,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_CharacterControl_Call_Menu = m_CharacterControl.FindAction("Call_Menu", throwIfNotFound: true);
         m_CharacterControl_Fire = m_CharacterControl.FindAction("Fire", throwIfNotFound: true);
         m_CharacterControl_Minimap = m_CharacterControl.FindAction("Minimap", throwIfNotFound: true);
+        // Debug
+        m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
+        m_Debug_Force_Stun = m_Debug.FindAction("Force_Stun", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -597,6 +627,39 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         }
     }
     public CharacterControlActions @CharacterControl => new CharacterControlActions(this);
+
+    // Debug
+    private readonly InputActionMap m_Debug;
+    private IDebugActions m_DebugActionsCallbackInterface;
+    private readonly InputAction m_Debug_Force_Stun;
+    public struct DebugActions
+    {
+        private @PlayerInputAction m_Wrapper;
+        public DebugActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Force_Stun => m_Wrapper.m_Debug_Force_Stun;
+        public InputActionMap Get() { return m_Wrapper.m_Debug; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
+        public void SetCallbacks(IDebugActions instance)
+        {
+            if (m_Wrapper.m_DebugActionsCallbackInterface != null)
+            {
+                @Force_Stun.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnForce_Stun;
+                @Force_Stun.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnForce_Stun;
+                @Force_Stun.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnForce_Stun;
+            }
+            m_Wrapper.m_DebugActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Force_Stun.started += instance.OnForce_Stun;
+                @Force_Stun.performed += instance.OnForce_Stun;
+                @Force_Stun.canceled += instance.OnForce_Stun;
+            }
+        }
+    }
+    public DebugActions @Debug => new DebugActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -627,5 +690,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnCall_Menu(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnMinimap(InputAction.CallbackContext context);
+    }
+    public interface IDebugActions
+    {
+        void OnForce_Stun(InputAction.CallbackContext context);
     }
 }

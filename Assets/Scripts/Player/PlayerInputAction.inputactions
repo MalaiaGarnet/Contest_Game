@@ -385,6 +385,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Debug",
+            "id": "661fbf11-3ea1-419a-a79a-e2f4e1de9712",
+            "actions": [
+                {
+                    "name": "Force_Stun",
+                    "type": "Button",
+                    "id": "aac43ac0-0084-4ed4-84c7-db254210dbfd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b4d067a0-53b8-4532-87d5-e5085ee5424e",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Force_Stun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

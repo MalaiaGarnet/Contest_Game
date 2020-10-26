@@ -22,15 +22,18 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
     public Scene_Loader m_Ingame_Scene_Loader;
     public Round_Indicator m_Ingame_Round_Indicator;
     public GameObject m_Dead_Indicator;
+    public GameObject m_Stun_Indicator;
 
     public Event_UI_Initialize e_Initialize = new Event_UI_Initialize();
 
     UnityAction<int> a_When_Damaged;
+    UnityAction<int> a_When_Stunned;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
         a_When_Damaged = new UnityAction<int>(When_Damaged);
+        a_When_Stunned = new UnityAction<int>(When_Stunned);
     }
 
     /// <summary>
@@ -43,11 +46,13 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
         if (m_Player != null)
         {
             m_Player.e_Damaged.RemoveListener(a_When_Damaged);
+            m_Player.e_Stunned.RemoveListener(a_When_Stunned);
         }
 
         // 현재 플레이어 갱신 후 해줄 거
         m_Player = _cc;
         m_Player.e_Damaged.AddListener(a_When_Damaged);
+        m_Player.e_Stunned.AddListener(a_When_Stunned);
         When_Damaged(0);
         e_Initialize.Invoke();
     }
@@ -66,5 +71,29 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
     public void When_Damaged(int _damage)
     {
         m_Dead_Indicator.SetActive(m_Player.m_MyProfile.HP <= 0);
+    }
+
+    Coroutine stun_coroutine;
+    public void When_Stunned(int _tick)
+    {
+        if (stun_coroutine != null)
+            StopCoroutine(stun_coroutine);
+
+        stun_coroutine = StartCoroutine(Stun_Process(_tick));
+    }
+    IEnumerator Stun_Process(int _tick)
+    {
+        Animation anim = m_Stun_Indicator.GetComponent<Animation>();
+        anim.clip = anim.GetClip("GUI_Ingame_Stun_Indicator_Fade_In");
+        m_Stun_Indicator.SetActive(true);
+        yield return new WaitForSecondsRealtime(_tick / 1000f);
+
+        anim.clip = anim.GetClip("GUI_Ingame_Stun_Indicator_Fade_Out");
+        anim.Play();
+
+        yield return new WaitForSecondsRealtime(2.0f);
+        m_Stun_Indicator.SetActive(false);
+
+        yield return null;
     }
 }

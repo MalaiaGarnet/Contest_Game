@@ -63,12 +63,15 @@ public class Packet_Unpacker
         int place = 0;
 
         place += sizeof(UInt64);
+        Debug.Log("기묘한 값 - " + BitConverter.ToString(_data));
 
-        _session_id = BitConverter.ToUInt16(_data, place);
-        place += sizeof(UInt16);
+        UInt64 id = BitConverter.ToUInt64(_data, place);
+        _session_id = (UInt16)id;
+        place += sizeof(UInt64);
 
-        _damage = BitConverter.ToUInt16(_data, place);
-        place += sizeof(UInt16);
+        UInt64 damage = BitConverter.ToUInt64(_data, place);
+        _damage = (UInt16)damage;
+        place += sizeof(UInt64);
     }
     public static void UnPackPacket(byte[] _data, ref UInt16 _player_index, ref UInt64 _x, ref UInt64 _y)
     {
