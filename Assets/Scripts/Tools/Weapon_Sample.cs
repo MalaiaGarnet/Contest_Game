@@ -80,7 +80,7 @@ public class Weapon_Sample : Tool, I_IK_Shotable
             session_ids.Add(0);
             if (Physics.Raycast(ray, out hit, 100f))
             {
-                CharacterController hit_user = hit.collider.gameObject.GetComponent<CharacterController>();
+                CharacterController hit_user = hit.collider.gameObject.GetComponentInParent<CharacterController>();
                 if (hit_user != null)
                 {
                     Debug.Log("산탄 히트 - " + hit_user.m_MyProfile.Session_ID);

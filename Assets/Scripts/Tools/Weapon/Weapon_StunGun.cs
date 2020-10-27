@@ -91,7 +91,7 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
             if (Physics.Raycast(ray, out hit, pelletTrail.pellet.pelletDist))
             {
                 trailobj.GetComponent<PelletTrail>().rayPositon = hit.point;
-                CharacterController victim = hit.collider.gameObject.GetComponent<CharacterController>();
+                CharacterController victim = hit.collider.gameObject.GetComponentInParent<CharacterController>();
                 if(victim != null)
                     victim_IDs[i] = victim.m_MyProfile.Session_ID;
                 impact_Pos.Add(hit.point);
