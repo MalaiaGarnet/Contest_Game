@@ -71,21 +71,23 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
         // This Add HitScan Logic
         Vector3 fwdDir = attacker.m_CameraAxis.forward;
 
-        Ray ray = new Ray(attacker.m_CameraAxis.position + fwdDir * 2f, fwdDir);
+        
         List<UInt16> victim_IDs = new List<UInt16>();
         List<Vector3> impact_Pos = new List<Vector3>();
-        RaycastHit hit;
+        
 
         sfx_Fire.PlayOneShot(sfx_Fire.clip); // Play Sound
 
-        victim_IDs.Add(0);
+       
 
         pelletTrail.pellet = pelletInfo; // 펠릿트레일의 펠릿에 커스텀한 펠릿정보를 보내주자.
 
         for (byte i = 0; i < pelletTrail.pellet.pelletCount; i++)
         {
+            Ray ray = new Ray(attacker.m_CameraAxis.position + fwdDir * 2f, fwdDir);
+            RaycastHit hit;
             GameObject trailobj = Instantiate(pelletTrail.gameObject, now_pos, attacker.m_ToolAxis.rotation);
-
+            victim_IDs.Add(0);
             if (Physics.Raycast(ray, out hit, pelletTrail.pellet.pelletDist))
             {
                 trailobj.GetComponent<PelletTrail>().rayPositon = hit.point;
