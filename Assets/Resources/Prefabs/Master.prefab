@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: a6efea97b69a8f540aabc797bdc6ac89, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: a6efea97b69a8f540aabc797bdc6ac89,
+    type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -60,7 +61,6 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
-        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
         m_MethodName: onMove
         m_Mode: 0
         m_Arguments:
@@ -76,7 +76,6 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
-        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
         m_MethodName: onInteract
         m_Mode: 0
         m_Arguments:
@@ -90,13 +89,23 @@ MonoBehaviour:
     m_ActionId: a811d55b-bb9a-4fee-8edb-f46643a4ce90
     m_ActionName: CharacterControl/Interact[/Keyboard/e]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_MethodName: onView
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b12a2de8-bbf9-4420-9027-87c93fc606ff
     m_ActionName: CharacterControl/View_Control
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
-        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
         m_MethodName: onTool_1
         m_Mode: 0
         m_Arguments:
@@ -112,7 +121,6 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
-        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
         m_MethodName: onTool_2
         m_Mode: 0
         m_Arguments:
@@ -128,7 +136,6 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
-        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
         m_MethodName: onTool_3
         m_Mode: 0
         m_Arguments:
@@ -144,7 +151,6 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
-        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
         m_MethodName: onTool_4
         m_Mode: 0
         m_Arguments:
@@ -158,13 +164,23 @@ MonoBehaviour:
     m_ActionId: 6b37dc3f-ed3d-408b-9865-dcb58bf60c8c
     m_ActionName: CharacterControl/Tool_4[/Keyboard/4]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_MethodName: onMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 082bdf7a-e309-4ed4-9b3e-37e911af8a93
     m_ActionName: CharacterControl/Call_Menu[/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
-        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
         m_MethodName: onFire
         m_Mode: 0
         m_Arguments:
@@ -180,7 +196,6 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7031361481819463496}
-        m_TargetAssemblyTypeName: Manager_Input, Assembly-CSharp
         m_MethodName: onProjection
         m_Mode: 0
         m_Arguments:
@@ -193,6 +208,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: cfbeb65a-4229-4514-9de0-0b9aa1cd69a9
     m_ActionName: CharacterControl/Minimap[/Keyboard/m]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: aac43ac0-0084-4ed4-84c7-db254210dbfd
+    m_ActionName: Debug/Force_Stun[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CharacterControl
@@ -305,8 +324,10 @@ MonoBehaviour:
   m_Game_Started: 0
   m_MapID: 0
   m_Round: 0
-  prefab_Guard: {fileID: 7696638750962336851, guid: 7c5a7c5c6afb0a64a9f37e131f90451c, type: 3}
-  prefab_Thief: {fileID: 5394443342023781533, guid: c20eb0463e2958f499269de91c8b4d3a, type: 3}
+  prefab_Guard: {fileID: 7696638750962336851, guid: 7c5a7c5c6afb0a64a9f37e131f90451c,
+    type: 3}
+  prefab_Thief: {fileID: 5394443342023781533, guid: c20eb0463e2958f499269de91c8b4d3a,
+    type: 3}
   m_DebugMode: 0
   m_FakeMap: 0
   m_FakeRound: 0

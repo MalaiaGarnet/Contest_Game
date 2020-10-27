@@ -299,6 +299,28 @@
                 {
                     "name": "",
                     "id": "97199a2e-7074-4d69-94c6-653bc15c984e",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Call_Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4decbcec-dfc2-45cb-9ea0-9cfad00c1ce4",
+                    "path": "<DualShockGamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Call_Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8ab41731-5070-4c2a-aa35-50f12560be9a",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",

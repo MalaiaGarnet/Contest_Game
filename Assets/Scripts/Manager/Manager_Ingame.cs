@@ -82,11 +82,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             m_Heartbeat_Wait += Time.fixedDeltaTime;
             if (m_Heartbeat_Wait > 5.0) // 하트비트가 너무 안 오면 타이틀로
             {
-                Ingame_UI.Instance.Lock_Cursor(false);
-                Destroy(Ingame_UI.Instance.gameObject);
-                m_Game_Started = false;
-                Manager_Network.Instance.Disconnect();
-                SceneManager.LoadScene("Title");
+                Quit_Game();
             }
         }
     }
@@ -276,7 +272,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
         yield return null;
     }
-    
+
     public void End_Game()
     {
         Add_Delayed_Coroutine(End_Game_Process());
@@ -290,6 +286,17 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         Play_Next_Coroutine();
 
         yield return null;
+    }
+
+    // 강제로 나가기
+    public void Quit_Game()
+    {
+        Ingame_UI.Instance.Lock_Cursor(false);
+        Destroy(Ingame_UI.Instance.gameObject);
+        m_Game_Started = false;
+        if (Manager_Network.Instance != null)
+            Manager_Network.Instance.Disconnect();
+        SceneManager.LoadScene("Title");
     }
 
 
