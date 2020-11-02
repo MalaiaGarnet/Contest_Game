@@ -48,7 +48,7 @@ public class Manager_Network : MonoBehaviour
     public Event_Player_Hit e_PlayerHit = new Event_Player_Hit();
     public Event_Player_Stun e_PlayerStun = new Event_Player_Stun();
 
-    public static bool Debug_Toggle = false; // 디버그 로거 표현 여부
+    public static bool Debug_Toggle = true; // 디버그 로거 표현 여부
     public static void Log(string _msg) // 로그 쓰기
     {
         if (Debug_Toggle)
@@ -154,8 +154,12 @@ public class Manager_Network : MonoBehaviour
     }
     IEnumerator Register_Process(string _id, string _pw, string _nickname)
     {
+        yield return new WaitForSecondsRealtime(2.0f);
+
+        /* 그거
         while (m_Encryptor == null)
             yield return new WaitForEndOfFrame();
+        */
 
         // 회원가입 패킷 전송
         UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.REGISTER;
