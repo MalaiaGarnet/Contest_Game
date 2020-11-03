@@ -28,7 +28,7 @@ public class Packet_Sender
         Task task = new Task();
         task.buffer = Packet_Packer.PackPacket(ref task.datasize, _protocol);
 
-        task.Encrypt(Manager_Network.Instance.m_Encryptor);
+       // task.Encrypt(Manager_Network.Instance.m_Encryptor);
         Manager_Packet.Instance.SendEnqueue(task);
     }
 
@@ -40,7 +40,7 @@ public class Packet_Sender
         Task task = new Task();
         task.buffer = Packet_Packer.PackPacket(ref task.datasize, _protocol, _data);
 
-        task.Encrypt(Manager_Network.Instance.m_Encryptor);
+        //task.Encrypt(Manager_Network.Instance.m_Encryptor);
         Manager_Packet.Instance.SendEnqueue(task);
     }
 
@@ -52,7 +52,7 @@ public class Packet_Sender
         Task task = new Task();
         UInt64 protocol = (UInt64)PROTOCOL.MNG_LOGIN | (UInt64)PROTOCOL_LOGIN.MATCH | (UInt64)PROTOCOL_LOGIN.START;
         task.buffer = Packet_Packer.PackPacket(ref task.datasize, protocol, _Type);
-        task.Encrypt(Manager_Network.Instance.m_Encryptor);
+        //task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
         Manager_Packet.Instance.SendEnqueue(task);
     }
@@ -65,7 +65,7 @@ public class Packet_Sender
         Task task = new Task();
         UInt64 protocol = (UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.READY;
         task.buffer = Packet_Packer.PackPacket(ref task.datasize, protocol, "");
-        task.Encrypt(Manager_Network.Instance.m_Encryptor);
+       // task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
         Manager_Packet.Instance.SendEnqueue(task);
     }
@@ -77,7 +77,7 @@ public class Packet_Sender
     {
         Task task = new Task();
         task.buffer = Packet_Packer.PackPacket(ref task.datasize, _protocol, _input, _pre_pos);
-        task.Encrypt(Manager_Network.Instance.m_Encryptor);
+        //task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
         Manager_Network.Log("첫 여덟 바이트 = " + BitConverter.ToString(task.buffer));
 
@@ -91,7 +91,7 @@ public class Packet_Sender
     {
         Task task = new Task();
         task.buffer = Packet_Packer.PackPacket(ref task.datasize, _protocol, _ids, _impact_pos);
-        task.Encrypt(Manager_Network.Instance.m_Encryptor);
+        //task.Encrypt(Manager_Network.Instance.m_Encryptor);
 
         Manager_Packet.Instance.SendEnqueue(task);
     }

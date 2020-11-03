@@ -98,7 +98,7 @@ public class Packet_Packer
 
         _size += sizeof(int);
 
-        _size = (_size / 8 + 1) * 8;
+      //  _size = (_size / 8 + 1) * 8;
 
         return data;
     }
