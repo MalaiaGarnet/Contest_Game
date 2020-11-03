@@ -23,6 +23,7 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
     public Round_Indicator m_Ingame_Round_Indicator;
     public GameObject m_Dead_Indicator;
     public GameObject m_Stun_Indicator;
+    public GUI_Menu m_Menu;
 
     public Event_UI_Initialize e_Initialize = new Event_UI_Initialize();
 
@@ -34,6 +35,19 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
         DontDestroyOnLoad(gameObject);
         a_When_Damaged = new UnityAction<int>(When_Damaged);
         a_When_Stunned = new UnityAction<int>(When_Stunned);
+    }
+
+    public bool Can_Move()
+    {
+        if (m_Ingame_Scene_Loader.gameObject.activeSelf)
+            return false;
+        if (m_Dead_Indicator.activeSelf)
+            return false;
+        if (m_Stun_Indicator.activeSelf)
+            return false;
+        if (m_Menu.gameObject.activeSelf)
+            return false;
+        return true;
     }
 
     /// <summary>

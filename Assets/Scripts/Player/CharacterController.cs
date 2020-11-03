@@ -43,6 +43,7 @@ public class CharacterController : MonoBehaviour
     private short           m_Index;
     public  int             battery = 10000;
     public  float           moveSpeed;
+    public  bool            m_Is_Stunned = false;
 
     [Header("캐릭터 물리메테리얼")]
     public PhysicMaterial   noFriction;     //프릭션 X
@@ -262,6 +263,13 @@ public class CharacterController : MonoBehaviour
 
     void Move()
     {
+        if (m_Is_Stunned)
+        {
+            Vector3 vec = new Vector3(0f, GetComponent<Rigidbody>().velocity.y, 0f);
+            GetComponent<Rigidbody>().velocity = vec;
+            return;
+        }
+
         // 만약에 이동하지 않을때
         if(m_Output.Move_X == 0 && m_Output.Move_Y == 0)
         {
@@ -396,6 +404,15 @@ public class CharacterController : MonoBehaviour
         if (m_MyProfile.Session_ID != _id)
             return;
 
+        StartCoroutine(Stun_Process(_tick));
         e_Stunned.Invoke(_tick);
+    }
+    IEnumerator Stun_Process(UInt16 _tick)
+    {
+        m_Is_Stunned = true;
+        yield return new WaitForSecondsRealtime(_tick / 1000.0f);
+
+        m_Is_Stunned = false;
+        yield return null;
     }
 }

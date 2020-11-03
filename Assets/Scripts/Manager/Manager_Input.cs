@@ -21,11 +21,12 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     public User_Input m_Player_Input;   // 클라이언트 최신 인풋
     public Vector3 m_Pre_Position;      // 예측 위치
 
-
+    Ingame_UI ui;
     #endregion
 
     void Start()
     {
+        ui = Ingame_UI.Instance;
     }
 
     void Update()
@@ -47,6 +48,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     /// <param name="_context"></param>
     public void onMove(CallbackContext _context)
     {
+        if (!ui.Can_Move())
+            return;
         m_Player_Input.Move_X = _context.ReadValue<Vector2>().x;
         m_Player_Input.Move_Y = _context.ReadValue<Vector2>().y;
     }
@@ -66,6 +69,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     /// <param name="_view"></param>
     public void ChangeView(Vector2 _view)
     {
+        if (!ui.Can_Move())
+            return;
         // 위아래
         m_Player_Input.View_X = Mathf.Max(-PITCH_LIMIT, Mathf.Min(PITCH_LIMIT, m_Player_Input.View_X + _view.x));
         // 양옆
@@ -73,13 +78,29 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     }
 
     public void onTool_1(CallbackContext _context)
-    { m_Player_Input.Tool_1 = _context.ReadValueAsButton(); }
+    {
+        if (!ui.Can_Move())
+            return; 
+        m_Player_Input.Tool_1 = _context.ReadValueAsButton();
+    }
     public void onTool_2(CallbackContext _context)
-    { m_Player_Input.Tool_2 = _context.ReadValueAsButton(); }
+    {
+        if (!ui.Can_Move())
+            return; 
+        m_Player_Input.Tool_2 = _context.ReadValueAsButton();
+    }
     public void onTool_3(CallbackContext _context)
-    { m_Player_Input.Tool_3 = _context.ReadValueAsButton(); }
+    {
+        if (!ui.Can_Move())
+            return; 
+        m_Player_Input.Tool_3 = _context.ReadValueAsButton();
+    }
     public void onTool_4(CallbackContext _context)
-    { m_Player_Input.Tool_4 = _context.ReadValueAsButton(); }
+    {
+        if (!ui.Can_Move())
+            return; 
+        m_Player_Input.Tool_4 = _context.ReadValueAsButton();
+    }
 
     /// <summary>
     /// 상호작용
@@ -87,6 +108,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     /// <param name="_context"></param>
     public void onInteract(CallbackContext _context)
     {
+        if (!ui.Can_Move())
+            return;
         m_Player_Input.Interact = _context.ReadValueAsButton();
     }
     /// <summary>
@@ -95,6 +118,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     /// <param name="_context"></param>
     public void onFire(CallbackContext _context)
     {
+        if (!ui.Can_Move())
+            return;
         m_Player_Input.Fire = _context.ReadValueAsButton();
     }
     /// <summary>
@@ -103,6 +128,17 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     /// <param name="_context"></param>
     public void onProjection(CallbackContext _context)
     {
+        if (!ui.Can_Move())
+            return;
         e_Input_Projection.Invoke(_context.ReadValueAsButton());
+    }
+    /// <summary>
+    /// 메뉴
+    /// </summary>
+    /// <param name="_context"></param>
+    public void onMenu(CallbackContext _context)
+    {
+        if (Manager_Ingame.Instance.m_Game_Started)
+            Ingame_UI.Instance.m_Menu.Toggle();
     }
 }
