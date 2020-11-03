@@ -37,6 +37,20 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
         a_When_Stunned = new UnityAction<int>(When_Stunned);
     }
 
+    public void Initialize()
+    {
+        m_Header.SetActive(false);
+        m_Footer.SetActive(false);
+        m_LeftSide.SetActive(false);
+        m_RightSide.SetActive(false);
+        m_Ingame_Scene_Loader.gameObject.SetActive(false);
+        m_Ingame_Round_Indicator.gameObject.SetActive(false);
+        m_Dead_Indicator.SetActive(false);
+        m_Stun_Indicator.SetActive(false);
+        m_Menu.Activate(false);
+        Lock_Cursor(false);
+    }
+
     public bool Can_Move()
     {
         if (m_Ingame_Scene_Loader.gameObject.activeSelf)

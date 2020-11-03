@@ -21,8 +21,13 @@ public class CharacterAnimator : MonoBehaviour
     public GameObject m_LiveModel;
     public GameObject prefab_DeadEffect;
 
+    [Header("가드 특수")]
+    public GameObject m_Head;
+    public GameObject m_CamAxis;
+
     CharacterController pc;
     Animator m_Anim;
+    bool m_Use_Role_Skill = false;
 
     void Start()
     {
@@ -35,6 +40,7 @@ public class CharacterAnimator : MonoBehaviour
             pc.e_Stunned.AddListener(When_Stunned);
         if (pc.m_MyProfile.Role_Index == 2)
             pc.e_Damaged.AddListener(When_Damaged);
+        pc.e_RoleSkill_Toggle.AddListener(When_Role_Skill_Toggle);
     }
 
     void FixedUpdate()
@@ -109,10 +115,46 @@ public class CharacterAnimator : MonoBehaviour
     {
         m_Anim.SetTrigger("Stun");
 
+        bool lookMode = IK_LookMode.activeSelf;
+        bool aimMode = IK_AimMode.activeSelf;
+
+        IK_LookMode.SetActive(false);
+        IK_AimMode.SetActive(false);
+
         m_Anim.SetBool("is_Stunned", true);
-        yield return new WaitForSecondsRealtime(_tick / 1000f);
+        Vector3 cam_axis_original_pos = m_CamAxis.transform.localPosition;
+        m_CamAxis.transform.SetParent(m_Head.transform);
+
+        yield return new WaitForSecondsRealtime(_tick / 1000f - 3.0f);
 
         m_Anim.SetBool("is_Stunned", false);
+
+        yield return new WaitForSecondsRealtime(3.0f);
+        m_CamAxis.transform.SetParent(transform);
+        m_CamAxis.transform.localPosition = cam_axis_original_pos;
+
+        IK_LookMode.SetActive(lookMode);
+        IK_AimMode.SetActive(aimMode);
+
+        yield return null;
+    }
+
+    void When_Role_Skill_Toggle()
+    {
+        m_Use_Role_Skill = !m_Use_Role_Skill;
+        if (pc.IsGuard())
+            StartCoroutine(Role_Skill_Process_Guard());
+        else
+            StartCoroutine(Role_Skill_Process_Rogue());
+    }
+    IEnumerator Role_Skill_Process_Guard()
+    {
+        Debug.Log("가드 스킬 토글 - " + m_Use_Role_Skill);
+        yield return null;
+    }
+    IEnumerator Role_Skill_Process_Rogue()
+    {
+        Debug.Log("로그 스킬 토글 - " + m_Use_Role_Skill);
         yield return null;
     }
 }

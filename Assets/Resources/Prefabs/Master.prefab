@@ -212,6 +212,21 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: aac43ac0-0084-4ed4-84c7-db254210dbfd
     m_ActionName: Debug/Force_Stun[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_MethodName: onSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f5db5a37-bb06-4671-91db-884f78f6858c
+    m_ActionName: CharacterControl/Role_Skill[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CharacterControl
@@ -242,6 +257,7 @@ MonoBehaviour:
     Tool_2: 0
     Tool_3: 0
     Tool_4: 0
+    Role_Skill: 0
   m_Pre_Position: {x: 0, y: 0, z: 0}
 --- !u!1 &1830250788153881869
 GameObject:
@@ -314,6 +330,7 @@ MonoBehaviour:
       Tool_2: 0
       Tool_3: 0
       Tool_4: 0
+      Role_Skill: 0
     Current_Tool: 0
     Tool_1: 0
     Tool_2: 0
