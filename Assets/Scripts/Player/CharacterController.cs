@@ -14,6 +14,8 @@ public class Event_Tool_Changed : UnityEvent<int> { }
 public class Event_Damaged : UnityEvent<int> { }
 /// <summary>스턴 이벤트</summary>
 public class Event_Stunned : UnityEvent<int> { }
+/// <summary>스턴 이벤트</summary>
+public class Event_RoleSkill_Toggle : UnityEvent { }
 
 /// <summary>
 /// 200913 주현킴
@@ -38,6 +40,7 @@ public class CharacterController : MonoBehaviour
     public Event_Tool_Changed e_ToolChanged = new Event_Tool_Changed();
     public Event_Damaged e_Damaged = new Event_Damaged();
     public Event_Stunned e_Stunned = new Event_Stunned();
+    public Event_RoleSkill_Toggle e_RoleSkill_Toggle = new Event_RoleSkill_Toggle();
 
     [Header("캐릭터 스탯")]
     private short           m_Index;
@@ -89,6 +92,7 @@ public class CharacterController : MonoBehaviour
         m_Tools[1] = MakeTool(m_MyProfile.Tool_2);
         m_Tools[2] = MakeTool(m_MyProfile.Tool_3);
         m_Tools[3] = MakeTool(m_MyProfile.Tool_4);
+        ChangeTool(2);
         ChangeTool(1);
     }
 
@@ -129,6 +133,8 @@ public class CharacterController : MonoBehaviour
 
     void FixedUpdate()
     {
+        Lerp_Position();
+
         // 인풋에 따른 이동 처리
         Move();
 
@@ -166,9 +172,21 @@ public class CharacterController : MonoBehaviour
                     continue;
 
                 Update_Profile(_Profiles[index]);
-                transform.position = m_MyProfile.Current_Pos;
+                Set_Lerp_Gap(m_MyProfile.Current_Pos);
             }
         }
+    }
+
+    Vector3 pos_gap;
+    void Set_Lerp_Gap(Vector3 _target_pos)
+    {
+        pos_gap = _target_pos - transform.position;
+    }
+    void Lerp_Position()
+    {
+        Vector3 temp_gap = pos_gap * 0.1f;
+        transform.position += temp_gap;
+        pos_gap -= temp_gap;
     }
 
     /// <summary>
@@ -202,6 +220,10 @@ public class CharacterController : MonoBehaviour
             ChangeTool(_new_profile.Current_Tool);
             e_ToolChanged.Invoke(_new_profile.Current_Tool);
         }
+
+        // 특수 기술!
+        if (m_Output.Role_Skill != _new_profile.User_Input.Role_Skill && m_Output.Role_Skill == true)
+            e_RoleSkill_Toggle.Invoke();
 
         m_MyProfile = _new_profile;
         m_Output = _new_profile.User_Input;
@@ -300,6 +322,7 @@ public class CharacterController : MonoBehaviour
         GetComponent<Rigidbody>().velocity = vector3;
     }
 
+    Vector3 before_pos = new Vector3();
     /// <summary>
     /// 충돌 예측
     /// </summary>
@@ -317,7 +340,8 @@ public class CharacterController : MonoBehaviour
         // 방향 계산
         Vector3 dir = Calculate_Direction();
         // 예측해야하는 거리 계산
-        float dist = collider.radius + moveSpeed * Manager_Ingame.Instance.m_Input_Update_Interval;
+        float dist = moveSpeed * Manager_Ingame.Instance.m_Input_Update_Interval;
+        // float dist = collider.radius + moveSpeed * Manager_Ingame.Instance.m_Input_Update_Interval;
 
         // 충돌 체크 시작
         // Physics.CapsuleCast  ==> 원래 해야하는 충돌체크
@@ -344,7 +368,6 @@ public class CharacterController : MonoBehaviour
             final_pos = hit.point;
         }
         return final_pos;
-
     }
 
     /// <summary>

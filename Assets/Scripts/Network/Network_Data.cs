@@ -153,6 +153,7 @@ namespace Network.Data
         public bool Tool_2;
         public bool Tool_3;
         public bool Tool_4;
+        public bool Role_Skill;
 
         public static User_Input Read_Bytes_New(byte[] _data, ref int _place)
         {
@@ -180,6 +181,8 @@ namespace Network.Data
             View_Y = BitConverter.ToSingle(_data, _place);
             _place += sizeof(float);
 
+            // UnityEngine.Debug.Log("들오는 사이즈 = " + Move_X + ", " + Move_Y);
+
             Fire = BitConverter.ToBoolean(_data, _place);
             _place += sizeof(bool);
             Jump = BitConverter.ToBoolean(_data, _place);
@@ -196,6 +199,12 @@ namespace Network.Data
             _place += sizeof(bool);
             Tool_4 = BitConverter.ToBoolean(_data, _place);
             _place += sizeof(bool);
+            Role_Skill = BitConverter.ToBoolean(_data, _place);
+            _place += sizeof(bool);
+            _place += sizeof(bool);
+            _place += sizeof(bool);
+            _place += sizeof(bool);
+
         }
         public void Write_Bytes(ref byte[] _data, ref int _place, ref int _size)
         {
@@ -208,7 +217,6 @@ namespace Network.Data
                 Buffer.BlockCopy(ms.ToArray(), 0, _data, _place, type_size);
                 _place += type_size; _size += type_size;
             }*/
-
             Buffer.BlockCopy(BitConverter.GetBytes(Move_X), 0, _data, _place, sizeof(float));
             _place += sizeof(float); _size += sizeof(float);
             Buffer.BlockCopy(BitConverter.GetBytes(Move_Y), 0, _data, _place, sizeof(float));
@@ -233,6 +241,15 @@ namespace Network.Data
             Buffer.BlockCopy(BitConverter.GetBytes(Tool_3), 0, _data, _place, sizeof(bool));
             _place += sizeof(bool); _size += sizeof(bool);
             Buffer.BlockCopy(BitConverter.GetBytes(Tool_4), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+
+            Buffer.BlockCopy(BitConverter.GetBytes(Role_Skill), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Role_Skill), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Role_Skill), 0, _data, _place, sizeof(bool));
+            _place += sizeof(bool); _size += sizeof(bool);
+            Buffer.BlockCopy(BitConverter.GetBytes(Role_Skill), 0, _data, _place, sizeof(bool));
             _place += sizeof(bool); _size += sizeof(bool);
         }
     };

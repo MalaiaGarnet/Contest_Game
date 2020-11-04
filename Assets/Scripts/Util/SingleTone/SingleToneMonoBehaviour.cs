@@ -20,7 +20,7 @@ public class SingleToneMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
         }
         else // 만약에 이미 있다면 스스로 파괴
         {
-            Destroy(_instance);
+            Destroy(_Inst.gameObject);
             return;
         }
     }

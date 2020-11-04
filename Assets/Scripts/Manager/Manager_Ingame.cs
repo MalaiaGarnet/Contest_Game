@@ -259,7 +259,10 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
     public void End_Round()
     {
+        Ingame_UI ui = Ingame_UI.Instance;
+
         m_Game_Started = false;
+        ui.Lock_Cursor(false);
         Add_Delayed_Coroutine(End_Round_Process());
         // TODO 이후 바로 prepare round 프로토콜 오므로 그에 대한 처리 할 것
     }
@@ -275,6 +278,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
     public void End_Game()
     {
+        Ingame_UI.Instance.Lock_Cursor(false);
         Add_Delayed_Coroutine(End_Game_Process());
         // 터졌으면 터진대로 처리해줄 것
     }
@@ -283,6 +287,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         Ingame_UI ui = Ingame_UI.Instance;
         ui.m_Ingame_Round_Indicator.End_Game();
         yield return new WaitForSeconds(3.0f);
+        Quit_Game();
         Play_Next_Coroutine();
 
         yield return null;
@@ -292,13 +297,13 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     public void Quit_Game()
     {
         Ingame_UI.Instance.Lock_Cursor(false);
-        Destroy(Ingame_UI.Instance.gameObject);
+        Ingame_UI.Instance.Initialize();
+        // Destroy(Ingame_UI.Instance.gameObject);
         m_Game_Started = false;
         if (Manager_Network.Instance != null)
             Manager_Network.Instance.Disconnect();
         SceneManager.LoadScene("Title");
     }
-
 
     IEnumerator Input_Send()
     {

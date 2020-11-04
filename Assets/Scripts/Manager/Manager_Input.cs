@@ -31,7 +31,10 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 
     void Update()
     {
-        Update_MouseView();
+        if (Manager_Ingame.Instance.m_Game_Started)
+        {
+            Update_MouseView();
+        }
     }
 
     void Update_MouseView()
@@ -100,6 +103,16 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         if (!ui.Can_Move())
             return; 
         m_Player_Input.Tool_4 = _context.ReadValueAsButton();
+    }
+    /// <summary>
+    /// 가드/로그 특수 기능
+    /// </summary>
+    /// <param name="_context"></param>
+    public void onSkill(CallbackContext _context)
+    {
+        if (!ui.Can_Move())
+            return;
+        m_Player_Input.Role_Skill = _context.ReadValueAsButton();
     }
 
     /// <summary>

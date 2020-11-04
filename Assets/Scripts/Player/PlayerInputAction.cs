@@ -97,6 +97,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Role_Skill"",
+                    ""type"": ""Button"",
+                    ""id"": ""f5db5a37-bb06-4671-91db-884f78f6858c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -418,6 +426,39 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Minimap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0947066e-2d31-464c-8870-d06c29f945c4"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Role_Skill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f274920-c887-4e87-acbf-c2a376eb6da0"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Role_Skill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""731a31d8-43f9-4f4f-b398-e0f3621445b4"",
+                    ""path"": ""<DualShockGamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Role_Skill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -496,6 +537,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_CharacterControl_Call_Menu = m_CharacterControl.FindAction("Call_Menu", throwIfNotFound: true);
         m_CharacterControl_Fire = m_CharacterControl.FindAction("Fire", throwIfNotFound: true);
         m_CharacterControl_Minimap = m_CharacterControl.FindAction("Minimap", throwIfNotFound: true);
+        m_CharacterControl_Role_Skill = m_CharacterControl.FindAction("Role_Skill", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_Force_Stun = m_Debug.FindAction("Force_Stun", throwIfNotFound: true);
@@ -558,6 +600,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_CharacterControl_Call_Menu;
     private readonly InputAction m_CharacterControl_Fire;
     private readonly InputAction m_CharacterControl_Minimap;
+    private readonly InputAction m_CharacterControl_Role_Skill;
     public struct CharacterControlActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -572,6 +615,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @Call_Menu => m_Wrapper.m_CharacterControl_Call_Menu;
         public InputAction @Fire => m_Wrapper.m_CharacterControl_Fire;
         public InputAction @Minimap => m_Wrapper.m_CharacterControl_Minimap;
+        public InputAction @Role_Skill => m_Wrapper.m_CharacterControl_Role_Skill;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -611,6 +655,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Minimap.started -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnMinimap;
                 @Minimap.performed -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnMinimap;
                 @Minimap.canceled -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnMinimap;
+                @Role_Skill.started -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnRole_Skill;
+                @Role_Skill.performed -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnRole_Skill;
+                @Role_Skill.canceled -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnRole_Skill;
             }
             m_Wrapper.m_CharacterControlActionsCallbackInterface = instance;
             if (instance != null)
@@ -645,6 +692,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Minimap.started += instance.OnMinimap;
                 @Minimap.performed += instance.OnMinimap;
                 @Minimap.canceled += instance.OnMinimap;
+                @Role_Skill.started += instance.OnRole_Skill;
+                @Role_Skill.performed += instance.OnRole_Skill;
+                @Role_Skill.canceled += instance.OnRole_Skill;
             }
         }
     }
@@ -712,6 +762,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnCall_Menu(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnMinimap(InputAction.CallbackContext context);
+        void OnRole_Skill(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {
