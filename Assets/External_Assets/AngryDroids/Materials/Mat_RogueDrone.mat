@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DroidHDColoredRed
+  m_Name: Mat_RogueDrone
   m_Shader: {fileID: 4800000, guid: 44238eb007e614f44930765400bf8efb, type: 3}
   m_ShaderKeywords: _AOMAP _DETAILMAP _EMISSION _NORMALMAP _SPECGLOSSMAP _VERTEXCOLOR
   m_LightmapFlags: 2
@@ -115,7 +115,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Opacity: 0
+    - _Opacity: 1
     - _Parallax: 0.02
     - _Power: 4.04
     - _RimPow: 28.8

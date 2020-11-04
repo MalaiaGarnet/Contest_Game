@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// 200912 주현킴
@@ -20,6 +21,7 @@ public class CharacterAnimator : MonoBehaviour
     [Header("로그 특수")]
     public GameObject m_LiveModel;
     public GameObject prefab_DeadEffect;
+    public List<Material> m_RenderTextures = new List<Material>();
 
     [Header("가드 특수")]
     public GameObject m_Head;
@@ -39,7 +41,14 @@ public class CharacterAnimator : MonoBehaviour
         if (pc.m_MyProfile.Role_Index == 1)
             pc.e_Stunned.AddListener(When_Stunned);
         if (pc.m_MyProfile.Role_Index == 2)
+        {
             pc.e_Damaged.AddListener(When_Damaged);
+            foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>())
+            {
+                if (mr.gameObject.layer == LayerMask.NameToLayer("Player"))
+                    m_RenderTextures.Add(mr.material);
+            }
+        }
         pc.e_RoleSkill_Toggle.AddListener(When_Role_Skill_Toggle);
     }
 
@@ -142,7 +151,7 @@ public class CharacterAnimator : MonoBehaviour
     void When_Role_Skill_Toggle()
     {
         m_Use_Role_Skill = !m_Use_Role_Skill;
-        if (pc.IsGuard())
+        if (pc.m_MyProfile.Role_Index == 1)
             StartCoroutine(Role_Skill_Process_Guard());
         else
             StartCoroutine(Role_Skill_Process_Rogue());
@@ -155,6 +164,31 @@ public class CharacterAnimator : MonoBehaviour
     IEnumerator Role_Skill_Process_Rogue()
     {
         Debug.Log("로그 스킬 토글 - " + m_Use_Role_Skill);
+
+        if (m_Use_Role_Skill)
+        {
+            for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+            {
+                foreach (Material mat in m_RenderTextures)
+                    mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
+                yield return new WaitForEndOfFrame();
+            }
+            foreach (Material mat in m_RenderTextures)
+                mat.SetFloat("_Opacity", 0.0f);
+        }
+        else
+        {
+            for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+            {
+                foreach (Material mat in m_RenderTextures)
+                    mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
+                yield return new WaitForEndOfFrame();
+            }
+            foreach (Material mat in m_RenderTextures)
+                mat.SetFloat("_Opacity", 1.0f);
+        }
+
+
         yield return null;
     }
 }

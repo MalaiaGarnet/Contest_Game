@@ -2687,6 +2687,7 @@ MonoBehaviour:
       Tool_2: 0
       Tool_3: 0
       Tool_4: 0
+      Role_Skill: 0
     Current_Tool: 0
     Tool_1: 0
     Tool_2: 0
@@ -2724,6 +2725,8 @@ MonoBehaviour:
   m_LiveModel: {fileID: 815687957390683128}
   prefab_DeadEffect: {fileID: 2488525614444690760, guid: 17645a00b365a2c4f957d6c861db0b70,
     type: 3}
+  m_Head: {fileID: 0}
+  m_CamAxis: {fileID: 0}
 --- !u!1 &5870439392097707752
 GameObject:
   m_ObjectHideFlags: 0

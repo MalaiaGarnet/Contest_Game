@@ -181,7 +181,7 @@ namespace Network.Data
             View_Y = BitConverter.ToSingle(_data, _place);
             _place += sizeof(float);
 
-            UnityEngine.Debug.Log("들오는 사이즈 = " + Move_X + ", " + Move_Y);
+            // UnityEngine.Debug.Log("들오는 사이즈 = " + Move_X + ", " + Move_Y);
 
             Fire = BitConverter.ToBoolean(_data, _place);
             _place += sizeof(bool);
