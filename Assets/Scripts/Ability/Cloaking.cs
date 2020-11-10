@@ -42,7 +42,7 @@ public class Cloaking : MonoBehaviour
 
         if (cloakShader != null)
         {
-            /// Test용
+            /// Test용 (추후 방식 바뀔예정)
             /// 쉐이더 프로퍼티 순서(쉐이더에서 선언된 프로퍼티 순서에 따라 매겨짐)
             /// 0 -> MainTex
             /// 1 -> DeformMap
