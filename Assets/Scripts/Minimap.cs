@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 201110 투영맵에 일부 정보가 보여지지 않던 현상 수정
+/// </summary>
 public class Minimap : MonoBehaviour
 {
     public GameObject minimap_axis;
@@ -16,18 +19,12 @@ public class Minimap : MonoBehaviour
         int vertices_count = 0;
         while (i < meshFilters.Length)
         {
-            if(meshFilters[i].sharedMesh != null)
-                vertices_count += meshFilters[i].sharedMesh.vertexCount;
-            if (vertices_count >= 60000) // 한계를 넘어선 경우
+            if (meshFilters[i].sharedMesh != null) // 메쉬 필터 내 할당한 메쉬가 존재
+                vertices_count += meshFilters[i].sharedMesh.vertexCount; // 할당 메쉬의 버텍스 카운트 계산해서 대입
+            
+            if (vertices_count >= 50000) // 세고 있던 것이 한계를 넘어선 경우
             {
-                // 모인 메쉬 처리, 이후 새롭게 생성
-                GameObject map = Instantiate(prefab_minimap, minimap_axis.transform);
-                map.transform.position = Vector3.zero;
-
-                map.GetComponent<MeshFilter>().mesh = new Mesh();
-                map.GetComponent<MeshFilter>().mesh.CombineMeshes(combine.ToArray());
-                map.SetActive(true);
-
+                Combine_Mesh(combine.ToArray());
                 combine.Clear();
                 vertices_count = 0;
             }
@@ -40,11 +37,18 @@ public class Minimap : MonoBehaviour
 
             i++;
         }
+        Combine_Mesh(combine.ToArray());
     }
 
-    // Update is called once per frame
-    void Update()
+    void Combine_Mesh(CombineInstance[] combine_instances)
     {
-        
+        // 메쉬 압축본을 놔두기 위한 오브젝트 하나 생성
+        GameObject map = Instantiate(prefab_minimap, minimap_axis.transform);
+        map.transform.position = Vector3.zero;
+
+        // 메쉬 새로 할당
+        map.GetComponent<MeshFilter>().mesh = new Mesh();
+        map.GetComponent<MeshFilter>().mesh.CombineMeshes(combine_instances); // 여태 모아둔 메쉬를 합치기
+        map.SetActive(true);
     }
 }
