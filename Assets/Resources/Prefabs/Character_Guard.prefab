@@ -579,7 +579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6354162610420975763
 Transform:
   m_ObjectHideFlags: 0
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fixTransforms: 1
   solver:
-    IKPosition: {x: 0.0000011309829, y: 2.354545, z: 2.0156562}
+    IKPosition: {x: 0.0000011072755, y: 2.4171312, z: 3.160182}
     IKPositionWeight: 1
     root: {fileID: 6354162610420975763}
     target: {fileID: 7696638750334529447}
@@ -653,6 +653,16 @@ MonoBehaviour:
       sqrMag: 0
       axis: {x: 0, y: 0, z: 1}
       baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
+    - transform: {fileID: 7662503942935207853}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -0.000000023707482, y: 0.06258607, z: 0.044525716}
+      defaultLocalRotation: {x: 0, y: -0, z: -0, w: 1}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0, y: 0, z: 1}
+      baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
     head:
       transform: {fileID: 7662503942935207853}
       weight: 1
@@ -665,7 +675,7 @@ MonoBehaviour:
       axis: {x: 0, y: 0, z: 1}
       baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
     eyes: []
-    bodyWeight: 0
+    bodyWeight: 0.281
     headWeight: 1
     eyesWeight: 1
     clampWeight: 0.5
@@ -735,7 +745,7 @@ GameObject:
   - component: {fileID: 3234540882980727609}
   m_Layer: 8
   m_Name: Arm1
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -950,7 +960,7 @@ GameObject:
   - component: {fileID: 5824347248929551269}
   m_Layer: 8
   m_Name: Foot1
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1223,7 +1233,7 @@ GameObject:
   - component: {fileID: 2197004765464275728}
   m_Layer: 8
   m_Name: Legs1
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1473,7 +1483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fixTransforms: 1
   solver:
-    IKPosition: {x: 0.0000011309829, y: 2.354545, z: 2.0156562}
+    IKPosition: {x: 0.0000011072755, y: 2.4171312, z: 3.160182}
     IKPositionWeight: 1
     root: {fileID: 2379227002881863}
     target: {fileID: 7696638750334529447}
@@ -1513,6 +1523,16 @@ MonoBehaviour:
       solverPosition: {x: 0, y: 0, z: 0}
       solverRotation: {x: 0, y: 0, z: 0, w: 0}
       defaultLocalPosition: {x: -0.0000002520208, y: 0.3752617, z: 0.15841769}
+      defaultLocalRotation: {x: 0, y: -0, z: -0, w: 1}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0, y: 0, z: 1}
+      baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
+    - transform: {fileID: 7662503942935207853}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -0.000000023707482, y: 0.06258607, z: 0.044525716}
       defaultLocalRotation: {x: 0, y: -0, z: -0, w: 1}
       length: 0
       sqrMag: 0
@@ -1631,7 +1651,7 @@ GameObject:
   - component: {fileID: 890474743746888006}
   m_Layer: 8
   m_Name: Legs2
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2129,7 +2149,7 @@ GameObject:
   - component: {fileID: 8985559035789309207}
   m_Layer: 8
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2288,7 +2308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7696638749784137833}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.45, z: 0}
+  m_LocalPosition: {x: 0, y: 2.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7696638750334529447}
@@ -2450,6 +2470,7 @@ MonoBehaviour:
   m_LastValue: {x: 0, y: 0}
   m_LiveModel: {fileID: 0}
   prefab_DeadEffect: {fileID: 0}
+  m_RenderTextures: []
   m_Head: {fileID: 6275956173879187523}
   m_CamAxis: {fileID: 7696638749784137833}
 --- !u!1 &7790693820354134475
@@ -2524,10 +2545,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.55596375
-  m_Height: 2.7167418
+  m_Radius: 0.55
+  m_Height: 2.5
   m_Direction: 1
-  m_Center: {x: 0, y: 1.3303748, z: -0.05596377}
+  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!1 &7855952750791972256
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,7 +2561,7 @@ GameObject:
   - component: {fileID: 3571048722649968077}
   m_Layer: 8
   m_Name: Arm2
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2634,7 +2655,7 @@ GameObject:
   - component: {fileID: 7002847250712931589}
   m_Layer: 8
   m_Name: Body1
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2725,7 +2746,7 @@ GameObject:
   - component: {fileID: 7392021293007073582}
   m_Layer: 8
   m_Name: Foot2
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3397,7 +3418,7 @@ GameObject:
   - component: {fileID: 284260667931469013}
   m_Layer: 8
   m_Name: Body2
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -1,4 +1,5 @@
-﻿using Network.Data;
+﻿using Boo.Lang;
+using Network.Data;
 using System;
 using System.Collections;
 using UnityEditor;
@@ -61,6 +62,10 @@ public class CharacterController : MonoBehaviour
     public Vector3 m_Before_Position;
     public const float ASCENDING_LIMIT = 0.6f;
 
+
+
+    Renderer[] m_Renderers;
+
     IEnumerator Start()
     {
         // 인풋 매니저 싱글톤 대기
@@ -94,6 +99,7 @@ public class CharacterController : MonoBehaviour
         m_Tools[3] = MakeTool(m_MyProfile.Tool_4);
         ChangeTool(2);
         ChangeTool(1);
+
     }
 
     void OnDestroy()
@@ -265,9 +271,27 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     public void Fix_Camera()
     {
+        Update_Render(false);
         Camera.main.transform.SetParent(m_CameraAxis);
         Camera.main.transform.localPosition = Vector3.zero;
         Camera.main.transform.localRotation = Quaternion.identity;
+    }
+
+    public void Update_Render(bool _enable)
+    {
+        if (m_Renderers == null)
+        {
+            List<Renderer> renderlist = new List<Renderer>();
+            foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            {
+                if (r.gameObject.CompareTag("RenderingPart")) // 렌더 대상인지 체크
+                    renderlist.Add(r);
+            }
+            m_Renderers = renderlist.ToArray();
+        }
+
+        foreach (Renderer rd in m_Renderers)
+            rd.gameObject.layer = LayerMask.NameToLayer(_enable ? "Player" : "NotRender");
     }
 
     Vector3 Calculate_Direction()

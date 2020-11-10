@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 815687957392689628}
   m_Layer: 8
   m_Name: Antenna
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 815687957392627280}
   m_Layer: 8
   m_Name: LegLeft_Middle
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 815687957392664672}
   m_Layer: 8
   m_Name: LegLeft_Lower
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 815687957392627764}
   m_Layer: 8
   m_Name: LegBack_Middle
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -526,7 +526,7 @@ GameObject:
   - component: {fileID: 815687957392629746}
   m_Layer: 8
   m_Name: LegRight_Foot
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -685,7 +685,7 @@ GameObject:
   - component: {fileID: 815687957392675056}
   m_Layer: 8
   m_Name: LegFront_Middle
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -877,7 +877,7 @@ GameObject:
   - component: {fileID: 815687957392615364}
   m_Layer: 8
   m_Name: Renderer
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -986,7 +986,7 @@ GameObject:
   - component: {fileID: 815687957392630596}
   m_Layer: 8
   m_Name: LegRight_Middle
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 815687957392701842}
   m_Layer: 8
   m_Name: LegBack_Foot
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1259,7 +1259,7 @@ GameObject:
   - component: {fileID: 815687957392688522}
   m_Layer: 8
   m_Name: ShieldPlate_03
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1369,7 +1369,7 @@ GameObject:
   - component: {fileID: 815687957392676784}
   m_Layer: 8
   m_Name: ShieldPlate_01
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1448,7 +1448,7 @@ GameObject:
   - component: {fileID: 815687957392630878}
   m_Layer: 8
   m_Name: LegBack_Lower
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1560,7 +1560,7 @@ GameObject:
   - component: {fileID: 815687957392708226}
   m_Layer: 8
   m_Name: LegFront_Foot
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1639,7 +1639,7 @@ GameObject:
   - component: {fileID: 815687957392616528}
   m_Layer: 8
   m_Name: LegRight_Lower
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1872,7 +1872,7 @@ GameObject:
   - component: {fileID: 815687957392639850}
   m_Layer: 8
   m_Name: Core
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2036,7 +2036,7 @@ GameObject:
   - component: {fileID: 815687957392648962}
   m_Layer: 8
   m_Name: LegFront_Lower
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2116,7 +2116,7 @@ GameObject:
   - component: {fileID: 815687957392686530}
   m_Layer: 8
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2197,7 +2197,7 @@ GameObject:
   - component: {fileID: 815687957392706188}
   m_Layer: 8
   m_Name: ShieldPlate_02
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2276,7 +2276,7 @@ GameObject:
   - component: {fileID: 815687957392622660}
   m_Layer: 8
   m_Name: ShieldPlate_04
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2355,7 +2355,7 @@ GameObject:
   - component: {fileID: 815687957392632740}
   m_Layer: 8
   m_Name: LegLeft_Foot
-  m_TagString: Untagged
+  m_TagString: RenderingPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2725,6 +2725,7 @@ MonoBehaviour:
   m_LiveModel: {fileID: 815687957390683128}
   prefab_DeadEffect: {fileID: 2488525614444690760, guid: 17645a00b365a2c4f957d6c861db0b70,
     type: 3}
+  m_RenderTextures: []
   m_Head: {fileID: 0}
   m_CamAxis: {fileID: 0}
 --- !u!1 &5870439392097707752
@@ -3210,6 +3211,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tool_5001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1216642987747593652, guid: 8a2985ed4aa700747bf2a642ef80c210,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8248394010474033556, guid: 8a2985ed4aa700747bf2a642ef80c210,
         type: 3}

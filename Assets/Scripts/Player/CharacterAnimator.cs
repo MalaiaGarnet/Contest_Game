@@ -71,7 +71,7 @@ public class CharacterAnimator : MonoBehaviour
         {
             IK_AimMode.SetActive(false);
             m_Anim.SetBool("is_Aiming", false);
-            IK_LookMode.SetActive(true);
+            // IK_LookMode.SetActive(true);
             return;
         }
 
@@ -91,7 +91,7 @@ public class CharacterAnimator : MonoBehaviour
         // 조준 여부에 따른 애니메이션 처리
         IK_AimMode.SetActive(shotable != null);
         m_Anim.SetBool("is_Aiming", shotable != null);
-        IK_LookMode.SetActive(shotable == null);
+        // IK_LookMode.SetActive(shotable == null);
     }
 
     /// <summary>
