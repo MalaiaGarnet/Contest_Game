@@ -109,14 +109,14 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
         SendShotResult(attacker, victim_IDs, impact_Pos);
 
-        //if (!m_IsDebug)
-        //{
-        //    if (!attacker.IsGuard() && m_ThiefShotAble) // 샷 제한
-        //    {
-        //        m_ThiefShotAble = false;
-        //        // 시각적으로 뭔갈 띄워보면 좋을거같다.
-        //    }
-        //}
+        if (!m_IsDebug)
+        {
+            if (!attacker.IsGuard() && m_ThiefShotAble) // 샷 제한
+            {
+                m_ThiefShotAble = false;
+                // 시각적으로 뭔갈 띄워보면 좋을거같다.
+            }
+        }
     }
 
     #region 코루틴
