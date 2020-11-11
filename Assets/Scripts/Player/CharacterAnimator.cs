@@ -166,26 +166,43 @@ public class CharacterAnimator : MonoBehaviour
         Debug.Log("로그 스킬 토글 - " + m_Use_Role_Skill);
 
         if (m_Use_Role_Skill)
-        {
+        {           
             for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
             {
                 foreach (Material mat in m_RenderTextures)
+                {
+                    mat.shader = Shader.Find("Custom/Shader_Cloaking");
                     mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
+                }
                 yield return new WaitForEndOfFrame();
             }
             foreach (Material mat in m_RenderTextures)
+            {
                 mat.SetFloat("_Opacity", 0.0f);
+            }
         }
         else
         {
             for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
             {
                 foreach (Material mat in m_RenderTextures)
+                {
                     mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
+                    if(mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+                    {
+                        mat.shader = Shader.Find("Project Droids/Droid HD");
+                    }
+                }
                 yield return new WaitForEndOfFrame();
             }
             foreach (Material mat in m_RenderTextures)
+            {
                 mat.SetFloat("_Opacity", 1.0f);
+                if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+                {
+                    mat.shader = Shader.Find("Project Droids/Droid HD");
+                }
+            }
         }
 
 
