@@ -171,6 +171,7 @@ public class CharacterAnimator : MonoBehaviour
             {
                 foreach (Material mat in m_RenderTextures)
                 {
+                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
                     mat.shader = Shader.Find("Custom/Shader_Cloaking");
                     mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
                 }
@@ -178,6 +179,7 @@ public class CharacterAnimator : MonoBehaviour
             }
             foreach (Material mat in m_RenderTextures)
             {
+                mat.shader = Shader.Find("Custom/Shader_Cloaking");
                 mat.SetFloat("_Opacity", 0.0f);
             }
         }
@@ -187,6 +189,7 @@ public class CharacterAnimator : MonoBehaviour
             {
                 foreach (Material mat in m_RenderTextures)
                 {
+                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
                     mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
                     if(mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                     {
