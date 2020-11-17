@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_RogueDrone
-  m_Shader: {fileID: 4800000, guid: 0be8a17c557287542806aea94b7dd946, type: 3}
+  m_Shader: {fileID: 4800000, guid: 44238eb007e614f44930765400bf8efb, type: 3}
   m_ShaderKeywords: _AOMAP _DETAILMAP _EMISSION _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
     _SPECGLOSSMAP _VERTEXCOLOR
   m_LightmapFlags: 2
@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DeformMap:
-        m_Texture: {fileID: 2800000, guid: c7caf981d7403414092e743bf78290dc, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:

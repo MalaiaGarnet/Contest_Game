@@ -18,7 +18,7 @@ public class Item_AntiTrap : Item
     {
         if(Physics.OverlapSphere(GetComponentInParent<GameObject>().transform.position, Range).Any((x) => x.CompareTag("Trap")))
         {
-            
+           
         }
     }
 

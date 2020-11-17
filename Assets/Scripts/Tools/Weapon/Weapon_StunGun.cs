@@ -31,6 +31,8 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
     public  bool         m_IsDebug = true;
     public  ushort       weapon_uid = 5001;
     private bool         m_ThiefShotAble = true;
+
+    private List<Material> m_TestMats = new List<Material>();
     
 
     public AnimationClip Get_Aim_Anim()
@@ -50,6 +52,14 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
     private void Start()
     {
+        if (m_IsDebug)
+        {
+            foreach (MeshRenderer mr in GetComponentInParent<MeshRenderer>())
+            {
+                if (mr.gameObject.layer == LayerMask.NameToLayer("Player"))
+                    m_TestMats.Add(mr.material);
+            }
+        }
         if (Manager_Network.Instance != null)
             Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));
     }
@@ -78,7 +88,14 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
         sfx_Fire.PlayOneShot(sfx_Fire.clip); // Play Sound
 
-       
+        if (m_IsDebug)
+        {
+            foreach (Material mat in m_TestMats)
+            {
+                mat.shader = Shader.Find("Custom/Shader_Cloaking");
+                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
+            }
+        }
 
         pelletTrail.pellet = pelletInfo; // 펠릿트레일의 펠릿에 커스텀한 펠릿정보를 보내주자.
 
@@ -95,9 +112,6 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
                 if(victim != null)
                     victim_IDs[i] = victim.m_MyProfile.Session_ID;
                 impact_Pos.Add(hit.point);
-
-                //if (victim.IsAlive()) // 네트워크 준비 (피해자가 살아있을때)
-                //    StartCoroutine(StunPlayer(victim, stunDuration));
             }
             else
                 impact_Pos.Add(ray.GetPoint(pelletTrail.pellet.pelletDist));
@@ -114,23 +128,10 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
             if (!attacker.IsGuard() && m_ThiefShotAble) // 샷 제한
             {
                 m_ThiefShotAble = false;
-                // 시각적으로 뭔갈 띄워보면 좋을거같다.
+                // 시각적으로 뭔갈 띄워보면 좋을거같다.       
             }
         }
     }
-
-    #region 코루틴
-    IEnumerator StunPlayer(CharacterController _Victim, float _StunDuration)
-    {
-        yield return new WaitForSeconds(0.2f);
-        // Need Stun Logic
-        _Victim.enabled = false;
-        yield return new WaitForSeconds(_StunDuration);
-        _Victim.enabled = true;
-        // Nee End Stun Logic
-        yield return null;
-    }
-    #endregion
 
     /// <summary>
     /// 이펙트를 그려줍니다.
@@ -159,7 +160,14 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
     public override void onInteract(bool _pressed)
     {
-        
+        if (m_IsDebug)
+        {
+            foreach (Material mat in m_TestMats)
+            {
+                mat.shader = Shader.Find("Project Droids / Droid HD");
+                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
+            }
+        }
     }
 
     void FixedUpdate()
