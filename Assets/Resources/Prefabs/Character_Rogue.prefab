@@ -2726,8 +2726,8 @@ MonoBehaviour:
   prefab_DeadEffect: {fileID: 2488525614444690760, guid: 17645a00b365a2c4f957d6c861db0b70,
     type: 3}
   m_RenderTextures: []
-  m_Head: {fileID: 0}
-  m_CamAxis: {fileID: 0}
+  m_Head: {fileID: 815687957390709948}
+  m_CamAxis: {fileID: 5870439392837528171}
 --- !u!1 &5870439392097707752
 GameObject:
   m_ObjectHideFlags: 0

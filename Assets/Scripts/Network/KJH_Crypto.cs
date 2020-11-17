@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
 public class KJH_Crypto
 {
     public byte[] key;
@@ -76,3 +77,5 @@ public class KJH_Crypto
         _output = output;
     }
 }
+
+*/

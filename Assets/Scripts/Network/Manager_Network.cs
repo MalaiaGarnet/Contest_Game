@@ -18,7 +18,7 @@ public class Manager_Network : MonoBehaviour
     public bool m_Connected { get; private set; } // 서버 연결 상태
 
     public TcpClient m_Socket = null; // TCP소켓
-    public KJH_Crypto m_Encryptor = null; // 암호화
+    public KJH_Crypto_2 m_Encryptor = null; // 암호화
 
     // 멤버
     string m_IP = "127.0.0.1";

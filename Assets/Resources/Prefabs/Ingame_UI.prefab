@@ -647,7 +647,7 @@ RectTransform:
   - {fileID: 1652374896}
   - {fileID: 8528698764969673350}
   m_Father: {fileID: 857572187867129713}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2891,6 +2891,7 @@ MonoBehaviour:
   m_Footer: {fileID: 2420081094169669028}
   m_LeftSide: {fileID: 2426204945781715604}
   m_RightSide: {fileID: 7683063757168080706}
+  m_Crosshair: {fileID: 77692471152024550}
   m_Ingame_Scene_Loader: {fileID: 6858775007775624972}
   m_Ingame_Round_Indicator: {fileID: 5937837774153891411}
   m_Dead_Indicator: {fileID: 8390714253203830518}
@@ -5843,9 +5844,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8819119572754960045}
-  - {fileID: 1863007765}
   - {fileID: 6542093581676632307}
   - {fileID: 6391833947511068412}
+  - {fileID: 1863007765}
   m_Father: {fileID: 2420081094377893518}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6109,7 +6110,7 @@ RectTransform:
   - {fileID: 9153914937537082556}
   - {fileID: 6821666915150727914}
   m_Father: {fileID: 857572187867129713}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6242,7 +6243,7 @@ RectTransform:
   - {fileID: 7036405194750016868}
   - {fileID: 2984491621643565707}
   m_Father: {fileID: 857572187867129713}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

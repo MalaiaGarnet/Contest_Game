@@ -26,7 +26,7 @@ public class Task_Handler
     {
         UInt64 protocol = 0;
         Manager_Network.Log("버퍼 정보 - " + BitConverter.ToString(_task.buffer));
-     //   _task.Decrypt(Manager_Network.Instance.m_Encryptor);
+        _task.Decrypt(Manager_Network.Instance.m_Encryptor);
         GetProtocol(_task.buffer, ref protocol);
 
         _manager.e_ProtocolRecv.Invoke((PROTOCOL)protocol);
@@ -63,12 +63,12 @@ public class Task_Handler
         if ((_protocol & (UInt64)PROTOCOL_GLOBAL.ENCRYPTION_KEY) > 0)
         {
             Manager_Network.Log("encrypt");
-            byte[] code = new byte[32];
+            byte[] code = new byte[8];
             Packet_Unpacker.UnPackPacket(_task.buffer, ref code);
 
             //Manager_Network.Log("키 대입");
-            //Manager_Network.Instance.m_Encryptor = new KJH_Crypto(code);
-            //Manager_Network.Log("암호화 키 취득 " + BitConverter.ToString(code));
+            Manager_Network.Instance.m_Encryptor = new KJH_Crypto_2(code);
+            Manager_Network.Log("암호화 키 취득 " + BitConverter.ToString(code));
             return;
         }
         return;
