@@ -19,6 +19,7 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
     public GameObject m_RightSide;
 
     [Header("센터 오브젝트들")]
+    public GameObject m_Crosshair;
     public Scene_Loader m_Ingame_Scene_Loader;
     public Round_Indicator m_Ingame_Round_Indicator;
     public GameObject m_Dead_Indicator;
@@ -94,6 +95,7 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
     {
         Cursor.lockState = _enable ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !_enable;
+        m_Crosshair.SetActive(_enable);
     }
 
     public void When_Damaged(int _damage)

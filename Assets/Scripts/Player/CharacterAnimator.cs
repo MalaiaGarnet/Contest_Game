@@ -30,9 +30,11 @@ public class CharacterAnimator : MonoBehaviour
     CharacterController pc;
     Animator m_Anim;
     bool m_Use_Role_Skill = false;
+    Vector3 m_Cam_OriginPos;
 
     void Start()
     {
+        m_Cam_OriginPos = m_CamAxis.transform.localPosition;
         pc = GetComponent<CharacterController>();
         m_Anim = GetComponentInChildren<Animator>();
 
@@ -131,7 +133,6 @@ public class CharacterAnimator : MonoBehaviour
         IK_AimMode.SetActive(false);
 
         m_Anim.SetBool("is_Stunned", true);
-        Vector3 cam_axis_original_pos = m_CamAxis.transform.localPosition;
         m_CamAxis.transform.SetParent(m_Head.transform);
 
         yield return new WaitForSecondsRealtime(_tick / 1000f - 3.0f);
@@ -140,7 +141,7 @@ public class CharacterAnimator : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(3.0f);
         m_CamAxis.transform.SetParent(transform);
-        m_CamAxis.transform.localPosition = cam_axis_original_pos;
+        m_CamAxis.transform.localPosition = m_Cam_OriginPos;
 
         IK_LookMode.SetActive(lookMode);
         IK_AimMode.SetActive(aimMode);
@@ -171,15 +172,19 @@ public class CharacterAnimator : MonoBehaviour
             {
                 foreach (Material mat in m_RenderTextures)
                 {
-                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
+                    Debug.Log("(투명화중) 머티리얼 태그1 - " + mat.GetTag("RenderType", true));
+
                     mat.shader = Shader.Find("Custom/Shader_Cloaking");
+                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
                     mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
+                    Debug.Log("(투명화중) 머티리얼 태그2 - " + mat.GetTag("RenderType", true));
                 }
                 yield return new WaitForEndOfFrame();
             }
             foreach (Material mat in m_RenderTextures)
             {
                 mat.shader = Shader.Find("Custom/Shader_Cloaking");
+                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
                 mat.SetFloat("_Opacity", 0.0f);
             }
         }
@@ -189,12 +194,15 @@ public class CharacterAnimator : MonoBehaviour
             {
                 foreach (Material mat in m_RenderTextures)
                 {
-                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
+                    // Debug.Log("(해제중) 머티리얼 태그1 - " + mat.GetTag("RenderType", true));
+
                     mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
                     if(mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                     {
+                        MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
                         mat.shader = Shader.Find("Project Droids/Droid HD");
                     }
+                    // Debug.Log("(해제중) 머티리얼 태그2 - " + mat.GetTag("RenderType", true));
                 }
                 yield return new WaitForEndOfFrame();
             }
@@ -203,12 +211,11 @@ public class CharacterAnimator : MonoBehaviour
                 mat.SetFloat("_Opacity", 1.0f);
                 if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                 {
+                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
                     mat.shader = Shader.Find("Project Droids/Droid HD");
                 }
             }
         }
-
-
         yield return null;
     }
 }

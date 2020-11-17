@@ -54,7 +54,7 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
     {
         if (m_IsDebug)
         {
-            foreach (MeshRenderer mr in GetComponentInParent<MeshRenderer>())
+            foreach (MeshRenderer mr in GetComponentsInParent<MeshRenderer>())
             {
                 if (mr.gameObject.layer == LayerMask.NameToLayer("Player"))
                     m_TestMats.Add(mr.material);
