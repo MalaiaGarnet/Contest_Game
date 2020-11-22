@@ -25,6 +25,7 @@ namespace Network.Data
     public class Event_Game_Start : UnityEvent<int> { };
     public class Event_Round_Ready : UnityEvent<int> { };
     public class Event_Round_Start : UnityEvent { };
+    public class Event_Item_Spawn : UnityEvent<Item_Data[]> { };
     public class Event_Round_End : UnityEvent { };
     public class Event_Game_End : UnityEvent { };
     public class Event_Player_Input : UnityEvent<User_Profile[]> { };

@@ -187,6 +187,24 @@ public class Packet_Unpacker
                                             "User_Input_Move y: " + _datas[i].User_Input.View_Y);
         }
     }
+    public static void UnPackPacket(byte[] _data, ref Item_Data[] _datas)
+    {
+        int place = 0;
+        UInt16 strlen = 0;
+        place += sizeof(UInt64); // 프로토콜 점프
+
+        UInt64 array_length = BitConverter.ToUInt64(_data, place); // 배열 길이 취득
+        place += sizeof(UInt64);
+
+        _datas = new Item_Data[array_length];
+        for (uint i = 0; i < array_length; i++)
+        {
+            _datas[i] = new Item_Data();
+            // TODO 컨텍스트 오류
+            // Buffer.BlockCopy(place, 0, _datas, 
+            // place += sizeof(Item_Data);
+        }
+    }
     public static void UnPackPacket(byte[] _data, ref Session_RoundData _roundData)
     {
         int place = 0;
