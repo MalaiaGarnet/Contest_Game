@@ -43,11 +43,11 @@ public class CustomWeaponInsfector : Editor
         }      
         EditorGUILayout.Space();
 
-        m_WeaponEdit.wponName = EditorGUILayout.TextField(new GUIContent("WeaponName", "무기명"), m_WeaponEdit.wponName);
+        m_WeaponEdit.wponName     = EditorGUILayout.TextField(new GUIContent("WeaponName", "무기명"), m_WeaponEdit.wponName);
         m_WeaponEdit.shotInternal = EditorGUILayout.FloatField(new GUIContent("ShotInternal", "발사간격"), m_WeaponEdit.shotInternal);
-        m_WeaponEdit.clip = EditorGUILayout.IntField(new GUIContent("장탄수", "Clip"), m_WeaponEdit.clip);
+        m_WeaponEdit.clip         = EditorGUILayout.IntField(new GUIContent("장탄수", "Clip"), m_WeaponEdit.clip);
         m_WeaponEdit.shotDistance = EditorGUILayout.FloatField(new GUIContent("ShotDist", "발사사거리"), m_WeaponEdit.shotDistance);
-        m_WeaponEdit.traceFilter = EditorGUILayout.LayerField(new GUIContent("TrFilter", "필터레이어"), m_WeaponEdit.traceFilter);
+        m_WeaponEdit.traceFilter  = EditorGUILayout.LayerField(new GUIContent("TrFilter", "필터레이어"), m_WeaponEdit.traceFilter);
 
         UseProperty("m_Aim_Ani");
         UseProperty("ownerNoGunInArm");
