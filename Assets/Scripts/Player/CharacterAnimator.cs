@@ -111,6 +111,17 @@ public class CharacterAnimator : MonoBehaviour
             GameObject eff = Instantiate(prefab_DeadEffect);
             Manager_Ingame.Instance.Add_Round_Object(eff);
             eff.transform.position = transform.position;
+            DeathEvent();
+        }
+    }
+
+    void DeathEvent()
+    {
+        if (m_CamAxis.GetComponentInParent<CharacterController>().m_MyProfile.Role_Index == 1)
+        {
+            DeathCam deathCam = new DeathCam();
+            deathCam.Guaurd = m_CamAxis.GetComponentInParent<CharacterController>().gameObject;
+            deathCam.StartCam();
         }
     }
 
