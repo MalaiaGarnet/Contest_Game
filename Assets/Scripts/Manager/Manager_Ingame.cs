@@ -15,6 +15,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     public Session_RoundData m_RoundData = new Session_RoundData();
     public User_Profile m_Client_Profile = new User_Profile();
     public List<User_Profile> m_Profiles = new List<User_Profile>();
+    public List<Item_Data> m_Items = new List<Item_Data>();
     public float m_Heartbeat_Wait = 0f;
     public bool m_Game_Started = false;
     public int m_MapID = 0;
@@ -70,6 +71,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(Start_Round));
         Manager_Network.Instance.e_RoundEnd.AddListener(new UnityAction(End_Round));
         Manager_Network.Instance.e_GameEnd.AddListener(new UnityAction(End_Game));
+        Manager_Network.Instance.e_ItemSpawn.AddListener(new UnityAction<Item_Data[]>(Get_Items));
     }
 
     private void FixedUpdate()
@@ -216,9 +218,13 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         // 맵 읽기
         Manager_Network.Log("맵 로드");
         Load_Mapdata(m_MapID, m_Round);
+
         // 캐릭터 오브젝트 
         Manager_Network.Log("캐릭터 생성");
         Create_PlayerCharacters();
+
+        // 아이템 오브젝트
+        Create_Items();
 
         yield return new WaitForSeconds(2.0f);
 
@@ -381,6 +387,22 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             }
             player_character.transform.position = pc.m_MyProfile.Current_Pos;
             Add_Round_Object(player_character);
+        }
+    }
+
+    public void Get_Items(Item_Data[] _items)
+    {
+        m_Items = new List<Item_Data>(_items);
+    }
+    public void Create_Items()
+    {
+        foreach (Item_Data item in m_Items)
+        {
+            GameObject item_prefab = Resources.Load<GameObject>("Prefabs/Tools/Tool_" + item.OID);
+            GameObject item_object = Instantiate(item_prefab);
+            item_object.transform.position = item.Position;
+            item_object.transform.rotation = Quaternion.Euler(item.Rotation);
+            Add_Round_Object(item_object);
         }
     }
 
