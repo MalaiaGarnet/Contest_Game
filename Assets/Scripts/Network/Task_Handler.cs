@@ -141,6 +141,13 @@ public class Task_Handler
                 Debug.Log("인게임 라운드 종료");
                 _manager.e_RoundEnd.Invoke();
             }
+            if ((_protocol & (UInt64)PROTOCOL_INGAME.SS_ROUND_SPAWN_ITEMS) > 0)
+            {
+                Debug.Log("아이템 스폰");
+                Item_Data[] datas = null;
+                Packet_Unpacker.UnPackPacket(_task.buffer, ref datas);
+                _manager.e_ItemSpawn.Invoke(datas);
+            }
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.INPUT) > 0)
         {

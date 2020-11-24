@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 using Network.Data;
 using UnityEngine;
@@ -185,6 +186,26 @@ public class Packet_Unpacker
                                                             "User_Input_View y: " + _datas[i].User_Input.View_Y);
             DebugLogger.Instance.AddText("User_Input_Move x: " + _datas[i].User_Input.View_X +
                                             "User_Input_Move y: " + _datas[i].User_Input.View_Y);
+        }
+    }
+    public static void UnPackPacket(byte[] _data, ref Item_Data[] _datas)
+    {
+        int place = 0;
+        UInt16 strlen = 0;
+        place += sizeof(UInt64); // 프로토콜 점프
+
+        UInt64 array_length = BitConverter.ToUInt64(_data, place); // 배열 길이 취득
+        place += sizeof(UInt64);
+
+        _datas = new Item_Data[array_length];
+        for (uint i = 0; i < array_length; i++)
+        {
+            _datas[i] = new Item_Data();
+            int size = Marshal.SizeOf(_datas[i]);
+
+            // TODO 컨텍스트 오류
+            Buffer.BlockCopy(_data, place, _datas, (int)i * size, size);
+            place += size;
         }
     }
     public static void UnPackPacket(byte[] _data, ref Session_RoundData _roundData)

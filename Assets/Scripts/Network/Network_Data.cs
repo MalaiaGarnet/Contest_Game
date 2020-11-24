@@ -255,4 +255,13 @@ namespace Network.Data
             _place += sizeof(bool); _size += sizeof(bool);
         }
     };
+
+    /// <summary> 아이템 정보 </summary>
+    [Serializable]
+    public struct Item_Data
+    {
+        int OID;
+        Vector3 Position;
+        Vector3 Rotation;
+    }
 }
