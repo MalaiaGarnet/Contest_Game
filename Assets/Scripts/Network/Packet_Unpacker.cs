@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 using Network.Data;
 using UnityEngine;
@@ -200,9 +201,11 @@ public class Packet_Unpacker
         for (uint i = 0; i < array_length; i++)
         {
             _datas[i] = new Item_Data();
+            int size = Marshal.SizeOf(_datas[i]);
+
             // TODO 컨텍스트 오류
-            // Buffer.BlockCopy(place, 0, _datas, 
-            // place += sizeof(Item_Data);
+            Buffer.BlockCopy(_data, place, _datas, (int)i * size, size);
+            place += size;
         }
     }
     public static void UnPackPacket(byte[] _data, ref Session_RoundData _roundData)

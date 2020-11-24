@@ -145,6 +145,7 @@ public class Task_Handler
             {
                 Debug.Log("아이템 스폰");
                 Item_Data[] datas = null;
+                Packet_Unpacker.UnPackPacket(_task.buffer, ref datas);
                 _manager.e_ItemSpawn.Invoke(datas);
             }
         }
