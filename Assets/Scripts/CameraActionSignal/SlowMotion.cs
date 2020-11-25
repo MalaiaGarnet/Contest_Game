@@ -6,20 +6,24 @@ public class SlowMotion : MonoBehaviour
     public void SlowMotionSlowyOn(float _Time)
     {
         Time.timeScale -= _Time;
+        StartCoroutine(SlowMotionSlowyOff(0.1f));
     }
 
     public void SlowMotionOn(float _Time)
     {
         Time.timeScale = _Time;
+        StartCoroutine(SlowMotionInstantOff());
     }
 
-    public void SlowMotionInstantOff()
+    IEnumerator SlowMotionInstantOff()
     {
+        yield return new WaitForSecondsRealtime(2.0f);
         Time.timeScale = 1.0f;
     }
 
-    public void SlowMotionSlowyOff(float _Time)
+    IEnumerator SlowMotionSlowyOff(float _Time)
     {
+        yield return new WaitForSecondsRealtime(2.0f);
         Time.timeScale += _Time;
     }
 }
