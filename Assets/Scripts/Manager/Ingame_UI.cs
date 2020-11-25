@@ -100,7 +100,8 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
 
     public void When_Damaged(int _damage)
     {
-        m_Dead_Indicator.SetActive(m_Player.m_MyProfile.HP <= 0);
+        // TODO 좀 있다 끄거나 다른 방법 찾기 (데스캠)
+        // m_Dead_Indicator.SetActive(m_Player.m_MyProfile.HP <= 0);
     }
 
     Coroutine stun_coroutine;

@@ -190,6 +190,8 @@ public class Packet_Unpacker
     }
     public static void UnPackPacket(byte[] _data, ref Item_Data[] _datas)
     {
+        Debug.Log("버퍼 정보 - " + BitConverter.ToString(_data));
+
         int place = 0;
         UInt16 strlen = 0;
         place += sizeof(UInt64); // 프로토콜 점프
@@ -198,14 +200,14 @@ public class Packet_Unpacker
         place += sizeof(UInt64);
 
         _datas = new Item_Data[array_length];
-        for (uint i = 0; i < array_length; i++)
+        int size = Marshal.SizeOf(new Item_Data());
+        // Debug.Log("아이템 자료형 크기 = " + size);
+        for (int i = 0; i < (int)array_length; i++)
         {
             _datas[i] = new Item_Data();
-            int size = Marshal.SizeOf(_datas[i]);
+            _datas[i].Read_Bytes(_data, ref place);
 
-            // TODO 컨텍스트 오류
-            Buffer.BlockCopy(_data, place, _datas, (int)i * size, size);
-            place += size;
+            // Debug.Log("아이템 id = " + _datas[i].OID + "\n위치 = " + _datas[i].Position + "\n회전 = " + _datas[i].Rotation);
         }
     }
     public static void UnPackPacket(byte[] _data, ref Session_RoundData _roundData)
