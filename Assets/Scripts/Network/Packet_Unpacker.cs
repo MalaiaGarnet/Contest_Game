@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Network.Data;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using Network.Data;
 using UnityEngine;
 
 /// <summary> 패킷 분해기 </summary>

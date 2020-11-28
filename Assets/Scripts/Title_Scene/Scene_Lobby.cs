@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Scene_Lobby : SingleToneMonoBehaviour<Scene_Lobby>
 {
@@ -30,7 +28,7 @@ public class Scene_Lobby : SingleToneMonoBehaviour<Scene_Lobby>
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Match_Security()

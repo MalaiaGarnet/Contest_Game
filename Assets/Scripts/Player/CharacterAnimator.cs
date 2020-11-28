@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// 200912 주현킴
@@ -178,7 +177,7 @@ public class CharacterAnimator : MonoBehaviour
         Debug.Log("로그 스킬 토글 - " + m_Use_Role_Skill);
 
         if (m_Use_Role_Skill)
-        {           
+        {
             for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
             {
                 foreach (Material mat in m_RenderTextures)
@@ -208,7 +207,7 @@ public class CharacterAnimator : MonoBehaviour
                     // Debug.Log("(해제중) 머티리얼 태그1 - " + mat.GetTag("RenderType", true));
 
                     mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
-                    if(mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+                    if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                     {
                         MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
                         mat.shader = Shader.Find("Project Droids/Droid HD");

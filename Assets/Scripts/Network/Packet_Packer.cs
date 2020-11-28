@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Network.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Network.Data;
 using UnityEngine;
 
 /// <summary> 패킷 제작기 </summary>
@@ -98,7 +98,7 @@ public class Packet_Packer
 
         _size += sizeof(int);
 
-      //  _size = (_size / 8 + 1) * 8;
+        //  _size = (_size / 8 + 1) * 8;
 
         return data;
     }
@@ -236,7 +236,7 @@ public class Packet_Packer
         place += sizeof(Int32);
         _size += sizeof(Int32);
 
-        for(int i = 0; i < _ids.Count; i++)
+        for (int i = 0; i < _ids.Count; i++)
         {
             // id
             Buffer.BlockCopy(BitConverter.GetBytes(_ids[i]), 0, data, place, sizeof(UInt16));

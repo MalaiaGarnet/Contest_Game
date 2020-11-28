@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Cloaking : MonoBehaviour
 {
@@ -63,12 +61,12 @@ public class Cloaking : MonoBehaviour
             Shader.SetGlobalFloat(m_cloakPropNames[5], rimPower);
             Shader.SetGlobalColor(m_cloakPropNames[6], rimColor);
         }
-       
+
     }
 
     public void StartCloaking(bool _IsPress)
     {
-        if (!_IsPress) 
+        if (!_IsPress)
             return;
 
 
@@ -76,6 +74,6 @@ public class Cloaking : MonoBehaviour
 
     public void StopCloaking(bool _IsPress)
     {
-    
+
     }
 }

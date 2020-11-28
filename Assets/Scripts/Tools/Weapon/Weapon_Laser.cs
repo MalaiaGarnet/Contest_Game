@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 [RequireComponent(typeof(Weapon))]
 public class Weapon_Laser : Tool, I_IK_Shotable
@@ -32,7 +32,7 @@ public class Weapon_Laser : Tool, I_IK_Shotable
 
     public override void onFire(bool _pressed)
     {
-        if (!_pressed) 
+        if (!_pressed)
             return;
 
         // 공격자 구하기
@@ -44,10 +44,10 @@ public class Weapon_Laser : Tool, I_IK_Shotable
         List<Vector3> impact_Pos = new List<Vector3>();
         RaycastHit hit;
 
-        for(short i = 1; i < laserTraii.Laser.laserCount; i++)
+        for (short i = 1; i < laserTraii.Laser.laserCount; i++)
         {
             GameObject laserObj = Instantiate(laserTraii.gameObject, gunMuzzle.position, attacker.m_ToolAxis.rotation);
-            if(Physics.Raycast(ray, out hit, laserTraii.Laser.LaserDist))
+            if (Physics.Raycast(ray, out hit, laserTraii.Laser.LaserDist))
             {
 
             }

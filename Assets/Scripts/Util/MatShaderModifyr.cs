@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 public static class MatShaderModifyr
-{ 
+{
     public static void ChangeBlendRenderType(Material _Mat, BlendMode _BlendMode, string _TagName)
     {
         switch (_BlendMode)

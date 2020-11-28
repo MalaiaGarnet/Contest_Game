@@ -30,7 +30,6 @@ public class CustomWeaponInsfector : Editor
         EditorGUILayout.Space();
         UseProperty("WeaponCategory");
 
-        //m_WeaponEdit.wponDetectionType = (WeaponDetectionType)EditorGUILayout.EnumFlagsField(new GUIContent("WeaponDetectionType", "무기 판정타입"), m_WeaponEdit.wponDetectionType);
         switch (m_WeaponEdit.WeaponCategory.eWeaponDetectionType)
         {
             case WeaponDetectionType.HITSCAN:

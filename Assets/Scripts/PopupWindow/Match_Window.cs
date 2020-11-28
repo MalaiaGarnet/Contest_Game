@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
-using Network.Data;
+﻿using Network.Data;
 using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Match_Window : Small_Window
 {
@@ -79,7 +78,7 @@ public class Match_Window : Small_Window
     {
         while (m_Timer_Enable)
         {
-            if(m_Timer == 2)
+            if (m_Timer == 2)
                 Packet_Sender.Send_Match_Start(_Role);
 
             m_Timer += 1;

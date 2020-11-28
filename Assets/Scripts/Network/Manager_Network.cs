@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading;
-using System.Net.Sockets;
-using System.Collections.Generic;
-using UnityEngine;
-using Network.Data;
-using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
+﻿using Network.Data;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Threading;
+using UnityEngine;
 
 /// <summary>
 /// 네트워크 관리자
@@ -55,13 +53,13 @@ public class Manager_Network : MonoBehaviour
         if (Debug_Toggle)
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
-            Debug.Log("[" + name + "] " +_msg);
+            Debug.Log("[" + name + "] " + _msg);
         }
     }
 
     void Awake()
     {
-        if(Instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
@@ -86,7 +84,7 @@ public class Manager_Network : MonoBehaviour
             m_Socket.Close();
         }
         m_Socket = new TcpClient();
-        
+
         try
         {
             // 연결 시도, 실패시 SocketException
@@ -225,7 +223,7 @@ public class Manager_Packet
 
     public void End_Thread()
     {
-        if(t_Receiver != null)
+        if (t_Receiver != null)
             t_Receiver.Abort();
         t_Receiver = null;
     }
@@ -248,7 +246,7 @@ public class Manager_Packet
             m_RecvQueue.Enqueue(task); // 받으면 받기 큐에 그것을 투입
         }
     }
-    
+
     public byte[] SetBuffer(UInt64 _protocol, byte[] _buffer, ref int _size)
     {
         byte[] data = new byte[1024];
@@ -297,11 +295,11 @@ public class Manager_Packet
             {
                 Task task = m_SendQueue.Dequeue();
                 PacketSend(task);
-                
+
                 Manager_Network.Log("Sended - " + task.buffer[0] + "/" + task.buffer[1] + "/" + task.buffer[2] + "/" + task.buffer[3]);
-            } 
+            }
         }
-        catch(Exception)
+        catch (Exception)
         {
             Manager_Network.Log("send error.");
             m_NetworkManager.e_Disconnected.Invoke();

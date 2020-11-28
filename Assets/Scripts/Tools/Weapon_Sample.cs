@@ -1,9 +1,7 @@
 ﻿using Network.Data;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -51,7 +49,7 @@ public class Weapon_Sample : Tool, I_IK_Shotable
     public override void onFire(bool _pressed)
     {
         if (!_pressed)
-            return;    
+            return;
 
         int bullet_count = 8;
         float range = 0.03f;

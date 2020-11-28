@@ -2,10 +2,9 @@
 using Network.Data;
 using System;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using Random = UnityEngine.Random;
+using UnityEditor;
 
 /// <summary>버튼 트리거 이벤트(버튼명, 누름/뗌 여부)</summary>
 public class Event_Button_Triggered : UnityEvent<string, bool> { }
@@ -24,19 +23,19 @@ public class Event_RoleSkill_Toggle : UnityEvent { }
 /// </summary>
 public class CharacterController : MonoBehaviour
 {
-    [Header("입출력")]
+    // 입출력
     protected Manager_Input InputManager;   // 입력 관리자
-    private  User_Input     m_Output;       // 서버로부터 받은 입력값
+    private User_Input m_Output;       // 서버로부터 받은 입력값
 
     [Header("네트워크/프로필")]
-    public  User_Profile                  m_MyProfile;   // 캐릭터 프로필
-    private User_Profile                 m_Profile_Before; // 이전 입력값
-    private UnityAction<User_Profile[]>  m_PlayerInputEvts; // 입력 수신 이벤트
-    private UnityAction<Session_RoundData, User_Profile[]>  m_PlayerUpdatePosEvts; // 위치 갱신 이벤트
+    public User_Profile m_MyProfile;   // 캐릭터 프로필
+    private User_Profile m_Profile_Before; // 이전 입력값
+    private UnityAction<User_Profile[]> m_PlayerInputEvts; // 입력 수신 이벤트
+    private UnityAction<Session_RoundData, User_Profile[]> m_PlayerUpdatePosEvts; // 위치 갱신 이벤트
     private UnityAction<UInt16, UInt16> m_PlayerDamageEvts; // 피해 이벤트
     private UnityAction<UInt16, UInt16> m_PlayerStunEvts; // 스턴 이벤트
 
-    [Header("이벤트")]
+    // 이벤트
     public Event_Button_Triggered e_Triggered = new Event_Button_Triggered();
     public Event_Tool_Changed e_ToolChanged = new Event_Tool_Changed();
     public Event_Damaged e_Damaged = new Event_Damaged();
@@ -44,14 +43,13 @@ public class CharacterController : MonoBehaviour
     public Event_RoleSkill_Toggle e_RoleSkill_Toggle = new Event_RoleSkill_Toggle();
 
     [Header("캐릭터 스탯")]
-    private short           m_Index;
-    public  int             battery = 10000;
-    public  float           moveSpeed;
-    public  bool            m_Is_Stunned = false;
+    public int battery = 10000;
+    public float moveSpeed;
+    public bool m_Is_Stunned = false;
 
     [Header("캐릭터 물리메테리얼")]
-    public PhysicMaterial   noFriction;     //프릭션 X
-    public PhysicMaterial   fullFriction; // 프릭션 O
+    public PhysicMaterial noFriction;     //프릭션 X
+    public PhysicMaterial fullFriction; // 프릭션 O
 
     [Header("캐릭터 무기")]
     public Transform m_ToolAxis;
@@ -62,9 +60,17 @@ public class CharacterController : MonoBehaviour
     public Vector3 m_Before_Position;
     public const float ASCENDING_LIMIT = 0.6f;
 
+    [CustomRange(0, 30.0f)] // 어라 생성자 그대로 가버리는데 이거;;
+    public float acquireDist = 10.0f;
+
+    private float m_DotValue = 0f;
+    private float m_ViewAngle = 45f;
+    private bool IsHit = false;
 
 
     Renderer[] m_Renderers;
+
+    private bool DDebug = true;
 
     IEnumerator Start()
     {
@@ -237,7 +243,7 @@ public class CharacterController : MonoBehaviour
 
     public bool IsPlayerHaveJob(UInt16 _JobIndex)
     {
-        if(m_MyProfile.Role_Index == _JobIndex)
+        if (m_MyProfile.Role_Index == _JobIndex)
         {
             return true;
         }
@@ -246,7 +252,15 @@ public class CharacterController : MonoBehaviour
 
     public bool IsGuard()
     {
-        switch(m_MyProfile.Role_Index)
+#if UNITY_2020_2_NEWER
+        return m_MyProfile.Role_Index switch
+        {
+            1 => false,
+            2 => true,
+            _ => false,
+        };
+#else
+        switch (m_MyProfile.Role_Index)
         {
             case 1:
                 return false;
@@ -255,11 +269,12 @@ public class CharacterController : MonoBehaviour
             default:
                 return false;
         }
+#endif
     }
 
     public bool IsAlive()
     {
-        if(m_MyProfile != null && (m_MyProfile.HP > 0))
+        if (m_MyProfile != null && (m_MyProfile.HP > 0))
         {
             return true;
         }
@@ -317,7 +332,7 @@ public class CharacterController : MonoBehaviour
         }
 
         // 만약에 이동하지 않을때
-        if(m_Output.Move_X == 0 && m_Output.Move_Y == 0)
+        if (m_Output.Move_X == 0 && m_Output.Move_Y == 0)
         {
             GetComponentInChildren<CapsuleCollider>().sharedMaterial = fullFriction;
         }
@@ -331,29 +346,18 @@ public class CharacterController : MonoBehaviour
             return;
         Vector3 dir = Calculate_Direction();
         Vector3 movement = dir * moveSpeed * 100f * Time.fixedDeltaTime;
-        Vector3 final_pos = transform.position + movement;
 
-        // 충돌 체크 시작 (아랫 방향)
-        //Ray ray = new Ray(final_pos + new Vector3(0f, ASCENDING_LIMIT, 0f), new Vector3(0f, -1f, 0f));      
-        Ray ray = new Ray(transform.position, dir.normalized);      
-
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, ASCENDING_LIMIT * 2f))
-            final_pos = hit.point;
-
-        //GetComponent<Rigidbody>().MovePosition(final_pos);
         Vector3 vector3 = new Vector3(movement.x, GetComponent<Rigidbody>().velocity.y, movement.z);
         GetComponent<Rigidbody>().velocity = vector3;
     }
 
-    Vector3 before_pos = new Vector3();
     /// <summary>
     /// 충돌 예측
     /// </summary>
     Vector3 Predict_Collide()
     {
         // 무입력시 체크 X
-        if(m_Output.Move_X.Equals(0.0f) && m_Output.Move_Y.Equals(0.0f))
+        if (m_Output.Move_X.Equals(0.0f) && m_Output.Move_Y.Equals(0.0f))
             return transform.position;
 
         // 캐릭터 콜라이더 취득
@@ -462,4 +466,88 @@ public class CharacterController : MonoBehaviour
         m_Is_Stunned = false;
         yield return null;
     }
+
+    /// <summary>
+    /// 아이템을 습득합니다.
+    /// </summary>
+    public void AcquireItem()
+    {
+        Item item = FindViewInItem(); // 만약 아이템을 발견했다면 해당 아이템을 가져와서
+        if(item != null && Manager_Network.Instance != null) // 통신이 안끊겼고, 아이템일때
+        {
+            if(Manager_Ingame.Instance.m_Client_Profile.Session_ID == m_MyProfile.Session_ID) // 습득자랑 현재 내 세션아디가 일치한다면 쏘자.
+            {
+                // TODO : 캐릭터가 발견한 아이템정보를 서버에 보내서, 습득 완료 및 캐릭터에 종속시키는 부분이 들어오면 될거같아요.
+            }
+        }
+    }
+
+    /// <summary>
+    /// 아이템을 탐색합니다.
+    /// </summary>
+    /// <returns></returns>
+    Item FindViewInItem()
+    {
+        RaycastHit hitinfo;
+        m_DotValue = Mathf.Cos(Mathf.Deg2Rad * (m_ViewAngle / 2)); // Dot값 부채꼴 형태로 구하기
+        int mask = LayerMask.NameToLayer("Item");
+        Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, mask); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
+        foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
+        {
+            Vector3 hitPos = hits.transform.position;
+            Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized; 
+
+            float dot = Vector3.Dot(dir, m_CameraAxis.forward);
+
+            if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
+            {
+                // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
+                if (!DDebug)
+                {
+                    if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask) && InputManager.m_Player_Input.Interact)
+                    {
+                        Debug.Log("앗 아이템을 발견했다!");
+                        Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
+                        IsHit = true;
+                        return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
+                    }
+                    else
+                    {
+                        Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                        Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
+                        IsHit = false;
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask) && !m_MyProfile.User_Input.Interact)
+                    {
+                        Debug.Log("앗 아이템을 발견했다!");
+                        Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
+                        IsHit = true;
+                        return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
+                    }
+                    else
+                    {
+                        Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                        Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
+                        IsHit = false;
+                        return null;
+                    }
+                }
+            }
+            IsHit = false;
+        }
+        return null;
+    }
+
+     private void OnDrawGizmosSelected()
+     {
+         FindViewInItem();
+
+         Handles.color = IsHit ? Color.cyan : Color.green;
+         Handles.DrawSolidArc(m_MyProfile.Current_Pos, Vector3.up, m_CameraAxis.forward, m_ViewAngle / 2, acquireDist);
+         Handles.DrawSolidArc(m_MyProfile.Current_Pos, Vector3.up, m_CameraAxis.forward, -m_ViewAngle / 2, acquireDist);
+     }
 }

@@ -11,11 +11,11 @@ public class Weapon : Tool, I_IK_Shotable
     [Tooltip("무기 분류 타입")]
     public WeaponCategory WeaponCategory = new WeaponCategory();
     public string wponName;     // 무기명
-    public float  shotInternal; // 샷 간격
+    public float shotInternal; // 샷 간격
     public Pellet pellet;       // 펠릿(히트스캔류)
-    public int    clip;         // 장탄수
-    public int    ammo;         // 발사수
-    public float  shotDistance; // 총기 사거리
+    public int clip;         // 장탄수
+    public int ammo;         // 발사수
+    public float shotDistance; // 총기 사거리
     public LayerMask traceFilter; // 필터링
 
     public AnimationClip m_Aim_Ani;
@@ -27,9 +27,9 @@ public class Weapon : Tool, I_IK_Shotable
     [Tooltip("총구")]
     public Transform ownerMuzzle;
 
-    private Vector3      m_FOVScreenPos;
-    private Transform    m_CamAxis;
-    
+    private Vector3 m_FOVScreenPos;
+    private Transform m_CamAxis;
+
     public Vector3[] HitVector
     {
         get;
@@ -37,13 +37,13 @@ public class Weapon : Tool, I_IK_Shotable
     }
     void Awake()
     {
-        m_FOVScreenPos = new Vector3((Camera.main.pixelWidth / 2),  (Camera.main.pixelHeight / 2), 0.0f);
+        m_FOVScreenPos = new Vector3((Camera.main.pixelWidth / 2), (Camera.main.pixelHeight / 2), 0.0f);
         // 히트스캔일때
         if (WeaponCategory.eWeaponDetectionType == WeaponDetectionType.HITSCAN)
         {
             //pellet = new Pellet(pellet.pelletCount, pellet.pelletAccurate, pellet.pelletDamage);
         }
-       
+
     }
 
 
@@ -62,7 +62,7 @@ public class Weapon : Tool, I_IK_Shotable
     public void Shooting()
     {
         List<Ray> rays = new List<Ray>();
-        for(int count = 0; count < pellet.pelletCount; count++)
+        for (int count = 0; count < pellet.pelletCount; count++)
         {
             rays.Add(m_CamAxis.GetComponentInParent<Camera>().ScreenPointToRay(new Vector3(m_FOVScreenPos.x + Random.Range(-pellet.pelletAccurate, pellet.pelletAccurate),
                 m_FOVScreenPos.y + Random.Range(-pellet.pelletAccurate, pellet.pelletAccurate), m_FOVScreenPos.z)));
@@ -71,7 +71,7 @@ public class Weapon : Tool, I_IK_Shotable
         Vector3 muzzleForward = ownerMuzzle.transform.TransformDirection(Vector3.forward) * shotDistance;
 
         List<UInt16> list_SessionID = new List<UInt16>();
-        List<Vector3> list_vHitPos = new List<Vector3>();  
+        List<Vector3> list_vHitPos = new List<Vector3>();
 
         RaycastHit hitInfo;
 
@@ -95,12 +95,12 @@ public class Weapon : Tool, I_IK_Shotable
                         Debug.Log(hitInfo.collider);
                 }
 
-                if(victim != null)
+                if (victim != null)
                 {
                     list_SessionID[index] = victim.m_MyProfile.Session_ID;
                 }
 
-               
+
 
             }
         }
@@ -141,7 +141,7 @@ public class Weapon : Tool, I_IK_Shotable
         if (_pressed)
             return;
 
-       Shooting();
+        Shooting();
     }
 
     public override void onInteract(bool _pressed)

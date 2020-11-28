@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Text;
-using UnityEngine;
-using UnityEngine.Events;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 
 namespace Network.Data
 {
@@ -88,16 +83,16 @@ namespace Network.Data
     public enum ROUND_END_REASON : ushort
     {
         NOT_ENDED = 0,
-	    TIME_OVER = 1,
-	    ALL_ROGUE_DEAD = 2,
-	    ALL_ROGUE_ESCAPED = 3,
+        TIME_OVER = 1,
+        ALL_ROGUE_DEAD = 2,
+        ALL_ROGUE_ESCAPED = 3,
     };
     public enum SESSION_END_REASON : ushort
     {
         NOT_ENDED = 0,
-	    NORMALLY_END = 1, // 정상 종료
-	    USER_TOO_SHORT = 2, // 누가 나가서 유저가 너무 적어짐
-	    CRITICAL_ERROR = 3, // 치명적인 오류
+        NORMALLY_END = 1, // 정상 종료
+        USER_TOO_SHORT = 2, // 누가 나가서 유저가 너무 적어짐
+        CRITICAL_ERROR = 3, // 치명적인 오류
     };
     [Serializable]
     public struct Session_RoundData

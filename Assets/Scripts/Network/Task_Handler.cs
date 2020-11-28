@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Network.Data;
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.Events;
-using Network.Data;
-using System.Text;
 
 /// <summary>
 /// 일 처리기

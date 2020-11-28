@@ -21,17 +21,17 @@ public class Pellet
     [Tooltip("펠릿 사거리")]
     public float pelletDist;
     [Tooltip("펠릿의 관통여부")]
-    public bool  IsPenetrate = false;
+    public bool IsPenetrate = false;
     [Tooltip("관통 가능 인원")]
     public short penetrateCount;
     [HideInInspector()]
     public Vector3 pelletDest;
-    
+
     public Pellet()
     {
 
     }
-  
+
     public Pellet(byte _Count, float _Accurate, float _Damage)
     {
         pelletCount = _Count;

@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class Weapon_Shotgun : Weapon
+﻿public class Weapon_Shotgun : Weapon
 {
     // Use this for initialization
     void Start()
