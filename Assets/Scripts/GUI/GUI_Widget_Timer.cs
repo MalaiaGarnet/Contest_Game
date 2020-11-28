@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using Network.Data;
 using UnityEngine.Events;
-using Network.Data;
+using UnityEngine.UI;
 
 public class GUI_Widget_Timer : GUI_Widget_Base
 {

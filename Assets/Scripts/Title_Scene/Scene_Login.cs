@@ -1,10 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
-using System;
+using UnityEngine.UI;
 
 public class Scene_Login : MonoBehaviour
 {

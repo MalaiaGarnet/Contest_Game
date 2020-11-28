@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class GUI_Widget_Announce : GUI_Widget_Base
@@ -29,7 +27,7 @@ public class GUI_Widget_Announce : GUI_Widget_Base
     void Update_Text()
     {
         announce.text = "";
-        for(int i = 0; i < msg_list.Count; i++)
+        for (int i = 0; i < msg_list.Count; i++)
             announce.text += msg_list[i];
     }
 }

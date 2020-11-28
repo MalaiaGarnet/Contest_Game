@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using Network.Data;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Network.Data;
 using UnityEngine.SceneManagement;
-using System;
 
 public class Event_RoundUpdate : UnityEvent<GameObject, Minimap> { }
 public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
@@ -175,7 +175,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     /// </summary>
     /// <param name="_map_id"></param>
     public void Start_Game(int _map_id)
-    { 
+    {
         m_MapID = _map_id;
         StartCoroutine(Start_Game_Process());
     }

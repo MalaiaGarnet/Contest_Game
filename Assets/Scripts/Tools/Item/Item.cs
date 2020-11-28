@@ -1,18 +1,17 @@
 ﻿using System;
-using UnityEngine;
 
 [Serializable]
 public abstract class Item : Tool
 {
-    public ushort   itemID;
+    public ushort itemID;
     public ItemType itemType;
-    public string   itemName;
-    public string   itemDesc;
-    public bool     isUseEnergy;
-    public byte     itemCount;
-    public ushort   itemEnergy;
+    public string itemName;
+    public string itemDesc;
+    public bool isUseEnergy;
+    public byte itemCount;
+    public ushort itemEnergy;
 
-    public bool     isActive;
+    public bool isActive;
 
     public Item() { }
     public Item(ushort _ID,
@@ -30,7 +29,7 @@ public abstract class Item : Tool
         itemDesc = _Desc;
         itemCount = _Count;
         isUseEnergy = _UseEnergy;
-        if(isUseEnergy)
+        if (isUseEnergy)
         {
             itemEnergy = _Energy;
         }
@@ -51,8 +50,9 @@ public abstract class Item : Tool
 
     public override void onInteract(bool _pressed)
     {
-        
     }
+
+
     public abstract void Item_Active();
     public abstract void Item_Passive();
 }

@@ -1,39 +1,38 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Network.Data;
 using System;
-using Network.Data;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class Weapon_StunGun : Tool, I_IK_Shotable
 {
     [Header("에임 애니메이션, 총구, 총알발사위치")]
     public AnimationClip animAim;
-    public Transform     gunleftGrip;
-    public Transform     gunMuzzle;
+    public Transform gunleftGrip;
+    public Transform gunMuzzle;
 
     [Header("비쥬얼 및 사운드 이펙트")]
     [Tooltip("총구 화염")]
-    public GameObject    effect_Fire;
+    public GameObject effect_Fire;
     [Tooltip("발사음")]
-    public AudioSource   sfx_Fire;
+    public AudioSource sfx_Fire;
 
     [Header("펠릿")]
     [Tooltip("펠릿 정보")]
-    public Pellet        pelletInfo;
+    public Pellet pelletInfo;
     [Tooltip("펠릿 트레일 오브젝트")]
-    public PelletTrail   pelletTrail;
+    public PelletTrail pelletTrail;
 
     [Header("어빌리티")]
-    public float         stunDuration = 5.0f;
- 
-    private Vector3      now_pos;
-    public  bool         m_IsDebug = true;
-    public  ushort       weapon_uid = 5001;
-    private bool         m_ThiefShotAble = true;
+    public float stunDuration = 5.0f;
+
+    private Vector3 now_pos;
+    public bool m_IsDebug = true;
+    public ushort weapon_uid = 5001;
+    private bool m_ThiefShotAble = true;
 
     private List<Material> m_TestMats = new List<Material>();
-    
+
 
     public AnimationClip Get_Aim_Anim()
     {
@@ -81,21 +80,21 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
         // This Add HitScan Logic
         Vector3 fwdDir = attacker.m_CameraAxis.forward;
 
-        
+
         List<UInt16> victim_IDs = new List<UInt16>();
         List<Vector3> impact_Pos = new List<Vector3>();
-        
+
 
         sfx_Fire.PlayOneShot(sfx_Fire.clip); // Play Sound
 
-        if (m_IsDebug)
+        /*if (m_IsDebug)
         {
             foreach (Material mat in m_TestMats)
             {
                 mat.shader = Shader.Find("Custom/Shader_Cloaking");
                 MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
             }
-        }
+        }*/
 
         pelletTrail.pellet = pelletInfo; // 펠릿트레일의 펠릿에 커스텀한 펠릿정보를 보내주자.
 
@@ -109,7 +108,7 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
             {
                 trailobj.GetComponent<PelletTrail>().rayPositon = hit.point;
                 CharacterController victim = hit.collider.gameObject.GetComponentInParent<CharacterController>();
-                if(victim != null)
+                if (victim != null)
                     victim_IDs[i] = victim.m_MyProfile.Session_ID;
                 impact_Pos.Add(hit.point);
             }
@@ -160,14 +159,14 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
     public override void onInteract(bool _pressed)
     {
-        if (m_IsDebug)
+        /*if (m_IsDebug)
         {
             foreach (Material mat in m_TestMats)
             {
                 mat.shader = Shader.Find("Project Droids / Droid HD");
                 MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
             }
-        }
+        }*/
     }
 
     void FixedUpdate()

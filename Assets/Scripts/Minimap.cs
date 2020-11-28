@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -21,7 +20,7 @@ public class Minimap : MonoBehaviour
         {
             if (meshFilters[i].sharedMesh != null) // 메쉬 필터 내 할당한 메쉬가 존재
                 vertices_count += meshFilters[i].sharedMesh.vertexCount; // 할당 메쉬의 버텍스 카운트 계산해서 대입
-            
+
             if (vertices_count >= 50000) // 세고 있던 것이 한계를 넘어선 경우
             {
                 Combine_Mesh(combine.ToArray());

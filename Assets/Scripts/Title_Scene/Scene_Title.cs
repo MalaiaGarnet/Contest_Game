@@ -1,8 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Scene_Title : MonoBehaviour
 {
@@ -40,7 +39,7 @@ public class Scene_Title : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
     /// <summary>
@@ -69,7 +68,7 @@ public class Scene_Title : MonoBehaviour
     void Update_SubState(bool _to_right)
     {
         // 현재 m_Sub_State에 해당되는 것만 활성화, 나머지는 비활성화
-        for(int i = 0; i < m_Sub_Scenes.Length; i++)
+        for (int i = 0; i < m_Sub_Scenes.Length; i++)
             m_Sub_Scenes[i].SetActive(i == (int)m_Sub_State - 1);
 
         // 화살표 버튼 활성화

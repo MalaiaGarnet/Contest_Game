@@ -27,7 +27,7 @@ public class WeaponCategory
 
     public bool Compare(WeaponBlock _WeaponBlock)
     {
-        if((eWeaponBlock & _WeaponBlock) == _WeaponBlock)
+        if ((eWeaponBlock & _WeaponBlock) == _WeaponBlock)
         {
             return true;
         }
@@ -36,7 +36,7 @@ public class WeaponCategory
 
     public WeaponDetectionType GetMelee()
     {
-        if(eWeaponBlock == WeaponBlock.MELEE)
+        if (eWeaponBlock == WeaponBlock.MELEE)
         {
             return eWeaponDetectionType;
         }

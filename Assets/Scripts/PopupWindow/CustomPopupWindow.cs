@@ -33,7 +33,7 @@ public enum PopUpResult
 /// </summary>
 public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
 {
-   
+
     public static void Show(string _Title, string _Desc, Action<PopUpResult> _CallFunc)
     {
         Instance.ShowOnly(_Title, _Desc, _CallFunc);
@@ -58,7 +58,7 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
     public Button BG_Button = null;    // 배경 버튼
     public Button OK_Button = null;   // OK 버튼
     public Button Cancel_Button = null; // 취소 버튼 <<임시>>
-   
+
     public Button[] Buttons = null;     //버튼들
 
     private bool IsLockCloseButton => Instance.m_LockButton;
@@ -87,7 +87,7 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
         BG_Button.gameObject.SetActive(true);
         gameObject.SetActive(true);
         Title.text = _Title;
-        Desc.text = _Desc;       
+        Desc.text = _Desc;
     }
     void ShowOnly(string _Title, string _Desc, params ButtonEventInfo[] _ButtonEvent)
     {
@@ -127,7 +127,7 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
     {
         BG_Button.gameObject.SetActive(false);
         GetComponent<Small_Window>().Close();
-        CallBackFunc?.Invoke(OutResult);      
+        CallBackFunc?.Invoke(OutResult);
     }
 
     #region 버튼이벤트
@@ -148,19 +148,19 @@ public class CustomPopupWindow : SingleToneMonoBehaviour<CustomPopupWindow>
     #endregion
 
     void Awake()
-    {             
+    {
         InitButtonConfig();
         transform.gameObject.SetActive(false);
         BG_Button.gameObject.SetActive(false);
         SetInstance(this);
-       
+
     }
- 
+
     #endregion
 }
 
 public struct ButtonEventInfo
 {
-   public string ButtonName;
-   public Action ButtonAction;
+    public string ButtonName;
+    public Action ButtonAction;
 }

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Network.Data;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using Network.Data;
 using UnityEngine;
 
 public class Packet_Sender

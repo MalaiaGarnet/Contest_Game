@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 public class SlowMotion : MonoBehaviour
 {
@@ -19,11 +18,14 @@ public class SlowMotion : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2.0f);
         Time.timeScale = 1.0f;
+        yield return null;
     }
 
     IEnumerator SlowMotionSlowyOff(float _Time)
     {
         yield return new WaitForSecondsRealtime(2.0f);
-        Time.timeScale += _Time;
+        while (Time.timeScale < 1)
+            Time.timeScale += _Time;
+        yield return null;
     }
 }

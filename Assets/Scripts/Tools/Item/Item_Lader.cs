@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Security.AccessControl;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Item_Lader : Item
 {
@@ -15,7 +13,7 @@ public class Item_Lader : Item
         itemCount = 0;
         itemDesc = "가드가 주변에 있을 때 아웃라인으로 표시됨";
     }
-    public override void Item_Active() 
+    public override void Item_Active()
     {
         CharacterController owner = gameObject.GetComponentInParent<CharacterController>();
         Vector3 ownerpos = owner.m_MyProfile.Current_Pos;
@@ -46,7 +44,9 @@ public class Item_Lader : Item
         {
             victim.GetComponent<Renderer>().material.shader = Shader.Find(oriShader.name);
         }
-        
+
+
+
     }
 
     public override void Item_Passive()

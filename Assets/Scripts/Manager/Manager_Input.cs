@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Network.Data;
 using UnityEngine;
 using UnityEngine.Events;
-using Network.Data;
-
-using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class Event_Input_Projection : UnityEvent<bool> { }
 public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
@@ -83,25 +79,25 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     public void onTool_1(CallbackContext _context)
     {
         if (!ui.Can_Move())
-            return; 
+            return;
         m_Player_Input.Tool_1 = _context.ReadValueAsButton();
     }
     public void onTool_2(CallbackContext _context)
     {
         if (!ui.Can_Move())
-            return; 
+            return;
         m_Player_Input.Tool_2 = _context.ReadValueAsButton();
     }
     public void onTool_3(CallbackContext _context)
     {
         if (!ui.Can_Move())
-            return; 
+            return;
         m_Player_Input.Tool_3 = _context.ReadValueAsButton();
     }
     public void onTool_4(CallbackContext _context)
     {
         if (!ui.Can_Move())
-            return; 
+            return;
         m_Player_Input.Tool_4 = _context.ReadValueAsButton();
     }
     /// <summary>
