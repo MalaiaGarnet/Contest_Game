@@ -12,7 +12,7 @@
 
     public override void Item_Passive()
     {
-        // 라운드 종료
+        itemCount++;
 
     }
 }

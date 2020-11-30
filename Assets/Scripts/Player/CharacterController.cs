@@ -4,7 +4,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 /// <summary>버튼 트리거 이벤트(버튼명, 누름/뗌 여부)</summary>
 public class Event_Button_Triggered : UnityEvent<string, bool> { }
@@ -25,11 +27,10 @@ public class CharacterController : MonoBehaviour
 {
     // 입출력
     protected Manager_Input InputManager;   // 입력 관리자
-    private User_Input m_Output;       // 서버로부터 받은 입력값
+    private User_Input      m_Output;       // 서버로부터 받은 입력값
 
     [Header("네트워크/프로필")]
-    public User_Profile m_MyProfile;   // 캐릭터 프로필
-    private User_Profile m_Profile_Before; // 이전 입력값
+    public  User_Profile                m_MyProfile;   // 캐릭터 프로필
     private UnityAction<User_Profile[]> m_PlayerInputEvts; // 입력 수신 이벤트
     private UnityAction<Session_RoundData, User_Profile[]> m_PlayerUpdatePosEvts; // 위치 갱신 이벤트
     private UnityAction<UInt16, UInt16> m_PlayerDamageEvts; // 피해 이벤트
@@ -37,15 +38,15 @@ public class CharacterController : MonoBehaviour
 
     // 이벤트
     public Event_Button_Triggered e_Triggered = new Event_Button_Triggered();
-    public Event_Tool_Changed e_ToolChanged = new Event_Tool_Changed();
-    public Event_Damaged e_Damaged = new Event_Damaged();
-    public Event_Stunned e_Stunned = new Event_Stunned();
+    public Event_Tool_Changed     e_ToolChanged = new Event_Tool_Changed();
+    public Event_Damaged          e_Damaged = new Event_Damaged();
+    public Event_Stunned          e_Stunned = new Event_Stunned();
     public Event_RoleSkill_Toggle e_RoleSkill_Toggle = new Event_RoleSkill_Toggle();
 
     [Header("캐릭터 스탯")]
-    public int battery = 10000;
+    public int   battery = 10000;
     public float moveSpeed;
-    public bool m_Is_Stunned = false;
+    public bool  m_Is_Stunned = false;
 
     [Header("캐릭터 물리메테리얼")]
     public PhysicMaterial noFriction;     //프릭션 X
@@ -53,11 +54,11 @@ public class CharacterController : MonoBehaviour
 
     [Header("캐릭터 무기")]
     public Transform m_ToolAxis;
-    public Tool[] m_Tools = new Tool[4]; // 툴 리스트
+    public Tool[]    m_Tools = new Tool[4]; // 툴 리스트
 
     [Header("캐릭터 좌표")]
     public Transform m_CameraAxis;
-    public Vector3 m_Before_Position;
+    public Vector3   m_Before_Position;
     public const float ASCENDING_LIMIT = 0.6f;
 
     [CustomRange(0, 30.0f)] // 어라 생성자 그대로 가버리는데 이거;;
@@ -67,10 +68,7 @@ public class CharacterController : MonoBehaviour
     private float m_ViewAngle = 45f;
     private bool IsHit = false;
 
-
     Renderer[] m_Renderers;
-
-    private bool DDebug = true;
 
     IEnumerator Start()
     {
@@ -214,6 +212,17 @@ public class CharacterController : MonoBehaviour
         // 킹호작용!
         if (m_Output.Interact != _new_profile.User_Input.Interact)
             e_Triggered.Invoke("Interact", _new_profile.User_Input.Interact);
+
+        User_Profile client = Manager_Ingame.Instance.m_Client_Profile;
+
+        if (client.User_Input.Interact == _new_profile.User_Input.Interact)
+        {
+            if(client.Session_ID == _new_profile.Session_ID)
+            {
+                AcquireItem();
+            }
+        }
+
 
         bool debug_tool_change = false;
         if (Manager_Ingame.Instance.m_DebugMode)
@@ -473,6 +482,7 @@ public class CharacterController : MonoBehaviour
     public void AcquireItem()
     {
         Item item = FindViewInItem(); // 만약 아이템을 발견했다면 해당 아이템을 가져와서
+        Debug.Log("아이템명칭 : " + item.itemName + "," + "반환받은 객체이름 : " + item.name);
         if(item != null && Manager_Network.Instance != null) // 통신이 안끊겼고, 아이템일때
         {
             if(Manager_Ingame.Instance.m_Client_Profile.Session_ID == m_MyProfile.Session_ID) // 습득자랑 현재 내 세션아디가 일치한다면 쏘자.
@@ -502,52 +512,33 @@ public class CharacterController : MonoBehaviour
             if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
             {
                 // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
-                if (!DDebug)
+                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask) && InputManager.m_Player_Input.Interact)
                 {
-                    if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask) && InputManager.m_Player_Input.Interact)
-                    {
-                        Debug.Log("앗 아이템을 발견했다!");
-                        Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
-                        IsHit = true;
-                        return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
-                    }
-                    else
-                    {
-                        Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
-                        Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
-                        IsHit = false;
-                        return null;
-                    }
+                    Debug.Log("앗 아이템을 발견했다!");
+                    Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
+                    IsHit = true;
+                    return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
                 }
                 else
                 {
-                    if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask) && !m_MyProfile.User_Input.Interact)
-                    {
-                        Debug.Log("앗 아이템을 발견했다!");
-                        Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
-                        IsHit = true;
-                        return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
-                    }
-                    else
-                    {
-                        Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
-                        Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
-                        IsHit = false;
-                        return null;
-                    }
+                    Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                    Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
+                    IsHit = false;
+                    return null;
                 }
             }
             IsHit = false;
         }
         return null;
     }
-
-     private void OnDrawGizmosSelected()
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
      {
-         FindViewInItem();
+        FindViewInItem();
 
-         Handles.color = IsHit ? Color.cyan : Color.green;
-         Handles.DrawSolidArc(m_MyProfile.Current_Pos, Vector3.up, m_CameraAxis.forward, m_ViewAngle / 2, acquireDist);
-         Handles.DrawSolidArc(m_MyProfile.Current_Pos, Vector3.up, m_CameraAxis.forward, -m_ViewAngle / 2, acquireDist);
+        Handles.color = IsHit ? Color.cyan : Color.green;
+        Handles.DrawSolidArc(m_CameraAxis.position, Vector3.up, m_CameraAxis.forward, m_ViewAngle / 2, acquireDist);
+        Handles.DrawSolidArc(m_CameraAxis.position, Vector3.up, m_CameraAxis.forward, -m_ViewAngle / 2, acquireDist);
      }
+#endif
 }
