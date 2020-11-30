@@ -255,19 +255,23 @@ namespace Network.Data
     [Serializable]
     public struct Item_Data
     {
+        public int IID;
         public int OID;
         public Vector3 Position;
         public Vector3 Rotation;
 
         public void Read_Bytes(byte[] _data, ref int _place)
         {
+            IID = BitConverter.ToInt32(_data, _place);
+            _place += sizeof(int);
+
             OID = BitConverter.ToInt32(_data, _place);
             _place += sizeof(int);
 
             float x = BitConverter.ToSingle(_data, _place);
             _place += sizeof(float);
             float y = BitConverter.ToSingle(_data, _place);
-            _place += sizeof(float);
+            _place += sizeof(float); 
             float z = BitConverter.ToSingle(_data, _place);
             _place += sizeof(float);
             Position = new Vector3(x, y, z);
