@@ -94,4 +94,14 @@ public class Packet_Sender
 
         Manager_Packet.Instance.SendEnqueue(task);
     }
+
+    public static void Send_Item_Get(int _instance_id)
+    {
+        Task task = new Task();
+        UInt64 protocol = (UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.ITEM | (UInt64)PROTOCOL_INGAME.ITEM_GET;
+        task.buffer = Packet_Packer.PackPacket(ref task.datasize, protocol, _instance_id);
+        task.Encrypt(Manager_Network.Instance.m_Encryptor);
+
+        Manager_Packet.Instance.SendEnqueue(task);
+    }
 }

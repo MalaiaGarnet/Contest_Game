@@ -102,6 +102,29 @@ public class Packet_Packer
 
         return data;
     }
+    public static byte[] PackPacket(ref int _size, UInt64 _protocol, int _data)
+    {
+        byte[] data = new byte[1024];
+        int place = 0;
+
+        place += sizeof(int);
+
+        Buffer.BlockCopy(BitConverter.GetBytes(_protocol), 0, data, place, sizeof(UInt64));
+        place += sizeof(UInt64);
+        _size += sizeof(UInt64);
+
+        Buffer.BlockCopy(BitConverter.GetBytes(_data), 0, data, place, sizeof(int));
+        place += sizeof(int);
+        _size += sizeof(int);
+
+        place = 0;
+
+        Buffer.BlockCopy(BitConverter.GetBytes(_size), 0, data, place, sizeof(int));
+
+        _size += sizeof(int);
+
+        return data;
+    }
     public static byte[] PackPacket(ref int _size, UInt64 _protocol, UInt64 _x, UInt64 _y)
     {
         byte[] data = new byte[1024];

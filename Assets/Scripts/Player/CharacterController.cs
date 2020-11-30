@@ -211,18 +211,15 @@ public class CharacterController : MonoBehaviour
             e_Triggered.Invoke("Fire", _new_profile.User_Input.Fire);
         // 킹호작용!
         if (m_Output.Interact != _new_profile.User_Input.Interact)
+        {
             e_Triggered.Invoke("Interact", _new_profile.User_Input.Interact);
 
-        User_Profile client = Manager_Ingame.Instance.m_Client_Profile;
-
-        if (client.User_Input.Interact == _new_profile.User_Input.Interact)
-        {
-            if(client.Session_ID == _new_profile.Session_ID)
+            User_Profile client = Manager_Ingame.Instance.m_Client_Profile;
+            if (client.Session_ID == _new_profile.Session_ID)
             {
                 AcquireItem();
             }
         }
-
 
         bool debug_tool_change = false;
         if (Manager_Ingame.Instance.m_DebugMode)
@@ -514,14 +511,14 @@ public class CharacterController : MonoBehaviour
                 // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
                 if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask) && InputManager.m_Player_Input.Interact)
                 {
-                    Debug.Log("앗 아이템을 발견했다!");
+                    // Debug.Log("앗 아이템을 발견했다!");
                     Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
                     IsHit = true;
                     return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
                 }
                 else
                 {
-                    Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                    // Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
                     Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
                     IsHit = false;
                     return null;
