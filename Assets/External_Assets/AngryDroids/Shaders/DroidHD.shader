@@ -178,7 +178,7 @@ Shader "Project Droids/Droid HD"
 	}
 	
 	//If this subshader is used then something is OLD (really simple shader)
-	SubShader 
+	/*SubShader 
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
@@ -256,8 +256,8 @@ Shader "Project Droids/Droid HD"
 			}
 		ENDCG
 		}
-	}
+	}*/
 	
 	FallBack "Diffuse"
-	CustomEditor "DroidShaderEditor"
+	//CustomEditor "DroidShaderEditor"
 }

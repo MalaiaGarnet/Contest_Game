@@ -184,8 +184,9 @@ public class CharacterAnimator : MonoBehaviour
                 {
                     Debug.Log("(투명화중) 머티리얼 태그1 - " + mat.GetTag("RenderType", true));
 
-                    mat.shader = Shader.Find("Custom/Shader_Cloaking");
+                    mat.shader = Shader.Find("Custom/DisRander_Test");
                     MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
+                    MatShaderModifyr.ChangeBlendQueueType(mat, BlendMode.Transparent, RenderOrder.Transparent);
                     mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
                     Debug.Log("(투명화중) 머티리얼 태그2 - " + mat.GetTag("RenderType", true));
                 }
@@ -193,7 +194,7 @@ public class CharacterAnimator : MonoBehaviour
             }
             foreach (Material mat in m_RenderTextures)
             {
-                mat.shader = Shader.Find("Custom/Shader_Cloaking");
+                mat.shader = Shader.Find("Custom/DisRander_Test");
                 MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
                 mat.SetFloat("_Opacity", 0.0f);
             }
@@ -205,25 +206,32 @@ public class CharacterAnimator : MonoBehaviour
                 foreach (Material mat in m_RenderTextures)
                 {
                     // Debug.Log("(해제중) 머티리얼 태그1 - " + mat.GetTag("RenderType", true));
-
+                    mat.shader = Shader.Find("Custom/DisRander_Test");
+                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
+                    MatShaderModifyr.ChangeBlendQueueType(mat, BlendMode.Opaque, RenderOrder.Opaque);
                     mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
-                    if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+                    /*if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                     {
                         MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
                         mat.shader = Shader.Find("Project Droids/Droid HD");
-                    }
+                    }*/
+
+                   
                     // Debug.Log("(해제중) 머티리얼 태그2 - " + mat.GetTag("RenderType", true));
                 }
                 yield return new WaitForEndOfFrame();
             }
             foreach (Material mat in m_RenderTextures)
             {
+                mat.shader = Shader.Find("Custom/DisRander_Test");
+                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
+                MatShaderModifyr.ChangeBlendQueueType(mat, BlendMode.Opaque, RenderOrder.Opaque);
                 mat.SetFloat("_Opacity", 1.0f);
-                if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+                /* if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                 {
                     MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
                     mat.shader = Shader.Find("Project Droids/Droid HD");
-                }
+                }*/
             }
         }
         yield return null;

@@ -85,7 +85,7 @@
 			rimBrightness = pow(rimBrightness,_RimPow);
 			
 			o.Emission = mappingScreenColor * (1-_Opacity) + _RimColor * rimBrightness;
-			o.Alpha = _Opacity;
+			o.Alpha = 1;
 		}
 
 		// Lighting 커스텀 함수
@@ -93,8 +93,6 @@
 		{
 			return fixed4(s.Albedo * _Opacity * _LightColor0, 1);
 		}
-		
-
 
 		ENDCG
 	}
