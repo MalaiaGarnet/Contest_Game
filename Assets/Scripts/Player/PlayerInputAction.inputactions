@@ -92,6 +92,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Scoreboard",
+                    "type": "Button",
+                    "id": "882875d9-af42-4520-9f39-8bd2bf77e428",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -444,6 +452,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Role_Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c46c6f1b-78fa-4a84-978d-7e233d108980",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Scoreboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7e82fa62-9215-46e8-8b27-0f7938001fc1",
+                    "path": "<DualShockGamepad>/touchpadButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Scoreboard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -207,10 +207,10 @@ public class CharacterController : MonoBehaviour
     void Update_Profile(User_Profile _new_profile)
     {
         // 발싸!
-        if (m_Output.Fire != _new_profile.User_Input.Fire)
+        if (m_Output.Fire != _new_profile.User_Input.Fire && _new_profile.User_Input.Fire == true)
             e_Triggered.Invoke("Fire", _new_profile.User_Input.Fire);
         // 킹호작용!
-        if (m_Output.Interact != _new_profile.User_Input.Interact)
+        if (m_Output.Interact != _new_profile.User_Input.Interact && _new_profile.User_Input.Interact == true)
         {
             e_Triggered.Invoke("Interact", _new_profile.User_Input.Interact);
 

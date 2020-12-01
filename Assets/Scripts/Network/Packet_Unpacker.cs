@@ -230,6 +230,8 @@ public class Packet_Unpacker
         place += sizeof(UInt16);
         UInt64 time_left = BitConverter.ToUInt64(_data, place); // 라운드 데이터
         place += sizeof(UInt64);
+        _roundData.Current_Round = cur_round;
+        _roundData.Time_Left = time_left;
 
         UInt64 array_length = BitConverter.ToUInt64(_data, place); // 배열 길이 취득
         place += sizeof(UInt64);
