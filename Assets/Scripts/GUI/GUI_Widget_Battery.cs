@@ -11,8 +11,10 @@ public class GUI_Widget_Battery : GUI_Widget_Base
             return;
 
         battery = m_Player.m_MyProfile.Battery;
-        m_Text.text = "";
+        m_Text.text = "" + battery;
+        /*
         for (int i = 0; i < 10000; i += 500)
             m_Text.text += i <= battery ? "■" : "□";
+        */
     }
 }

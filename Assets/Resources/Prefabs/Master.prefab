@@ -227,6 +227,21 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f5db5a37-bb06-4671-91db-884f78f6858c
     m_ActionName: CharacterControl/Role_Skill[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7031361481819463496}
+        m_MethodName: onScoreboard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 882875d9-af42-4520-9f39-8bd2bf77e428
+    m_ActionName: CharacterControl/Scoreboard[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CharacterControl
@@ -337,6 +352,7 @@ MonoBehaviour:
     Tool_3: 0
     Tool_4: 0
   m_Profiles: []
+  m_Items: []
   m_Heartbeat_Wait: 0
   m_Game_Started: 0
   m_MapID: 0

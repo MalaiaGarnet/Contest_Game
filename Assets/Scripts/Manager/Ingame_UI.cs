@@ -23,6 +23,7 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
     public GameObject m_Dead_Indicator;
     public GameObject m_Stun_Indicator;
     public GUI_Menu m_Menu;
+    public GameObject m_Scoreboard;
 
     public Event_UI_Initialize e_Initialize = new Event_UI_Initialize();
 
@@ -47,6 +48,7 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
         m_Dead_Indicator.SetActive(false);
         m_Stun_Indicator.SetActive(false);
         m_Menu.Activate(false);
+        m_Scoreboard.SetActive(false);
         Lock_Cursor(false);
     }
 

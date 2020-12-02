@@ -105,6 +105,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Scoreboard"",
+                    ""type"": ""Button"",
+                    ""id"": ""882875d9-af42-4520-9f39-8bd2bf77e428"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -459,6 +467,28 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Role_Skill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c46c6f1b-78fa-4a84-978d-7e233d108980"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Scoreboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e82fa62-9215-46e8-8b27-0f7938001fc1"",
+                    ""path"": ""<DualShockGamepad>/touchpadButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Scoreboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -538,6 +568,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_CharacterControl_Fire = m_CharacterControl.FindAction("Fire", throwIfNotFound: true);
         m_CharacterControl_Minimap = m_CharacterControl.FindAction("Minimap", throwIfNotFound: true);
         m_CharacterControl_Role_Skill = m_CharacterControl.FindAction("Role_Skill", throwIfNotFound: true);
+        m_CharacterControl_Scoreboard = m_CharacterControl.FindAction("Scoreboard", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_Force_Stun = m_Debug.FindAction("Force_Stun", throwIfNotFound: true);
@@ -601,6 +632,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_CharacterControl_Fire;
     private readonly InputAction m_CharacterControl_Minimap;
     private readonly InputAction m_CharacterControl_Role_Skill;
+    private readonly InputAction m_CharacterControl_Scoreboard;
     public struct CharacterControlActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -616,6 +648,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @Fire => m_Wrapper.m_CharacterControl_Fire;
         public InputAction @Minimap => m_Wrapper.m_CharacterControl_Minimap;
         public InputAction @Role_Skill => m_Wrapper.m_CharacterControl_Role_Skill;
+        public InputAction @Scoreboard => m_Wrapper.m_CharacterControl_Scoreboard;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -658,6 +691,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Role_Skill.started -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnRole_Skill;
                 @Role_Skill.performed -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnRole_Skill;
                 @Role_Skill.canceled -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnRole_Skill;
+                @Scoreboard.started -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnScoreboard;
+                @Scoreboard.performed -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnScoreboard;
+                @Scoreboard.canceled -= m_Wrapper.m_CharacterControlActionsCallbackInterface.OnScoreboard;
             }
             m_Wrapper.m_CharacterControlActionsCallbackInterface = instance;
             if (instance != null)
@@ -695,6 +731,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Role_Skill.started += instance.OnRole_Skill;
                 @Role_Skill.performed += instance.OnRole_Skill;
                 @Role_Skill.canceled += instance.OnRole_Skill;
+                @Scoreboard.started += instance.OnScoreboard;
+                @Scoreboard.performed += instance.OnScoreboard;
+                @Scoreboard.canceled += instance.OnScoreboard;
             }
         }
     }
@@ -763,6 +802,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnMinimap(InputAction.CallbackContext context);
         void OnRole_Skill(InputAction.CallbackContext context);
+        void OnScoreboard(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {

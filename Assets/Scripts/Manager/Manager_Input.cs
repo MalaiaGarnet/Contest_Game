@@ -33,6 +33,14 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         }
     }
 
+    void Update_Profile()
+    {
+        User_Profile[] profiles = new User_Profile[1];
+        Manager_Ingame.Instance.m_Client_Profile.User_Input = m_Player_Input;
+        profiles[0] = Manager_Ingame.Instance.m_Client_Profile;
+        Manager_Network.Instance.e_PlayerInput.Invoke(profiles);
+    }
+
     void Update_MouseView()
     {
         Vector2 view_vec = Mouse.current.delta.ReadValue();
@@ -51,6 +59,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
             return;
         m_Player_Input.Move_X = _context.ReadValue<Vector2>().x;
         m_Player_Input.Move_Y = _context.ReadValue<Vector2>().y;
+
+        Update_Profile();
     }
     /// <summary>
     /// 시점 갱신
@@ -130,6 +140,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         if (!ui.Can_Move())
             return;
         m_Player_Input.Fire = _context.ReadValueAsButton();
+
+        // Update_Profile();
     }
     /// <summary>
     /// 후로젝숀
@@ -140,6 +152,8 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         if (!ui.Can_Move())
             return;
         e_Input_Projection.Invoke(_context.ReadValueAsButton());
+
+        Update_Profile();
     }
     /// <summary>
     /// 메뉴
@@ -150,4 +164,15 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
         if (Manager_Ingame.Instance.m_Game_Started)
             Ingame_UI.Instance.m_Menu.Toggle();
     }
+    
+    /// <summary>
+    /// 스코어보드
+    /// </summary>
+    /// <param name="_context"></param>
+    public void onScoreboard(CallbackContext _context)
+    {
+        if (Manager_Ingame.Instance.m_Game_Started)
+            Ingame_UI.Instance.m_Scoreboard.SetActive(_context.ReadValueAsButton());
+    }
+
 }
