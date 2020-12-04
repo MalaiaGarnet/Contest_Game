@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_RogueDrone
-  m_Shader: {fileID: 4800000, guid: 548d892daeff1f34b8e27e12140a66d8, type: 3}
+  m_Shader: {fileID: 4800000, guid: 0be8a17c557287542806aea94b7dd946, type: 3}
   m_ShaderKeywords: _AOMAP _DETAILMAP _EMISSION _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
     _SPECGLOSSMAP _VERTEXCOLOR
   m_LightmapFlags: 2
@@ -68,6 +68,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 7cdd78ef856bd2d4eb7a1d3711f8448d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -96,6 +100,7 @@ Material:
     - _BumpScale: 1
     - _BurnLevel: 0.159
     - _Cull: 2
+    - _Cut: 0
     - _Cutoff: 0.5
     - _DeformIntense: 0
     - _DeformIntensity: 0
@@ -117,6 +122,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Opacity: 1
+    - _OutThinkness: 1.15
     - _Parallax: 0.02
     - _Power: 4.5
     - _RimPow: 1
@@ -140,5 +146,6 @@ Material:
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 1, g: 0, b: 0.07378197, a: 1}
     - _MainColor: {r: 0.0699537, g: 0.07943524, b: 0.11320752, a: 1}
+    - _OutColor: {r: 0.4392157, g: 1.1294118, b: 16, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0, g: 0, b: 0, a: 1}

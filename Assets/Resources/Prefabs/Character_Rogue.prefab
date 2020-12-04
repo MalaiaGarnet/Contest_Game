@@ -2166,7 +2166,7 @@ MonoBehaviour:
   m_FootSound: {fileID: 8300000, guid: 20c4ab4d5bee56642a48c4977eb169e6, type: 3}
   m_LeftFoot: {fileID: 4789042555111826463}
   m_RightFoot: {fileID: 49420812799170063}
-  m_Torso: {fileID: 1806674500990626270}
+  m_Torso: {fileID: 1602851554124860541}
   m_Drone_FrontFoot: {fileID: 1648368502592574151}
   m_Drone_BackFoot: {fileID: 7694660863980975353}
 --- !u!1 &815687957390699938
@@ -2264,7 +2264,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 33f6b2c5f44897141abbb2c1bb0abee3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3233,6 +3233,7 @@ MonoBehaviour:
   m_RenderTextures: []
   m_Head: {fileID: 815687957390709948}
   m_CamAxis: {fileID: 5870439392837528171}
+  CloakingSound: {fileID: 1806674500990626270}
 --- !u!1 &5870439392097707752
 GameObject:
   m_ObjectHideFlags: 0
@@ -3787,6 +3788,12 @@ PrefabInstance:
 --- !u!4 &6511631358313102095 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8248394010474033556, guid: 8a2985ed4aa700747bf2a642ef80c210,
+    type: 3}
+  m_PrefabInstance: {fileID: 2892956512886999707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1602851554124860541 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4475346997255325414, guid: 8a2985ed4aa700747bf2a642ef80c210,
     type: 3}
   m_PrefabInstance: {fileID: 2892956512886999707}
   m_PrefabAsset: {fileID: 0}

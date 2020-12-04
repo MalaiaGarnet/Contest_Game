@@ -31,6 +31,9 @@ public class CharacterAnimator : MonoBehaviour
     bool m_Use_Role_Skill = false;
     Vector3 m_Cam_OriginPos;
 
+    [Header("임시 캐릭터 효과음")]
+    public AudioSource CloakingSound;
+
     void Start()
     {
         m_Cam_OriginPos = m_CamAxis.transform.localPosition;
@@ -167,73 +170,88 @@ public class CharacterAnimator : MonoBehaviour
         else
             StartCoroutine(Role_Skill_Process_Rogue());
     }
+
     IEnumerator Role_Skill_Process_Guard()
     {
         Debug.Log("가드 스킬 토글 - " + m_Use_Role_Skill);
         yield return null;
     }
+
     IEnumerator Role_Skill_Process_Rogue()
     {
         Debug.Log("로그 스킬 토글 - " + m_Use_Role_Skill);
-
+        Material mat = transform.GetComponent<Renderer>().material;
         if (m_Use_Role_Skill)
         {
-            for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+            CloakingSound.PlayOneShot(CloakingSound.clip);
+           
+            mat.shader = Shader.Find("Custom/Cloaking");
+            for(float i = 0.0f; i <=1.0f; i += Time.smoothDeltaTime)
             {
-                foreach (Material mat in m_RenderTextures)
-                {
-                    Debug.Log("(투명화중) 머티리얼 태그1 - " + mat.GetTag("RenderType", true));
-
-                    mat.shader = Shader.Find("Custom/DisRander_Test");
-                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-                    MatShaderModifyr.ChangeBlendQueueType(mat, BlendMode.Transparent, RenderOrder.Transparent);
-                    mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
-                    Debug.Log("(투명화중) 머티리얼 태그2 - " + mat.GetTag("RenderType", true));
-                }
-                yield return new WaitForEndOfFrame();
+                mat.SetFloat("_Cut", i);
+                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
             }
-            foreach (Material mat in m_RenderTextures)
-            {
-                mat.shader = Shader.Find("Custom/DisRander_Test");
-                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-                mat.SetFloat("_Opacity", 0.0f);
-            }
+            yield return new WaitForEndOfFrame();
         }
         else
         {
-            for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+            CloakingSound.PlayOneShot(CloakingSound.clip);
+            for (float i = 0.0f; i <= 1.0f; i += Time.smoothDeltaTime)
             {
-                foreach (Material mat in m_RenderTextures)
-                {
-                    // Debug.Log("(해제중) 머티리얼 태그1 - " + mat.GetTag("RenderType", true));
-                    mat.shader = Shader.Find("Custom/DisRander_Test");
-                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
-                    MatShaderModifyr.ChangeBlendQueueType(mat, BlendMode.Opaque, RenderOrder.Opaque);
-                    mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
-                    /*if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
-                    {
-                        MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
-                        mat.shader = Shader.Find("Project Droids/Droid HD");
-                    }*/
-
-                   
-                    // Debug.Log("(해제중) 머티리얼 태그2 - " + mat.GetTag("RenderType", true));
-                }
-                yield return new WaitForEndOfFrame();
+                mat.SetFloat("_Cut", Mathf.Min(0.0f, 1.0f - i));
+                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));     
+            
             }
-            foreach (Material mat in m_RenderTextures)
-            {
-                mat.shader = Shader.Find("Custom/DisRander_Test");
-                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
-                MatShaderModifyr.ChangeBlendQueueType(mat, BlendMode.Opaque, RenderOrder.Opaque);
-                mat.SetFloat("_Opacity", 1.0f);
-                /* if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
-                {
-                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
-                    mat.shader = Shader.Find("Project Droids/Droid HD");
-                }*/
-            }
+            mat.shader = Shader.Find("Project Droids/Droid HD");
         }
         yield return null;
     }
+
+    /*IEnumerator void Cloaking()
+    {
+        for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+        {
+            foreach (Material mat in m_RenderTextures)
+            {
+                mat.shader = Shader.Find("Custom/Cloaking");
+                mat.SetFloat("_Cut", Mathf.Min(1.0f, i));
+                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        foreach (Material mat in m_RenderTextures)
+        {
+            mat.shader = Shader.Find("Custom/Cloaking");
+            mat.SetFloat("_Opacity", 0.0f);
+        }
+    }*/
+
+    /*IEnumerator void RestroreFromCloaking()
+    {
+        for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+        {
+            foreach (Material mat in m_RenderTextures)
+            {
+                mat.SetFloat("_Cut", Mathf.Max(0.0f, 1.0f - i));
+                mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
+                //if(mat.GetFloat("_Cut")
+                if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+                {
+                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
+                    mat.shader = Shader.Find("Project Droids/Droid HD");
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        foreach (Material mat in m_RenderTextures)
+        {
+            mat.SetFloat("_Cut", 0.0f);
+            mat.SetFloat("_Opacity", 1.0f);
+            if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+            {
+                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
+                mat.shader = Shader.Find("Project Droids/Droid HD");
+            }
+        }
+    }*/
 }

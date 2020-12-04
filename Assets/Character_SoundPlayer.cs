@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO : 요기 조만간 수정좀 해봐야할거같네요
 public class Character_SoundPlayer : MonoBehaviour
 {
     public AudioClip m_FootSound;
