@@ -1,78 +1,117 @@
 ﻿Shader "Custom/Cloaking"
 {
-    Properties
-    {
-        _MainTex("Albedo Texture", 2D) = "while"{}
-        _NormalMap("Normal Map", 2D) = "bump" {}
+	Properties
+	{
+		_Color ("Primary Color (R)", Color) = (1,1,1,0.5)
+		_Color1 ("Secondary Color (G)", Color) = (0.5,0.5,0.5,0.5)
+		_Color2 ("Tretiary Color (B)", Color) = (0,0,0,0.5)
+		_MainTex ("Fallback (RGB)", 2D) = "white" {}
+		_MaskTex ("Mask", 2D) = "black" {}
+		_BumpMap ("Normals", 2D) = "" {}
+		_SpecMap ("Specular", 2D) = "" {}
+		_AOMap ("Ambient Occlusion", 2D) = "" {}
+		_AOScale ("Ambient Occlusion Intensity", Range(1.0,10.0)) = 1
+		_DetailMap ("Pattern (R)", 2D) = "" {}
+        _Power("Vertex Color Intensity", Range(1.0,16.0) ) = 2.0
+        [HDR]_GlowColor ("Self-Illumination Color", Color) = (0,0,0,1)
+		_DamageColor ("Damage Color", Color) = (1,1,1,0)
+		_BurnLevel("Burn Level", Range(0.0,1.0)) = 0.0
+		_Opacity ("Opacity", Range(0.0, 1.0)) = 0.5
+		[HDR]_OutColor("OutColor", Color) = (1,1,1,1)
+		_NoiseTex("Noise Texture", 2D) = "white"{}
+		_OutThinkness("OutThinkness", Range(0, 2.0)) = 1.15
+		_Cut("Cut", Range(0.0, 1.0)) = 0.0
+	}
 
-        _Opacity("Opacity", Range(0, 1)) = 0.1 // 투명도
-        _DeformIntensity("Deform by Normal Intensity", Range(0, 3)) = 1 // 왜곡
+	SubShader {
+		Tags { "RenderType"="Transparent" "Queue" = "Transparent"  }
 
-        _RimPow("Rim Power", int) = 3 // 외곽
-        _RimColor("Rim Color", Color) = (0,1,1,1) // RGBA, 외곽 색깔
-    }
-    SubShader
-    {
-        Tags { "Queue" = "Transparent" "RenderType"="Opaque" }
-       // ZBuffer를 잠시 비활성화
-        zwrite off 
+		CGPROGRAM
+		#pragma surface surf StandardSpecular alpha:fade
+		//#pragma surface surf Lambert alpha:fade
+		#pragma target 3.0
+		#pragma shader_feature _NORMALMAP
+		#pragma shader_feature _DETAILMAP
+		#pragma shader_feature _AOMAP
+		#pragma shader_feature _VERTEXCOLOR
 
-        GrabPass {} // 아래 대상을 송출하기전에, 배경을 따오는것
-        CGPROGRAM
-        #pragma surface surf CloakingLight noambient novertexlights noforwardadd 
-        
-        // Use shader model 3.0 target, to get nicer looking lighting
-        #pragma target 3.0
+		fixed4 _Color;
+		fixed4 _Color1;
+		fixed4 _Color2;
+		fixed4 _GlowColor;
+		fixed4 _DamageColor;
+		fixed _BurnLevel;
+		float _Opacity;
 
-        sampler2D _MainTex;
-        sampler2D _GrabTexture; // 따올 텍스쳐 (GrabPass's Texture)
-        sampler2D _NormalMap;
+		sampler2D _MaskTex;
+		sampler2D _SpecMap;
+#ifdef _NORMALMAP
+        sampler2D _BumpMap;
+#endif
+#ifdef _DETAILMAP
+        sampler2D _DetailMap;
+#endif
+#ifdef _AOMAP
+	    sampler2D _AOMap;
+		fixed _AOScale;
+#endif
+		sampler2D _NoiseTex;
+		float4	  _OutColor;
+		float	  _OutThinkness;
+		float	  _Cut;
 
-        float _DeformIntensity;
-        float _Opacity;
-        float _RimPow;
-        fixed3 _RimColor;
 
-        struct Input
-        {
-            float2 uv_MainTex;
-            float2 uv_NormalMap;
+		struct Input {
+			float2 uv_MainTex;
+			float2 uv_NoiseTex;
+#ifdef _DETAILMAP
+			float2 uv2_DetailMap;
+#endif
+			float3 viewDir;
+		};
 
-            float4 ScreenPos;    
-            float3 ViewDir; // 카메라방향
-        };
+        float _Power;
+
+		void surf (Input IN, inout SurfaceOutputStandardSpecular o)
+		{
+			fixed4 col = fixed4(0,0,0,0);
+			fixed4 mask = tex2D (_MaskTex, IN.uv_MainTex);
+			fixed4 spec = tex2D (_SpecMap, IN.uv_MainTex);
+#ifdef _DETAILMAP
+			fixed4 patt = tex2D (_DetailMap, IN.uv2_DetailMap);
+			_Color *= patt;
+#endif
+			col += _Color * mask.r;
+			col += _Color1 * mask.g;
+			col += _Color2 * mask.b;
+
+			o.Albedo = col.rgb * (1 - _BurnLevel);
+			o.Smoothness = col.a * (1 - _BurnLevel);
+			o.Specular = spec.g * (1 - _BurnLevel);
 
 
-        void surf (Input _In, inout SurfaceOutput o)
-        {
-          o.Normal = UnpackNormal(tex2D(_NormalMap, _In.uv_NormalMap));
-          
-          float4 uv_color = tex2D(_MainTex, _In.uv_MainTex);
-        
-          float2 uv_Screen = _In.ScreenPos.xy / _In.ScreenPos.w;
+#ifdef _VERTEXCOLOR
+			o.Albedo *= col.rgb * _Power;
+			o.Specular *= col.rgb;
+#endif
 
-          fixed3 mappingScreenColor = tex2D(_GrabTexture, uv_Screen + o.Normal.xy * _DeformIntensity);
-          
-          float rimBrightness = 1 - saturate(dot(_In.ViewDir, o.Normal)); // 비교
+#ifdef _AOMAP
+			fixed4 ao = tex2D (_AOMap, IN.uv_MainTex);
+			o.Albedo *= ao * _AOScale;
+#endif
 
-          rimBrightness = pow(rimBrightness, _RimPow);
+#ifdef _NORMALMAP
+            o.Normal = UnpackNormal(tex2D (_BumpMap, IN.uv_MainTex));
+#endif
+			float4 noise = tex2D(_NoiseTex, IN.uv_NoiseTex);
+			float alpha = step(_Cut, noise.r);
+			float outline = step(noise.r, _Cut * _OutThinkness);
 
-          o.Emission = mappingScreenColor * (1 - _Opacity) + _RimColor * rimBrightness;
-
-          o.Albedo = uv_color.rgb;
-        }
-        // 위의 선언한 CloakingLight 구현부
-        /*
-         *
-         *  @param s -> 빛을 제외한 surf 함수 처리된 결과 픽셀
-         *  @param _LightDir -> 빛의 방향
-         *  @param _Brightness -> 빛의 세기
-         */
-        fixed4 LightingCloakingLight(SurfaceOutput s, float3 _LightDir, float _Brightness)
-        {
-            return fixed4(s.Albedo * _Opacity * _LightColor0, 1);
-        }
-        ENDCG
-    }
-    FallBack "Diffuse"
+			o.Albedo = col.rgb;
+			o.Emission = (outline * _OutColor.rgb) + (col.rgb * mask.rgb) + (clamp((_GlowColor.rgb * mask.a * _GlowColor.a + _DamageColor.rgb * _DamageColor.a), fixed3(0,0,0), fixed3(1,1,1)) * (1 - _BurnLevel)) * _Opacity;
+            o.Alpha = alpha * _Opacity;
+		}
+		ENDCG
+	}
+	FallBack "Diffuse"
 }

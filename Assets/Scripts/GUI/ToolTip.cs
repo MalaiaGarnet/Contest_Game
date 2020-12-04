@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 using TMPro;
 using System;
-using System.Threading.Tasks; 
+using System.Collections;
+using System.Threading.Tasks;
 
 namespace Greyzone.GUI
 {
@@ -20,19 +21,6 @@ namespace Greyzone.GUI
 
         [Header("소리")]
         public AudioSource tooltipSound;
-
-        // Use this for initialization
-        void Start()
-        {
-            
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
         public void ShowMessage(MessageStyle _MsgStyle)
         {
             switch(_MsgStyle)
@@ -42,9 +30,39 @@ namespace Greyzone.GUI
                 case MessageStyle.ON_HEAD_MSG:
                     break;
                 case MessageStyle.ON_SCREEN_UP_MSG:
-                    break;
+                    break;                 
             }
         }
+
+        public void ViewSideInItemMessage(Item _Item, Vector3 _PlayerPos, float _Dist)
+        {
+            transform.localPosition = _Item.transform.localPosition;
+
+            msg_TMP.text = _Item.itemName + "\n\n" + "습득하기";
+
+            StartCoroutine(UpdateItemMessagePos(_Item, _PlayerPos, _Dist));     
+        }
+
+        IEnumerator UpdateItemMessagePos(Item _Item, Vector3 _PlayerPos, float _Dist)
+        {
+            yield return new WaitForSeconds(0.5f);
+            while (true)
+            {
+                if (Vector3.Distance(_PlayerPos, _Item.transform.position) < _Dist)
+                {
+                    this.gameObject.SetActive(true);
+                    //tooltipSound.PlayOneShot(tooltipSound.clip);
+                    yield return new WaitForSeconds(0.5f);
+                }
+                else
+                {
+                    this.gameObject.SetActive(false);
+                    break;
+                }
+            }
+            
+        }
+
 
         /// <summary>
         /// 머리위에 메시지를 띄웁니다.

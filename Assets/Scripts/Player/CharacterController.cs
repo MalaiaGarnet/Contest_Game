@@ -7,6 +7,7 @@ using UnityEngine.Events;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using Greyzone.GUI;
 
 /// <summary>버튼 트리거 이벤트(버튼명, 누름/뗌 여부)</summary>
 public class Event_Button_Triggered : UnityEvent<string, bool> { }
@@ -18,6 +19,8 @@ public class Event_Damaged : UnityEvent<int> { }
 public class Event_Stunned : UnityEvent<int> { }
 /// <summary>스턴 이벤트</summary>
 public class Event_RoleSkill_Toggle : UnityEvent { }
+
+public class Event_SearchItem : UnityEvent { }
 
 /// <summary>
 /// 200913 주현킴
@@ -35,6 +38,7 @@ public class CharacterController : MonoBehaviour
     private UnityAction<Session_RoundData, User_Profile[]> m_PlayerUpdatePosEvts; // 위치 갱신 이벤트
     private UnityAction<UInt16, UInt16> m_PlayerDamageEvts; // 피해 이벤트
     private UnityAction<UInt16, UInt16> m_PlayerStunEvts; // 스턴 이벤트
+    private UnityAction                 m_SearchItem;
 
     // 이벤트
     public Event_Button_Triggered e_Triggered = new Event_Button_Triggered();
@@ -42,6 +46,7 @@ public class CharacterController : MonoBehaviour
     public Event_Damaged          e_Damaged = new Event_Damaged();
     public Event_Stunned          e_Stunned = new Event_Stunned();
     public Event_RoleSkill_Toggle e_RoleSkill_Toggle = new Event_RoleSkill_Toggle();
+    public Event_SearchItem       e_SerachItem = new Event_SearchItem();
 
     [Header("캐릭터 스탯")]
     public int   battery = 10000;
@@ -82,6 +87,8 @@ public class CharacterController : MonoBehaviour
         m_PlayerUpdatePosEvts = new UnityAction<Session_RoundData, User_Profile[]>(When_Player_UpdatePosition);
         m_PlayerDamageEvts = new UnityAction<ushort, ushort>(Damage);
         m_PlayerStunEvts = new UnityAction<ushort, ushort>(Stun);
+        m_SearchItem = new UnityAction(FindOnFieldItem);
+
         if (Manager_Network.Instance == null)
         {
             // 네트워크 매니저 없음 -> 로컬 디버그 모드
@@ -528,6 +535,52 @@ public class CharacterController : MonoBehaviour
         }
         return null;
     }
+
+    Item FindViewInNoPressItem()
+    {
+        RaycastHit hitinfo;
+        m_DotValue = Mathf.Cos(Mathf.Deg2Rad * (m_ViewAngle / 2)); // Dot값 부채꼴 형태로 구하기
+        int mask = LayerMask.NameToLayer("Item");
+        Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, mask); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
+        foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
+        {
+            Vector3 hitPos = hits.transform.position;
+            Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized;
+
+            float dot = Vector3.Dot(dir, m_CameraAxis.forward);
+
+            if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
+            {
+                // 중간 장애물 없이 아이템을 정말 발견했다
+                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask))
+                {
+                    // Debug.Log("앗 아이템을 발견했다!");
+                    Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
+                    return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
+                }
+                else
+                {
+                    // Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                    Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
+                    IsHit = false;
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
+    void FindOnFieldItem()
+    {     
+        Item item = FindViewInNoPressItem();
+        if(item != null)
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.ViewSideInItemMessage(item, m_MyProfile.Current_Pos, acquireDist);
+            e_SerachItem.Invoke();
+        }
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
      {

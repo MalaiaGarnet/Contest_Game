@@ -31,8 +31,6 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
     public ushort weapon_uid = 5001;
     private bool m_ThiefShotAble = true;
 
-    private List<Material> m_TestMats = new List<Material>();
-
 
     public AnimationClip Get_Aim_Anim()
     {
@@ -51,16 +49,11 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
     private void Start()
     {
-        if (m_IsDebug)
-        {
-            foreach (MeshRenderer mr in GetComponentsInParent<MeshRenderer>())
-            {
-                if (mr.gameObject.layer == LayerMask.NameToLayer("Player"))
-                    m_TestMats.Add(mr.material);
-            }
-        }
         if (Manager_Network.Instance != null)
+        {
             Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));
+            
+        }
     }
     public void RestoreThiefShotAble()
     {
@@ -74,27 +67,19 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
         CharacterController attacker = GetComponentInParent<CharacterController>();
 
-        if (!attacker.IsGuard() && !m_ThiefShotAble)
+        if (!m_ThiefShotAble && !attacker.IsGuard())
             return;
 
         // This Add HitScan Logic
         Vector3 fwdDir = attacker.m_CameraAxis.forward;
 
-
         List<UInt16> victim_IDs = new List<UInt16>();
         List<Vector3> impact_Pos = new List<Vector3>();
 
-
         sfx_Fire.PlayOneShot(sfx_Fire.clip); // Play Sound
 
-        /*if (m_IsDebug)
-        {
-            foreach (Material mat in m_TestMats)
-            {
-                mat.shader = Shader.Find("Custom/Shader_Cloaking");
-                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-            }
-        }*/
+        if(m_IsDebug)
+            AbilityTest(_Press : _pressed);
 
         pelletTrail.pellet = pelletInfo; // 펠릿트레일의 펠릿에 커스텀한 펠릿정보를 보내주자.
 
@@ -124,11 +109,38 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
         if (!m_IsDebug)
         {
-            if (!attacker.IsGuard() && m_ThiefShotAble) // 샷 제한
+            if (m_ThiefShotAble && !attacker.IsGuard()) // 샷 제한
             {
                 m_ThiefShotAble = false;
-                // 시각적으로 뭔갈 띄워보면 좋을거같다.       
             }
+        }
+        else
+        {
+            m_ThiefShotAble = true;
+        }
+    }
+
+
+    void AbilityTest(bool _Press)
+    {
+        Material mat = GetComponentInChildren<Renderer>().material;
+        if (_Press)
+        {         
+            mat.shader = Shader.Find("Custom/Cloaking");
+            for(float i = 0.0f; i <=1.0f; i += Time.smoothDeltaTime)
+            {
+                mat.SetFloat("_Cut", i);
+                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
+            }
+        }
+        else
+        {
+            for (float i = 0.0f; i <= 1.0f; i += Time.smoothDeltaTime)
+            {
+                mat.SetFloat("_Cut", Mathf.Min(0.0f, 1.0f - i));
+                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));              
+            }
+            mat.shader = Shader.Find("Project Droids/Droid HD");
         }
     }
 
@@ -159,19 +171,10 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
     public override void onInteract(bool _pressed)
     {
-        /*if (m_IsDebug)
-        {
-            foreach (Material mat in m_TestMats)
-            {
-                mat.shader = Shader.Find("Project Droids / Droid HD");
-                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
-            }
-        }*/
     }
 
     void FixedUpdate()
     {
         now_pos = gunMuzzle.transform.position;
-        //Debug.Log("현재 총구 실시간 위치 : " +  now_pos);
     }
 }

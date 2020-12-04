@@ -13,6 +13,5 @@
     public override void Item_Passive()
     {
         itemCount++;
-
     }
 }
