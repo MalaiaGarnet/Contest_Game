@@ -1,4 +1,5 @@
 ﻿using Network.Data;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -129,7 +130,19 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     {
         if (!ui.Can_Move())
             return;
-        m_Player_Input.Role_Skill = _context.ReadValueAsButton();
+
+        if (m_Player_Input.Role_Skill != _context.ReadValueAsButton())
+        {
+            m_Player_Input.Role_Skill = _context.ReadValueAsButton();
+            if (Manager_Ingame.Instance.m_DebugMode)
+                return;
+
+            if (m_Player_Input.Role_Skill)
+            {
+                UInt64 protocol = (UInt64)PROTOCOL.MNG_INGAME | (UInt64)PROTOCOL_INGAME.SKILL | (UInt64)PROTOCOL_INGAME.SKILL_QUSTION;
+                Packet_Sender.Send_Protocol(protocol);
+            }
+        }
     }
 
     /// <summary>
