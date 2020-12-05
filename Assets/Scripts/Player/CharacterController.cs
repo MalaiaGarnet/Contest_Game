@@ -17,8 +17,8 @@ public class Event_Tool_Changed : UnityEvent<int> { }
 public class Event_Damaged : UnityEvent<int> { }
 /// <summary>스턴 이벤트</summary>
 public class Event_Stunned : UnityEvent<int> { }
-/// <summary>스턴 이벤트</summary>
-public class Event_RoleSkill_Toggle : UnityEvent { }
+/// <summary>스킬 이벤트</summary>
+public class Event_RoleSkill_Toggle : UnityEvent<bool> { }
 
 public class Event_SearchItem : UnityEvent { }
 
@@ -247,8 +247,8 @@ public class CharacterController : MonoBehaviour
         }
 
         // 특수 기술!
-        if (m_Output.Role_Skill != _new_profile.User_Input.Role_Skill && m_Output.Role_Skill == true)
-            e_RoleSkill_Toggle.Invoke();
+        if (m_MyProfile.m_Using_Skill != _new_profile.m_Using_Skill)
+            e_RoleSkill_Toggle.Invoke(_new_profile.m_Using_Skill);
 
         m_MyProfile = _new_profile;
         m_Output = _new_profile.User_Input;

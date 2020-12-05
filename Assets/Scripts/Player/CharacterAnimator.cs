@@ -162,9 +162,9 @@ public class CharacterAnimator : MonoBehaviour
         yield return null;
     }
 
-    void When_Role_Skill_Toggle()
+    void When_Role_Skill_Toggle(bool _enable)
     {
-        m_Use_Role_Skill = !m_Use_Role_Skill;
+        m_Use_Role_Skill = _enable;
         if (pc.m_MyProfile.Role_Index == 1)
             StartCoroutine(Role_Skill_Process_Guard());
         else
