@@ -35,6 +35,9 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 
     void Update_Profile()
     {
+        if (Manager_Ingame.Instance.m_DebugMode)
+            return;
+
         User_Profile[] profiles = new User_Profile[1];
         Manager_Ingame.Instance.m_Client_Profile.User_Input = m_Player_Input;
         profiles[0] = Manager_Ingame.Instance.m_Client_Profile;
@@ -88,24 +91,32 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
 
     public void onTool_1(CallbackContext _context)
     {
+        // TODO 툴버튼 전부 잠시 막아두기
+        return;
         if (!ui.Can_Move())
             return;
         m_Player_Input.Tool_1 = _context.ReadValueAsButton();
     }
     public void onTool_2(CallbackContext _context)
     {
+        // TODO 툴버튼 전부 잠시 막아두기
+        return;
         if (!ui.Can_Move())
             return;
         m_Player_Input.Tool_2 = _context.ReadValueAsButton();
     }
     public void onTool_3(CallbackContext _context)
     {
+        // TODO 툴버튼 전부 잠시 막아두기
+        return;
         if (!ui.Can_Move())
             return;
         m_Player_Input.Tool_3 = _context.ReadValueAsButton();
     }
     public void onTool_4(CallbackContext _context)
     {
+        // TODO 툴버튼 전부 잠시 막아두기
+        return;
         if (!ui.Can_Move())
             return;
         m_Player_Input.Tool_4 = _context.ReadValueAsButton();

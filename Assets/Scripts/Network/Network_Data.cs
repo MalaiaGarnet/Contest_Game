@@ -128,6 +128,8 @@ namespace Network.Data
         public UInt16 Tool_3;
         public UInt16 Tool_4;
 
+        public bool m_Using_Skill = false;
+
         public void Round_Init()
         {
             HP = 1000;

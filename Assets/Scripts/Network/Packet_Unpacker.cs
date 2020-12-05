@@ -172,20 +172,8 @@ public class Packet_Unpacker
             _datas[i].Tool_4 = BitConverter.ToUInt16(_data, place);
             place += sizeof(UInt16);
 
-            DebugLogger.Instance.AddText("[ user profile " + i + " ]");
-            DebugLogger.Instance.AddText("Session_ID: " + _datas[i].Session_ID);
-            DebugLogger.Instance.AddText("NickName: " + _datas[i].Nickname);
-            DebugLogger.Instance.AddText("Role_Index: " + _datas[i].Role_Index);
-            DebugLogger.Instance.AddText("Is_Ready: " + _datas[i].Is_Ready);
-            DebugLogger.Instance.AddText("HP: " + _datas[i].HP);
-            DebugLogger.Instance.AddText("Battery: " + _datas[i].Battery);
-            DebugLogger.Instance.AddText("Score: " + _datas[i].Score);
-            DebugLogger.Instance.AddText("Current_pos: " + _datas[i].Current_Pos);
-            DebugLogger.Instance.AddText("Current_rot: " + _datas[i].Current_Rot);
-            DebugLogger.Instance.AddText("User_Input_View x: " + _datas[i].User_Input.View_X +
-                                                            "User_Input_View y: " + _datas[i].User_Input.View_Y);
-            DebugLogger.Instance.AddText("User_Input_Move x: " + _datas[i].User_Input.View_X +
-                                            "User_Input_Move y: " + _datas[i].User_Input.View_Y);
+            _datas[i].m_Using_Skill = BitConverter.ToBoolean(_data, place);
+            place += sizeof(bool);
         }
     }
     public static void UnPackPacket(byte[] _data, ref Item_Data[] _datas)
@@ -297,6 +285,9 @@ public class Packet_Unpacker
             place += sizeof(UInt16);
             _datas[i].Tool_4 = BitConverter.ToUInt16(_data, place);
             place += sizeof(UInt16);
+
+            _datas[i].m_Using_Skill = BitConverter.ToBoolean(_data, place);
+            place += sizeof(bool);
         }
     }
 }
