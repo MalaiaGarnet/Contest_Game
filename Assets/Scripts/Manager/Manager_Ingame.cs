@@ -401,10 +401,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             Debug.Log("소환할 아이템 = " + item.OID);
             GameObject item_prefab = Resources.Load<GameObject>("Prefabs/Tools/Tool_" + item.OID);
             if (item_prefab == null)
-            {
                 Debug.LogWarning("아이템 없음");
-                continue;
-            }
             GameObject item_object = Instantiate(item_prefab);
             item_object.transform.position = item.Position;
             item_object.transform.rotation = Quaternion.Euler(item.Rotation);
