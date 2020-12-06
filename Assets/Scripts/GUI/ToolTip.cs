@@ -11,8 +11,9 @@ namespace Greyzone.GUI
     {
         [Header("메시지 텍스트")]
         public TextMeshPro msg_TMP;
+        public TextMeshProUGUI msg_TMP_UI;
         public Text        msg_Normal;
-        public Texture2D   msgBackGround;
+        public GameObject  msgBackGround;
         public bool        useTMPMsg;
 
         [Header("페이드")]
@@ -21,18 +22,29 @@ namespace Greyzone.GUI
 
         [Header("소리")]
         public AudioSource tooltipSound;
-        public void ShowMessage(MessageStyle _MsgStyle)
+        public void ShowMessage(MessageStyle _MsgStyle, string _Desc, Vector3 _TargetPos = default)
         {
             switch(_MsgStyle)
             {
                 case MessageStyle.NORMAL_MSG:
+                    msg_Normal.text = _Desc;
                     break;
                 case MessageStyle.ON_HEAD_MSG:
+                    gameObject.transform.localPosition = _TargetPos;
+                    msgBackGround.SetActive(true);
+                    msg_TMP.text = _Desc;
+                    msg_TMP.CrossFadeAlpha(fadeOpacity, fadeDuration, ignoreTimeScale: false);
+                    tooltipSound.PlayOneShot(tooltipSound.clip);
                     break;
                 case MessageStyle.ON_SCREEN_UP_MSG:
+                    msgBackGround.GetComponent<Image>().CrossFadeAlpha(fadeOpacity, fadeDuration, ignoreTimeScale: false);
+                    msg_TMP_UI.text = _Desc;
+                    msg_TMP_UI.CrossFadeAlpha(fadeOpacity, fadeDuration, ignoreTimeScale: false);
+                    tooltipSound.PlayOneShot(tooltipSound.clip);
                     break;                 
             }
         }
+
 
         public void ViewSideInItemMessage(Item _Item, Vector3 _PlayerPos, float _Dist)
         {
@@ -43,12 +55,15 @@ namespace Greyzone.GUI
             StartCoroutine(UpdateItemMessagePos(_Item, _PlayerPos, _Dist));     
         }
 
+
+
+        #region 코루틴
         IEnumerator UpdateItemMessagePos(Item _Item, Vector3 _PlayerPos, float _Dist)
         {
             yield return new WaitForSeconds(0.5f);
             while (true)
             {
-                if (Vector3.Distance(_PlayerPos, _Item.transform.position) < _Dist)
+                if (Vector3.Distance(_PlayerPos, _Item.transform.localPosition) < _Dist)
                 {
                     this.gameObject.SetActive(true);
                     //tooltipSound.PlayOneShot(tooltipSound.clip);
@@ -60,8 +75,9 @@ namespace Greyzone.GUI
                     break;
                 }
             }
-            
+
         }
+        #endregion
 
 
         /// <summary>

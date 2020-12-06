@@ -1,7 +1,8 @@
 ﻿using RootMotion.FinalIK;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 /// <summary>
 /// 200912 주현킴
@@ -119,12 +120,34 @@ public class CharacterAnimator : MonoBehaviour
 
     void DeathEvent()
     {
-        if (m_CamAxis.GetComponentInParent<CharacterController>().m_MyProfile.Role_Index == 1)
+        if (pc.m_MyProfile.Role_Index == 1)
         {
-            DeathCam deathCam = new DeathCam();
-            deathCam.Guaurd = m_CamAxis.GetComponentInParent<CharacterController>().gameObject;
+            DeathCam deathCam = new DeathCam
+            {
+                Guaurd = pc.gameObject
+            };
             deathCam.StartCam();
         }
+        else
+        {
+            DeathCam deathCam = new DeathCam
+            {
+                Guaurd = GetAnimatedGuardAction()
+            };
+        }
+    }
+
+    GameObject GetAnimatedGuardAction()
+    {
+        Collider[] colliders = Physics.OverlapSphere(pc.m_MyProfile.Current_Pos, float.PositiveInfinity, LayerMask.NameToLayer("Player"));
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject.GetComponentInParent<CharacterController>().IsGuard())
+            {
+                return collider.gameObject;
+            }
+        }
+        return m_CamAxis;
     }
 
     /// <summary>
@@ -184,32 +207,19 @@ public class CharacterAnimator : MonoBehaviour
         if (m_Use_Role_Skill)
         {
             CloakingSound.PlayOneShot(CloakingSound.clip);
-           
-            mat.shader = Shader.Find("Custom/Cloaking");
-            for(float i = 0.0f; i <=1.0f; i += Time.smoothDeltaTime)
-            {
-                mat.SetFloat("_Cut", i);
-                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
-            }
-            yield return new WaitForEndOfFrame();
+            StartCoroutine(Cloaking());
         }
         else
         {
             CloakingSound.PlayOneShot(CloakingSound.clip);
-            for (float i = 0.0f; i <= 1.0f; i += Time.smoothDeltaTime)
-            {
-                mat.SetFloat("_Cut", Mathf.Min(0.0f, 1.0f - i));
-                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));     
-            
-            }
-            mat.shader = Shader.Find("Project Droids/Droid HD");
+            StartCoroutine(RestroreFromCloaking());
         }
         yield return null;
     }
 
-    /*IEnumerator void Cloaking()
+    IEnumerator Cloaking()
     {
-        for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+        for (float i = 0f; i <= 1.0f; i += (Time.fixedDeltaTime / 10))
         {
             foreach (Material mat in m_RenderTextures)
             {
@@ -224,11 +234,13 @@ public class CharacterAnimator : MonoBehaviour
             mat.shader = Shader.Find("Custom/Cloaking");
             mat.SetFloat("_Opacity", 0.0f);
         }
-    }*/
 
-    /*IEnumerator void RestroreFromCloaking()
+        yield return null;
+    }
+
+    IEnumerator RestroreFromCloaking()
     {
-        for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+        for (float i = 0f; i <= 1.0f; i += (Time.fixedDeltaTime / 10))
         {
             foreach (Material mat in m_RenderTextures)
             {
@@ -253,5 +265,7 @@ public class CharacterAnimator : MonoBehaviour
                 mat.shader = Shader.Find("Project Droids/Droid HD");
             }
         }
-    }*/
+
+        yield return null;
+    }
 }

@@ -173,6 +173,7 @@ public class Packet_Unpacker
             place += sizeof(UInt16);
 
             _datas[i].m_Using_Skill = BitConverter.ToBoolean(_data, place);
+            Debug.Log("using skill = " + _datas[i].m_Using_Skill);
             place += sizeof(bool);
         }
     }
