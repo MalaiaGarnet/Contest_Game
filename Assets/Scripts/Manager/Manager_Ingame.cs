@@ -25,6 +25,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     public GameObject prefab_Guard;
     public GameObject prefab_Thief;
     List<GameObject> m_Round_Objects = new List<GameObject>(); // 라운드 끝나면 사라질 것들
+    List<GameObject> m_Item_Objects = new List<GameObject>(); // 아이템들 (멀리 가면 없어짐)
 
     [Header("이벤트")]
     public Event_RoundUpdate e_RoundUpdate = new Event_RoundUpdate();
@@ -394,9 +395,14 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
     public void Get_Items(Item_Data[] _items)
     {
         m_Items = new List<Item_Data>(_items);
+        Create_Items();
     }
     public void Create_Items()
     {
+        foreach (GameObject obj in m_Item_Objects)
+            Destroy(obj);
+        m_Item_Objects.Clear();
+
         foreach (Item_Data item in m_Items)
         {
             Debug.Log("소환할 아이템 = " + item.OID);
@@ -409,7 +415,8 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
             GameObject item_object = Instantiate(item_prefab);
             item_object.transform.position = item.Position;
             item_object.transform.rotation = Quaternion.Euler(item.Rotation);
-            Add_Round_Object(item_object);
+
+            m_Item_Objects.Add(item_object);
         }
     }
 
