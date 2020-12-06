@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2494833082202085960}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Tool_1001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,6 +38,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2494833082202085960}
     m_Modifications:
+    - target: {fileID: 2330403043107383191, guid: 0a89acc624152544f8abce8d1040690c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 4506230158345141982, guid: 0a89acc624152544f8abce8d1040690c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -97,6 +102,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ITEM@MemoryChip
+      objectReference: {fileID: 0}
+    - target: {fileID: 6506815746865069805, guid: 0a89acc624152544f8abce8d1040690c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a89acc624152544f8abce8d1040690c, type: 3}

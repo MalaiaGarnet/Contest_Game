@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 5379442690819975247}
   - component: {fileID: 1015636552400218223}
   - component: {fileID: 7469949084990903683}
+  - component: {fileID: 4591204250537064164}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5379442690819975247
 Transform:
@@ -79,6 +80,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!135 &4591204250537064164
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2330403043107383191}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.432022
+  m_Center: {x: 0.3436917, y: 0.28554437, z: -0.5350005}
 --- !u!1 &4992579584432111209
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,12 +103,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4506230158345141982}
   - component: {fileID: 8073635839899109095}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ITEM@MemoryChip
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4506230158345141982
 Transform:
@@ -147,7 +161,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7889636206660318018
 Transform:
