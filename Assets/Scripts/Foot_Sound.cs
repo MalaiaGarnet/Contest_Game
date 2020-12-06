@@ -13,7 +13,7 @@ public class Foot_Sound : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!m_Audio.isPlaying)
+        // if (!m_Audio.isPlaying)
             m_Audio.Play();
     }
 

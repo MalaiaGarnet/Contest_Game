@@ -579,7 +579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6354162610420975763
 Transform:
   m_ObjectHideFlags: 0
@@ -592,7 +592,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7208682424276985411}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3596370998281017089
 MonoBehaviour:
@@ -675,8 +675,8 @@ MonoBehaviour:
       axis: {x: 0, y: 0, z: 1}
       baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
     eyes: []
-    bodyWeight: 0.281
-    headWeight: 1
+    bodyWeight: 0
+    headWeight: 0
     eyesWeight: 1
     clampWeight: 0.5
     clampWeightHead: 0.5
@@ -898,7 +898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7208682424276985411
 Transform:
   m_ObjectHideFlags: 0
@@ -910,8 +910,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 248930212179872179}
   - {fileID: 6354162610420975763}
+  - {fileID: 248930212179872179}
   m_Father: {fileID: 2142329629647553534}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1963,7 +1963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4865523019967560421
 Transform:
   m_ObjectHideFlags: 0
@@ -2040,7 +2040,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7208682424276985411}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &705479869
 MonoBehaviour:
@@ -3328,6 +3328,7 @@ MonoBehaviour:
     spine:
     - {fileID: 144982800092315415}
     - {fileID: 8945365133219499809}
+    - {fileID: 1996842726302658386}
     eyes: []
   solver:
     IKPosition: {x: 0, y: 0, z: 0}
@@ -3715,6 +3716,7 @@ MonoBehaviour:
       - {fileID: 4067887605859745453}
       - {fileID: 144982800092315415}
       - {fileID: 8945365133219499809}
+      - {fileID: 1996842726302658386}
       leftUpperArmBone: {fileID: 7136712260759874016}
       rightUpperArmBone: {fileID: 1230092111624571427}
       leftThighBone: {fileID: 7753679056000075845}
@@ -3916,15 +3918,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b984bacf6c6c1a14da413a9d91c159be, type: 3}
---- !u!4 &3927606326189581508 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8248394010474033556, guid: b984bacf6c6c1a14da413a9d91c159be,
-    type: 3}
-  m_PrefabInstance: {fileID: 4970152657870706000}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8281491650042144561 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3896813541901529697, guid: b984bacf6c6c1a14da413a9d91c159be,
+    type: 3}
+  m_PrefabInstance: {fileID: 4970152657870706000}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3927606326189581508 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8248394010474033556, guid: b984bacf6c6c1a14da413a9d91c159be,
     type: 3}
   m_PrefabInstance: {fileID: 4970152657870706000}
   m_PrefabAsset: {fileID: 0}
