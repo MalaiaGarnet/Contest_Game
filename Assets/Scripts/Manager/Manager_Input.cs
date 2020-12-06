@@ -93,7 +93,7 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     public void onTool_1(CallbackContext _context)
     {
         // TODO 툴버튼 전부 잠시 막아두기
-        return;
+         return;
         if (!ui.Can_Move())
             return;
         m_Player_Input.Tool_1 = _context.ReadValueAsButton();
@@ -130,7 +130,6 @@ public class Manager_Input : SingleToneMonoBehaviour<Manager_Input>
     {
         if (!ui.Can_Move())
             return;
-
         if (m_Player_Input.Role_Skill != _context.ReadValueAsButton())
         {
             m_Player_Input.Role_Skill = _context.ReadValueAsButton();

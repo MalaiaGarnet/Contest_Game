@@ -51,8 +51,7 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
     {
         if (Manager_Network.Instance != null)
         {
-            Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));
-            
+            Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));           
         }
     }
     public void RestoreThiefShotAble()
@@ -62,7 +61,7 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
     public override void onFire(bool _pressed)
     {
-        if (_pressed)
+        if (!_pressed)
             return;
 
         CharacterController attacker = GetComponentInParent<CharacterController>();
@@ -77,9 +76,6 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
         List<Vector3> impact_Pos = new List<Vector3>();
 
         sfx_Fire.PlayOneShot(sfx_Fire.clip); // Play Sound
-
-        if(m_IsDebug)
-            AbilityTest(_Press : _pressed);
 
         pelletTrail.pellet = pelletInfo; // 펠릿트레일의 펠릿에 커스텀한 펠릿정보를 보내주자.
 
@@ -109,7 +105,7 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
 
         if (!m_IsDebug)
         {
-            if (m_ThiefShotAble && !attacker.IsGuard()) // 샷 제한
+            if (m_ThiefShotAble) // 샷 제한
             {
                 m_ThiefShotAble = false;
             }
@@ -117,30 +113,6 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
         else
         {
             m_ThiefShotAble = true;
-        }
-    }
-
-
-    void AbilityTest(bool _Press)
-    {
-        Material mat = GetComponentInChildren<Renderer>().material;
-        if (_Press)
-        {         
-            mat.shader = Shader.Find("Custom/Cloaking");
-            for(float i = 0.0f; i <=1.0f; i += Time.smoothDeltaTime)
-            {
-                mat.SetFloat("_Cut", i);
-                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
-            }
-        }
-        else
-        {
-            for (float i = 0.0f; i <= 1.0f; i += Time.smoothDeltaTime)
-            {
-                mat.SetFloat("_Cut", Mathf.Min(0.0f, 1.0f - i));
-                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));              
-            }
-            mat.shader = Shader.Find("Project Droids/Droid HD");
         }
     }
 

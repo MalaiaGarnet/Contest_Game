@@ -487,6 +487,8 @@ public class CharacterController : MonoBehaviour
     {
         Item item = FindViewInItem(); // 만약 아이템을 발견했다면 해당 아이템을 가져와서
         Debug.Log("아이템명칭 : " + item.itemName + "," + "반환받은 객체이름 : " + item.name);
+        ToolTip toolTip = new ToolTip();
+        toolTip.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, item.name + "을/를" + "습득");
         if(item != null && Manager_Network.Instance != null) // 통신이 안끊겼고, 아이템일때
         {
             if(Manager_Ingame.Instance.m_Client_Profile.Session_ID == m_MyProfile.Session_ID) // 습득자랑 현재 내 세션아디가 일치한다면 쏘자.
@@ -502,7 +504,6 @@ public class CharacterController : MonoBehaviour
     /// <returns></returns>
     Item FindViewInItem()
     {
-        RaycastHit hitinfo;
         m_DotValue = Mathf.Cos(Mathf.Deg2Rad * (m_ViewAngle / 2)); // Dot값 부채꼴 형태로 구하기
         int mask = LayerMask.NameToLayer("Item");
         Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, mask); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
@@ -516,7 +517,7 @@ public class CharacterController : MonoBehaviour
             if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
             {
                 // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
-                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask) && InputManager.m_Player_Input.Interact)
+                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, mask) && InputManager.m_Player_Input.Interact)
                 {
                     // Debug.Log("앗 아이템을 발견했다!");
                     Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
@@ -538,7 +539,6 @@ public class CharacterController : MonoBehaviour
 
     Item FindViewInNoPressItem()
     {
-        RaycastHit hitinfo;
         m_DotValue = Mathf.Cos(Mathf.Deg2Rad * (m_ViewAngle / 2)); // Dot값 부채꼴 형태로 구하기
         int mask = LayerMask.NameToLayer("Item");
         Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, mask); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
@@ -552,7 +552,7 @@ public class CharacterController : MonoBehaviour
             if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
             {
                 // 중간 장애물 없이 아이템을 정말 발견했다
-                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out hitinfo, acquireDist, mask))
+                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, mask))
                 {
                     // Debug.Log("앗 아이템을 발견했다!");
                     Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
