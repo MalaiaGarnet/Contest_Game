@@ -45,22 +45,26 @@ public static class MatShaderModifyr
                 _Mat.SetOverrideTag("Queue", _Order.ToString());
                 break;
             default:
+                _Mat.SetOverrideTag("Queue", _Order.ToString());
                 break;
         }
-    }
-
-    public static bool ChangeKeyword(Material _Mat, string _KeywordName, bool _Addable)
-    {
-        return false;
     }
 }
 public enum BlendMode
 {
     NONE,
-    Opaque,
-    Cutout,
+    Opaque,                
+    Cutout,                 
     Fade,
-    Transparent
+    Transparent,
+    TransparentCutout,
+    Background,
+    Overlay,
+    TreeOpaque,
+    TreeTransparentCutout,
+    TreeBillboard,
+    Grass,
+    GrassBillboard
 }
 
 public enum RenderOrder

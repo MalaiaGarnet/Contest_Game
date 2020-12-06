@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8456750432384695125}
   - component: {fileID: 3594913767554120565}
   - component: {fileID: 6363973352346732185}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5539622480305112092}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Tool_3001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5946556091897913432}
   - component: {fileID: 2496675535157236575}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Dummy_Sprite(will remove)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

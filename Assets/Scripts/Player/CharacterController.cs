@@ -68,6 +68,8 @@ public class CharacterController : MonoBehaviour
 
     [CustomRange(0, 30.0f)] // 어라 생성자 그대로 가버리는데 이거;;
     public float acquireDist = 10.0f;
+    public float itemSearchDuration = 1.0f;
+    public LayerMask ItemLayer;
 
     private float m_DotValue = 0f;
     private float m_ViewAngle = 45f;
@@ -93,6 +95,8 @@ public class CharacterController : MonoBehaviour
         {
             // 네트워크 매니저 없음 -> 로컬 디버그 모드
             Manager_Ingame.Instance.e_FakeInput.AddListener(m_PlayerInputEvts);
+            e_SerachItem.AddListener(m_SearchItem);
+            StartCoroutine(Update_FieldOnItem());
         }
         else
         {
@@ -121,6 +125,7 @@ public class CharacterController : MonoBehaviour
             if (Manager_Ingame.Instance != null) // 아직 인게임 인스턴스가 파괴되지않았을때만
             {
                 Manager_Ingame.Instance.e_FakeInput.RemoveListener(m_PlayerInputEvts);
+                e_SerachItem.RemoveListener(m_SearchItem);
             }
         }
         else
@@ -132,6 +137,16 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    IEnumerator Update_FieldOnItem()
+    {
+        yield return new WaitForSecondsRealtime(10.0f);
+        while (true)
+        {
+            yield return new WaitForSeconds(itemSearchDuration);
+            e_SerachItem.Invoke();          
+        }
+        yield return null;
+    }
     private void Update()
     {
         // 시선 처리
@@ -226,7 +241,7 @@ public class CharacterController : MonoBehaviour
             {
                 AcquireItem();
             }
-        }
+        }      
 
         bool debug_tool_change = false;
         if (Manager_Ingame.Instance.m_DebugMode)
@@ -487,13 +502,15 @@ public class CharacterController : MonoBehaviour
     {
         Item item = FindViewInItem(); // 만약 아이템을 발견했다면 해당 아이템을 가져와서
         Debug.Log("아이템명칭 : " + item.itemName + "," + "반환받은 객체이름 : " + item.name);
-        ToolTip toolTip = new ToolTip();
-        toolTip.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, item.name + "을/를" + "습득");
+
         if(item != null && Manager_Network.Instance != null) // 통신이 안끊겼고, 아이템일때
         {
             if(Manager_Ingame.Instance.m_Client_Profile.Session_ID == m_MyProfile.Session_ID) // 습득자랑 현재 내 세션아디가 일치한다면 쏘자.
             {
                 // TODO : 캐릭터가 발견한 아이템정보를 서버에 보내서, 습득 완료 및 캐릭터에 종속시키는 부분이 들어오면 될거같아요.
+                Packet_Sender.Send_Item_Get(item.GetInstanceID);
+                
+                //TooltipManager.Instance.tooltip_ScreenMsg.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, item.name + "을/를" + "습득");
             }
         }
     }
@@ -505,8 +522,8 @@ public class CharacterController : MonoBehaviour
     Item FindViewInItem()
     {
         m_DotValue = Mathf.Cos(Mathf.Deg2Rad * (m_ViewAngle / 2)); // Dot값 부채꼴 형태로 구하기
-        int mask = LayerMask.NameToLayer("Item");
-        Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, mask); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
+
+        Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, ItemLayer); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
         foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
         {
             Vector3 hitPos = hits.transform.position;
@@ -516,68 +533,88 @@ public class CharacterController : MonoBehaviour
 
             if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
             {
-                // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
-                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, mask) && InputManager.m_Player_Input.Interact)
+                if(m_Output.Interact)
                 {
-                    // Debug.Log("앗 아이템을 발견했다!");
-                    Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
-                    IsHit = true;
-                    return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
-                }
-                else
-                {
-                    // Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
-                    Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
-                    IsHit = false;
-                    return null;
-                }
+                    // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
+                    if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
+                    {
+                        //Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                        Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
+                        IsHit = false;
+                        return null;
+                    }
+                    else
+                    {
+                        Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
+                        IsHit = true;
+                        Item item = hits.gameObject.GetComponent<Item>();
+                        if (item == null)
+                            item = hits.gameObject.GetComponentInChildren<Item>();
+                        return item; // 해당 아이템 반환
+                    }
+                }              
             }
             IsHit = false;
         }
         return null;
     }
 
+    private List<Collider> hitTargets = new List<Collider>();
+
     Item FindViewInNoPressItem()
     {
         m_DotValue = Mathf.Cos(Mathf.Deg2Rad * (m_ViewAngle / 2)); // Dot값 부채꼴 형태로 구하기
-        int mask = LayerMask.NameToLayer("Item");
-        Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, mask); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
+        Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, ItemLayer.value); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
         foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
         {
-            Vector3 hitPos = hits.transform.position;
+            Vector3 hitPos = hits.transform.localPosition;
             Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized;
 
-            float dot = Vector3.Dot(dir, m_CameraAxis.forward);
-
+            float dot = Vector3.Dot(dir, this.transform.forward);
+            Debug.Log(hitPos + "<-- 히트스피어 || 플레이어 위치--->" + m_MyProfile.Current_Pos);
+            Debug.Log("dot : " + dot + " 맞은 물체" + hits.name);
             if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
             {
-                // 중간 장애물 없이 아이템을 정말 발견했다
-                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, mask))
+                if (dot > m_DotValue)
                 {
-                    // Debug.Log("앗 아이템을 발견했다!");
-                    Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
-                    return hitinfo.collider.gameObject.GetComponent<Item>(); // 해당 아이템 반환
-                }
-                else
-                {
-                    // Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
-                    Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
-                    IsHit = false;
-                    return null;
+                    // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
+                    if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
+                    {
+                        //Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                        Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
+                        IsHit = false;
+                        return null;
+                    }
+                    else
+                    {
+                        Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
+                        IsHit = true;
+                        Item item = hits.gameObject.GetComponent<Item>();
+                        if (item == null)
+                            item = hits.gameObject.GetComponentInChildren<Item>();
+                        return item; // 해당 아이템 반환
+                    }
                 }
             }
         }
         return null;
     }
 
+    
+
     void FindOnFieldItem()
-    {     
+    {   
         Item item = FindViewInNoPressItem();
-        if(item != null)
+        if (item != null)
         {
-            ToolTip toolTip = new ToolTip();
-            toolTip.ViewSideInItemMessage(item, m_MyProfile.Current_Pos, acquireDist);
-            e_SerachItem.Invoke();
+            TooltipManager.Instance.tooltip_HeadMessage.ViewSideInItemMessage(item, m_MyProfile.Current_Pos, acquireDist);          
+            TooltipManager.Instance.tooltip_HeadMessage.DrawOnHeadMessage(this.gameObject);
+            TooltipManager.Instance.tooltip_ScreenMsg.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, item.name + "을 찾음");
+        }
+        else
+        {
+            TooltipManager.Instance.tooltip_HeadMessage.ShowMessage(MessageStyle.ON_HEAD_MSG, "안돼!!", m_MyProfile.Current_Pos);
+            TooltipManager.Instance.tooltip_ScreenMsg.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, "아이템을 못찾았어!");
         }
     }
 

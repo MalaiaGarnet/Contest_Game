@@ -83,11 +83,12 @@ public class CustomCharacterControllerInsfector : Editor
             UseProperty("m_Before_Position", "이전 위치", "캐릭터의 이전에 있던 위치");
         }
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField(new GUIContent("아이템 인식거리"), CustomizeGUIStyle(new CustomLabel(FontStyle.Bold, 12, Color.white, new CustomTex2D(10, 5, Color.black))));
+        EditorGUILayout.LabelField(new GUIContent("아이템 인식 설정"), CustomizeGUIStyle(new CustomLabel(FontStyle.Bold, 12, Color.white, new CustomTex2D(10, 5, Color.grey))));
 
         UseProperty("acquireDist", "아이템 인식거리", "아이템 인식거리");
         EditorGUILayout.Space();
-
+        UseProperty("itemSearchDuration", "아이템 탐색 주기", "아이템 탐색 주기");
+        UseProperty("ItemLayer", "아이템 레이어", "아이템 레이어");
 
 
         if (GUI.changed)

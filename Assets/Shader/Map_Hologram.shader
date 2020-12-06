@@ -46,13 +46,7 @@
           rim = saturate(pow(1 - rim, _RimPow) + pow(frac(_In.worldPos.g * _RimPow - _Time.y), _RimHeight) * 0.1);
           o.Alpha = rim * _Opacity;
         }
-        // 위의 선언한 CloakingLight 구현부
-        /*
-         *
-         *  @param s -> 빛을 제외한 surf 함수 처리된 결과 픽셀
-         *  @param _LightDir -> 빛의 방향
-         *  @param _Brightness -> 빛의 세기
-         */
+
         float4 LightingCloakingLight(SurfaceOutput s, float3 _LightDir, float _Brightness)
         {
             //return fixed4(s.Albedo * _Opacity * _LightColor0, 1);

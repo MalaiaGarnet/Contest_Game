@@ -20,10 +20,13 @@ namespace Greyzone.GUI
         public float       fadeDuration; // 노출시간
         public float       fadeOpacity;  // 투명도
 
-        [Header("소리")]
-        public AudioSource tooltipSound;
+        //[Header("소리")]
+        //public AudioSource tooltipSound;
+
         public void ShowMessage(MessageStyle _MsgStyle, string _Desc, Vector3 _TargetPos = default)
         {
+ 
+            gameObject.SetActive(true);
             switch(_MsgStyle)
             {
                 case MessageStyle.NORMAL_MSG:
@@ -34,23 +37,29 @@ namespace Greyzone.GUI
                     msgBackGround.SetActive(true);
                     msg_TMP.text = _Desc;
                     msg_TMP.CrossFadeAlpha(fadeOpacity, fadeDuration, ignoreTimeScale: false);
-                    tooltipSound.PlayOneShot(tooltipSound.clip);
+                    //tooltipSound.PlayOneShot(tooltipSound.clip);
                     break;
                 case MessageStyle.ON_SCREEN_UP_MSG:
                     msgBackGround.GetComponent<Image>().CrossFadeAlpha(fadeOpacity, fadeDuration, ignoreTimeScale: false);
                     msg_TMP_UI.text = _Desc;
                     msg_TMP_UI.CrossFadeAlpha(fadeOpacity, fadeDuration, ignoreTimeScale: false);
-                    tooltipSound.PlayOneShot(tooltipSound.clip);
+                    //tooltipSound.PlayOneShot(tooltipSound.clip);
                     break;                 
             }
+            StartCoroutine(HideToolTip());
         }
 
+        IEnumerator HideToolTip()
+        {
+            yield return new WaitForSeconds(2.0f);
+            gameObject.SetActive(false);
+        }
 
         public void ViewSideInItemMessage(Item _Item, Vector3 _PlayerPos, float _Dist)
         {
             transform.localPosition = _Item.transform.localPosition;
 
-            msg_TMP.text = _Item.itemName + "\n\n" + "습득하기";
+            ShowMessage(MessageStyle.ON_HEAD_MSG, _Item.itemName + "을/를 습득하기", _PlayerPos);
 
             StartCoroutine(UpdateItemMessagePos(_Item, _PlayerPos, _Dist));     
         }
@@ -66,7 +75,7 @@ namespace Greyzone.GUI
                 if (Vector3.Distance(_PlayerPos, _Item.transform.localPosition) < _Dist)
                 {
                     this.gameObject.SetActive(true);
-                    //tooltipSound.PlayOneShot(tooltipSound.clip);
+
                     yield return new WaitForSeconds(0.5f);
                 }
                 else
@@ -94,18 +103,6 @@ namespace Greyzone.GUI
             {
                 msg_Normal.transform.position = _TargetHead.transform.position; // 머리위에 오게 ㅇㅇ
             }
-            //MessageFadeOn();
-        }
-
-        async void MessageFadeOn()
-        {
-            await Task.Delay((int)fadeDuration);
-        }
-
-        private void OnDestroy()
-        {
-            if (gameObject != null)
-                Destroy(gameObject);
         }
     }
 
