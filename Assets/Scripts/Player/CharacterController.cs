@@ -291,9 +291,9 @@ public class CharacterController : MonoBehaviour
         switch (m_MyProfile.Role_Index)
         {
             case 1:
-                return false;
-            case 2:
                 return true;
+            case 2:
+                return false;
             default:
                 return false;
         }
@@ -502,13 +502,16 @@ public class CharacterController : MonoBehaviour
     {
         Item item = FindViewInItem(); // 만약 아이템을 발견했다면 해당 아이템을 가져와서
         Debug.Log("아이템명칭 : " + item.itemName + "," + "반환받은 객체이름 : " + item.name);
-
-        if(item != null && Manager_Network.Instance != null) // 통신이 안끊겼고, 아이템일때
+        Item_Data itemDat = new Item_Data
+        {
+            IID = item.itemID
+        };
+        if (item != null && Manager_Network.Instance != null) // 통신이 안끊겼고, 아이템일때
         {
             if(Manager_Ingame.Instance.m_Client_Profile.Session_ID == m_MyProfile.Session_ID) // 습득자랑 현재 내 세션아디가 일치한다면 쏘자.
             {
                 // TODO : 캐릭터가 발견한 아이템정보를 서버에 보내서, 습득 완료 및 캐릭터에 종속시키는 부분이 들어오면 될거같아요.
-                Packet_Sender.Send_Item_Get(item.GetInstanceID);
+                Packet_Sender.Send_Item_Get(itemDat.IID);
                 
                 //TooltipManager.Instance.tooltip_ScreenMsg.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, item.name + "을/를" + "습득");
             }
@@ -577,7 +580,7 @@ public class CharacterController : MonoBehaviour
             {
                 if (dot > m_DotValue)
                 {
-                    // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
+                    // 중간 장애물이 없을때
                     if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
                     {
                         //Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
@@ -628,4 +631,11 @@ public class CharacterController : MonoBehaviour
         Handles.DrawSolidArc(m_CameraAxis.position, Vector3.up, m_CameraAxis.forward, -m_ViewAngle / 2, acquireDist);
      }
 #endif
+}
+
+public enum RoleType : ushort
+{
+    None,
+    Guard,
+    Thief
 }

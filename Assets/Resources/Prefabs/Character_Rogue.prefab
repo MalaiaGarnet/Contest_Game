@@ -3180,7 +3180,7 @@ GameObject:
   - component: {fileID: 5394443342023781532}
   m_Layer: 8
   m_Name: Character_Rogue
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3301,6 +3301,10 @@ MonoBehaviour:
   m_CameraAxis: {fileID: 5870439392837528170}
   m_Before_Position: {x: 0, y: 0, z: 0}
   acquireDist: 10
+  itemSearchDuration: 1
+  ItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &5394443342023781532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3323,6 +3327,9 @@ MonoBehaviour:
   m_RenderTextures: []
   m_Head: {fileID: 815687957390709948}
   m_CamAxis: {fileID: 5870439392837528171}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
   CloakingSound: {fileID: 1806674500990626270}
 --- !u!1 &5870439392097707752
 GameObject:

@@ -5,7 +5,7 @@
         _MainTex("메인텍스쳐", 2D) = "bump" {}
         _RefPow("굴절세기", Range(0, 1)) = 0.05
         [HDR]_RefColor("테 색깔", Color) = (0,0,0,1)
-        [Toggle]_UseRefColor("테색깔쓸까요?", bool) = false
+        [Toggle]_UseRefColor("테색깔쓸까요?", Range(0, 1)) = 1
     }
     SubShader
     {
@@ -24,8 +24,8 @@
         sampler2D _MainTex;
         
         float     _RefPow;
-        float4    _RefColor;
-        bool      _UseRefColor;
+        float3    _RefColor;
+        fixed     _UseRefColor;
 
         struct Input
         {
@@ -42,7 +42,8 @@
 
             if(_UseRefColor)
             {
-                o.Emission = tex2D(_GrabTexture, (screenUV.xy + ref.x * _RefPow)) * _RefColor;
+                screenUV.rgb = _RefColor;
+                o.Emission = tex2D(_GrabTexture, (screenUV.xy + ref.x * _RefPow));
             }
             else
             {

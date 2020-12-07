@@ -55,6 +55,11 @@ namespace Greyzone.GUI
             gameObject.SetActive(false);
         }
 
+        public void HideMessage()
+        {
+            gameObject.SetActive(false);
+        }
+
         public void ViewSideInItemMessage(Item _Item, Vector3 _PlayerPos, float _Dist)
         {
             transform.localPosition = _Item.transform.localPosition;

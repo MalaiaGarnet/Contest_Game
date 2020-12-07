@@ -2581,7 +2581,7 @@ GameObject:
   - component: {fileID: 7696638750962336850}
   m_Layer: 8
   m_Name: Character_Guard
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2675,6 +2675,10 @@ MonoBehaviour:
   m_CameraAxis: {fileID: 7696638749784137832}
   m_Before_Position: {x: 0, y: 0, z: 0}
   acquireDist: 10
+  itemSearchDuration: 1
+  ItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &7696638750962336850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2696,6 +2700,9 @@ MonoBehaviour:
   m_RenderTextures: []
   m_Head: {fileID: 6275956173879187523}
   m_CamAxis: {fileID: 7696638749784137833}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
   CloakingSound: {fileID: 0}
 --- !u!1 &7790693820354134475
 GameObject:

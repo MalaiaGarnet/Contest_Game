@@ -14,6 +14,8 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
     [Header("비쥬얼 및 사운드 이펙트")]
     [Tooltip("총구 화염")]
     public GameObject effect_Fire;
+    public GameObject effect_Traj_Prefab;
+    private GameObject m_Effect_Traj;
     [Tooltip("발사음")]
     public AudioSource sfx_Fire;
 
@@ -48,11 +50,12 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
     }
 
     private void Start()
-    {
+    {      
         if (Manager_Network.Instance != null)
         {
             Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(RestoreThiefShotAble));           
         }
+        m_Effect_Traj = Instantiate(effect_Traj_Prefab, Get_Muzzle());
     }
     public void RestoreThiefShotAble()
     {
@@ -124,8 +127,11 @@ public class Weapon_StunGun : Tool, I_IK_Shotable
     {
         GameObject effect = Instantiate(effect_Fire);
         effect.transform.SetParent(_Attacker.m_ToolAxis); // 총구에 이펙트 붙이기
+        m_Effect_Traj.SetActive(true);
+        m_Effect_Traj.transform.SetParent(_Attacker.m_ToolAxis);
         effect.transform.SetPositionAndRotation(gunMuzzle.position, _Attacker.m_ToolAxis.rotation);
         Destroy(effect, _DestroyDur);
+        m_Effect_Traj.SetActive(false);
     }
 
     void SendShotResult(CharacterController _Attacker, List<UInt16> _VictimSecIDs, List<Vector3> _ImpactPos)

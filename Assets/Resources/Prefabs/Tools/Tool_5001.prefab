@@ -82,6 +82,8 @@ MonoBehaviour:
   gunleftGrip: {fileID: 3896813541901529697}
   gunMuzzle: {fileID: 5840613055604181460}
   effect_Fire: {fileID: 100006, guid: 30b4cc2728d8cec499fad63ba93785a4, type: 3}
+  effect_Traj_Prefab: {fileID: 2577851311663497029, guid: 666e0683dc5c8624191a9f62ac85b38e,
+    type: 3}
   sfx_Fire: {fileID: 4475346997255325414}
   pelletInfo:
     pelletCount: 1
