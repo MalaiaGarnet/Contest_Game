@@ -72,8 +72,9 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         Manager_Network.Instance.e_RoundReady.AddListener(new UnityAction<int>(Prepare_Round));
         Manager_Network.Instance.e_RoundStart.AddListener(new UnityAction(Start_Round));
         Manager_Network.Instance.e_RoundEnd.AddListener(new UnityAction(End_Round));
-        Manager_Network.Instance.e_GameEnd.AddListener(new UnityAction(End_Game));
+        Manager_Network.Instance.e_GameEnd.AddListener(new UnityAction<SESSION_END_REASON>(End_Game));
         Manager_Network.Instance.e_ItemSpawn.AddListener(new UnityAction<Item_Data[]>(Get_Items));
+        Manager_Network.Instance.e_ItemGet.AddListener(new UnityAction<int>(Player_Get_Item));
     }
 
     private void FixedUpdate()
@@ -284,7 +285,7 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         yield return null;
     }
 
-    public void End_Game()
+    public void End_Game(SESSION_END_REASON _reason)
     {
         Ingame_UI.Instance.Lock_Cursor(false);
         Add_Delayed_Coroutine(End_Game_Process());
@@ -405,18 +406,32 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
         foreach (Item_Data item in m_Items)
         {
-            Debug.Log("소환할 아이템 = " + item.OID);
             GameObject item_prefab = Resources.Load<GameObject>("Prefabs/Tools/Tool_" + item.OID);
             if (item_prefab == null)
             {
-                Debug.LogWarning("아이템 없음");
+                Debug.LogWarning(item.OID + "번 아이템 프리팹 없음");
                 continue;
             }
             GameObject item_object = Instantiate(item_prefab);
             item_object.transform.position = item.Position;
             item_object.transform.rotation = Quaternion.Euler(item.Rotation);
+            Item item_script = item_object.GetComponent<Item>();
+            if (item_script == null)
+            {
+                Debug.LogWarning(item.OID + "번 아이템 내에 Item 스크립트 없음");
+                continue;
+            }
+            item_script.item_data = item;
 
             m_Item_Objects.Add(item_object);
+        }
+    }
+    public void Player_Get_Item(int _instance_id)
+    {
+        foreach (GameObject obj in m_Item_Objects)
+        {
+            // obj 에게서 item_data 빼내기
+            // 대조해서 맞으면 오브젝트를 제거
         }
     }
 

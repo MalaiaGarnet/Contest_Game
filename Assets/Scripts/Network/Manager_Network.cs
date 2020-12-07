@@ -46,6 +46,7 @@ public class Manager_Network : MonoBehaviour
     public Event_Player_Hit e_PlayerHit = new Event_Player_Hit();
     public Event_Player_Stun e_PlayerStun = new Event_Player_Stun();
     public Event_Item_Spawn e_ItemSpawn = new Event_Item_Spawn();
+    public Event_Item_Get e_ItemGet = new Event_Item_Get();
 
     public static bool Debug_Toggle = false; // 디버그 로거 표현 여부
     public static void Log(string _msg) // 로그 쓰기

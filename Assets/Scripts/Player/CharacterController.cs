@@ -502,16 +502,12 @@ public class CharacterController : MonoBehaviour
     {
         Item item = FindViewInItem(); // 만약 아이템을 발견했다면 해당 아이템을 가져와서
         Debug.Log("아이템명칭 : " + item.itemName + "," + "반환받은 객체이름 : " + item.name);
-        Item_Data itemDat = new Item_Data
-        {
-            IID = item.itemID
-        };
         if (item != null && Manager_Network.Instance != null) // 통신이 안끊겼고, 아이템일때
         {
-            if(Manager_Ingame.Instance.m_Client_Profile.Session_ID == m_MyProfile.Session_ID) // 습득자랑 현재 내 세션아디가 일치한다면 쏘자.
+            if (Manager_Ingame.Instance.m_Client_Profile.Session_ID == m_MyProfile.Session_ID) // 습득자랑 현재 내 세션아디가 일치한다면 쏘자.
             {
                 // TODO : 캐릭터가 발견한 아이템정보를 서버에 보내서, 습득 완료 및 캐릭터에 종속시키는 부분이 들어오면 될거같아요.
-                Packet_Sender.Send_Item_Get(itemDat.IID);
+                Packet_Sender.Send_Item_Get(item.item_data.IID);
                 
                 //TooltipManager.Instance.tooltip_ScreenMsg.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, item.name + "을/를" + "습득");
             }

@@ -273,7 +273,7 @@ namespace Network.Data
             float x = BitConverter.ToSingle(_data, _place);
             _place += sizeof(float);
             float y = BitConverter.ToSingle(_data, _place);
-            _place += sizeof(float); 
+            _place += sizeof(float);
             float z = BitConverter.ToSingle(_data, _place);
             _place += sizeof(float);
             Position = new Vector3(x, y, z);
