@@ -105,6 +105,8 @@ public class CharacterController : MonoBehaviour
             Manager_Network.Instance.e_HeartBeat.AddListener(m_PlayerUpdatePosEvts);
             Manager_Network.Instance.e_PlayerHit.AddListener(m_PlayerDamageEvts);
             Manager_Network.Instance.e_PlayerStun.AddListener(m_PlayerStunEvts);
+            e_SerachItem.AddListener(m_SearchItem);
+            StartCoroutine(Update_FieldOnItem());
         }
 
         // 프로필에 해당하는 툴 등록
@@ -134,6 +136,7 @@ public class CharacterController : MonoBehaviour
             Manager_Network.Instance.e_HeartBeat.RemoveListener(m_PlayerUpdatePosEvts);
             Manager_Network.Instance.e_PlayerHit.RemoveListener(m_PlayerDamageEvts);
             Manager_Network.Instance.e_PlayerStun.RemoveListener(m_PlayerStunEvts);
+            e_SerachItem.RemoveListener(m_SearchItem);
         }
     }
 
@@ -612,7 +615,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            TooltipManager.Instance.tooltip_HeadMessage.ShowMessage(MessageStyle.ON_HEAD_MSG, "안돼!!", m_MyProfile.Current_Pos);
+            //TooltipManager.Instance.tooltip_HeadMessage.ShowMessage(MessageStyle.ON_HEAD_MSG, "안돼!!", m_MyProfile.Current_Pos);
             TooltipManager.Instance.tooltip_ScreenMsg.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, "아이템을 못찾았어!");
         }
     }
