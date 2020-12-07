@@ -197,23 +197,23 @@ public class CharacterAnimator : MonoBehaviour
         if (m_Use_Role_Skill)
         {
             CloakingSound.PlayOneShot(CloakingSound.clip);
-            for (float i = 0f; i <= 1.0f; i += (Time.deltaTime / 10))
+            for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
             {
                 foreach (Material mat in m_RenderTextures)
                 {
                     mat.shader = Shader.Find("Custom/Cloaking");
                     MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-                   // mat.SetFloat("_CutRender", i);
+                    // mat.SetFloat("_CutRender", i);
                     Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), i);
                     // mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
                 }
-                yield return new WaitForSeconds(Time.deltaTime / 10);
+                yield return new WaitForEndOfFrame();
             }
             foreach (Material mat in m_RenderTextures)
             {
                 mat.shader = Shader.Find("Custom/Cloaking");
                 MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-              //  mat.SetFloat("_CutRender", 1.0f);
+                // mat.SetFloat("_CutRender", 1.0f);
                 Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), 1.0f);
                 // mat.SetFloat("_Opacity", 0.0f);
             }
@@ -223,7 +223,7 @@ public class CharacterAnimator : MonoBehaviour
         else
         {
             CloakingSound.PlayOneShot(CloakingSound.clip);
-            for (float i = 0f; i <= 1.0f; i += (Time.deltaTime / 10))
+            for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
             {
                 foreach (Material mat in m_RenderTextures)
                 {
@@ -239,7 +239,7 @@ public class CharacterAnimator : MonoBehaviour
                         }
                     }
                 }
-                yield return new WaitForSeconds(Time.deltaTime / 10);
+                yield return new WaitForEndOfFrame();
             }
             foreach (Material mat in m_RenderTextures)
             {

@@ -287,7 +287,10 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
 
     public void End_Game(SESSION_END_REASON _reason)
     {
-        Ingame_UI.Instance.Lock_Cursor(false);
+        Ingame_UI ui = Ingame_UI.Instance;
+
+        m_Game_Started = false;
+        ui.Lock_Cursor(false);
         Add_Delayed_Coroutine(End_Game_Process());
         // 터졌으면 터진대로 처리해줄 것
     }

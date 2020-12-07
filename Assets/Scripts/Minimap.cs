@@ -6,6 +6,18 @@ using UnityEngine;
 /// </summary>
 public class Minimap : MonoBehaviour
 {
+    public Material holo_shader;
+    public MeshRenderer mesh;
+
+    private void Start()
+    {
+        for (int i = 0; i < mesh.materials.Length; i++)
+        {
+            mesh.materials[i] = holo_shader;
+        }
+    }
+
+    /* 구버전
     public GameObject minimap_axis;
     public GameObject prefab_minimap;
 
@@ -50,4 +62,5 @@ public class Minimap : MonoBehaviour
         map.GetComponent<MeshFilter>().mesh.CombineMeshes(combine_instances); // 여태 모아둔 메쉬를 합치기
         map.SetActive(true);
     }
+    */
 }

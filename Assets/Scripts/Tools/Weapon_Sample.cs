@@ -101,7 +101,7 @@ public class Weapon_Sample : Tool, I_IK_Shotable
             effect.transform.SetPositionAndRotation(cc.m_ToolAxis.position, cc.m_ToolAxis.rotation);
 
             Destroy(effect, 1.0f);
-            Destroy(bullet, 1.0f);
+            Destroy(bullet, 0.05f);
         }
 
         if (Manager_Ingame.Instance.m_Client_Profile.Session_ID == cc.m_MyProfile.Session_ID)

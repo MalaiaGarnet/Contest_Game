@@ -20,7 +20,7 @@
 		[HDR]_OutColor("OutColor", Color) = (1,1,1,1)
 		_NoiseTex("Noise Texture", 2D) = "white"{}
 		_OutThinkness("OutThinkness", Range(0, 2.0)) = 1.15
-		_CutRender("_CutRender", Range(0.0, 1.0)) = 0.0
+		//_CutRender("_CutRender", Range(0.0, 1.0)) = 0.0
 	}
 
 	SubShader {
@@ -58,7 +58,7 @@
 		sampler2D _NoiseTex;
 		float4	  _OutColor;
 		float	  _OutThinkness;
-		float	  _CutRender;
+		uniform float	  _CutRender;
 
 
 		struct Input {
