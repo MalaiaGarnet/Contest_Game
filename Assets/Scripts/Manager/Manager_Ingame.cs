@@ -296,6 +296,8 @@ public class Manager_Ingame : SingleToneMonoBehaviour<Manager_Ingame>
         Ingame_UI ui = Ingame_UI.Instance;
         ui.m_Ingame_Round_Indicator.End_Game();
         yield return new WaitForSeconds(3.0f);
+        ui.Show_SessionEnd();
+        yield return new WaitForSeconds(5.0f);
         Quit_Game();
         Play_Next_Coroutine();
 

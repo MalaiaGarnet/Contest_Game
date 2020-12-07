@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8248394010474033556}
   - component: {fileID: 6631883491179286070}
   - component: {fileID: 4475346997255325414}
+  - component: {fileID: 5676698309424577463}
   m_Layer: 0
   m_Name: Tool_4001
   m_TagString: Untagged
@@ -86,7 +87,6 @@ MonoBehaviour:
     type: 3}
   effect_Bullet: {fileID: 100000, guid: 8eaaa4f553116f44b8459bc24201c514, type: 3}
   sfx_Fire: {fileID: 4475346997255325414}
-  m_ID: 0
 --- !u!82 &4475346997255325414
 AudioSource:
   m_ObjectHideFlags: 0
@@ -183,6 +183,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5676698309424577463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216642987747593652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28f0ab19e046684587cbaacaa2b30b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item_data:
+    IID: 0
+    OID: 0
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+  itemID: 0
+  itemType: 0
+  itemName: 
+  itemDesc: 
+  isUseEnergy: 0
+  itemCount: 0
+  itemEnergy: 0
+  isActive: 0
 --- !u!1 &1433145787696777884
 GameObject:
   m_ObjectHideFlags: 0

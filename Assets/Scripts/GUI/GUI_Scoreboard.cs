@@ -10,6 +10,10 @@ public class GUI_Scoreboard : MonoBehaviour
 
     void Start()
     {
+    }
+
+    public void Register_Event()
+    {
         Manager_Network.Instance.e_HeartBeat.AddListener(Update_Scoreboard);
     }
 

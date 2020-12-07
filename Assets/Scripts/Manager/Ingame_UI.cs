@@ -24,6 +24,7 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
     public GameObject m_Stun_Indicator;
     public GUI_Menu m_Menu;
     public GameObject m_Scoreboard;
+    public GameObject m_Session_End;
 
     public Event_UI_Initialize e_Initialize = new Event_UI_Initialize();
 
@@ -35,6 +36,19 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
         DontDestroyOnLoad(gameObject);
         a_When_Damaged = new UnityAction<int>(When_Damaged);
         a_When_Stunned = new UnityAction<int>(When_Stunned);
+    }
+
+    private IEnumerator Start()
+    {
+        while (Manager_Ingame.Instance == null)
+            yield return new WaitForEndOfFrame();
+
+        if (!Manager_Ingame.Instance.m_DebugMode)
+        {
+            while (Manager_Network.Instance == null)
+                yield return new WaitForEndOfFrame();
+            m_Scoreboard.GetComponent<GUI_Scoreboard>().Register_Event();
+        }
     }
 
     public void Initialize()
@@ -49,6 +63,7 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
         m_Stun_Indicator.SetActive(false);
         m_Menu.Activate(false);
         m_Scoreboard.SetActive(false);
+        m_Session_End.SetActive(false);
         Lock_Cursor(false);
     }
 
@@ -63,6 +78,11 @@ public class Ingame_UI : SingleToneMonoBehaviour<Ingame_UI>
         if (m_Menu.gameObject.activeSelf)
             return false;
         return true;
+    }
+
+    public void Show_SessionEnd()
+    {
+        m_Session_End.SetActive(true);
     }
 
     /// <summary>

@@ -3246,6 +3246,7 @@ MonoBehaviour:
   m_Stun_Indicator: {fileID: 8194663812377453349}
   m_Menu: {fileID: 9110843684754587971}
   m_Scoreboard: {fileID: 3044210298555774961}
+  m_Session_End: {fileID: 1980625423478021110}
 --- !u!1 &2420081094432486169
 GameObject:
   m_ObjectHideFlags: 0
@@ -7726,7 +7727,7 @@ GameObject:
   - component: {fileID: 1678490696937568802}
   - component: {fileID: 2718970149817719497}
   m_Layer: 5
-  m_Name: Guard_Scores (1)
+  m_Name: Result
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7748,7 +7749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 200}
+  m_AnchoredPosition: {x: 0, y: 80}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &1678490696937568802
@@ -7780,18 +7781,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 4b399f2780e26a14da5448c2b8cb90f0, type: 3}
-    m_FontSize: 48
+    m_FontSize: 72
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 48
+    m_MaxSize: 72
     m_Alignment: 7
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uACB0\uACFC : 20000\\"
+  m_Text: "\uAE09\uC5EC\n20000\\"
 --- !u!1001 &197501723086485330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10530,6 +10531,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Button_Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617116120443323380, guid: cc697483586e3ce478a7e28ec1b98bf4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc697483586e3ce478a7e28ec1b98bf4, type: 3}
