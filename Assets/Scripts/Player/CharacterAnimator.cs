@@ -200,13 +200,59 @@ public class CharacterAnimator : MonoBehaviour
         if (m_Use_Role_Skill)
         {
             CloakingSound.PlayOneShot(CloakingSound.clip);
-            //StartCoroutine(Cloaking());
-            Cloaking();
+            for (float i = 0f; i <= 1.0f; i += (Time.deltaTime / 10))
+            {
+                foreach (Material mat in m_RenderTextures)
+                {
+                    mat.shader = Shader.Find("Custom/Cloaking");
+                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
+                    mat.SetFloat("_Cut", i);                    
+                    // mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
+                }
+                yield return new WaitForSeconds(Time.deltaTime / 10);
+            }
+            foreach (Material mat in m_RenderTextures)
+            {
+                mat.shader = Shader.Find("Custom/Cloaking");
+                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
+                mat.SetFloat("_Cut", 1.0f);
+               // mat.SetFloat("_Opacity", 0.0f);
+            }
+
+            yield return null;
         }
         else
         {
             CloakingSound.PlayOneShot(CloakingSound.clip);
-            StartCoroutine(RestroreFromCloaking());
+            for (float i = 0f; i <= 1.0f; i += (Time.deltaTime / 10))
+            {
+                foreach (Material mat in m_RenderTextures)
+                {
+                    mat.SetFloat("_Cut", Mathf.Max(1.0f - i));
+                    //mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
+                    if (mat.GetFloat("_Cut") <= 0.0f)
+                    {
+                        if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+                        {
+                            MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
+                            mat.shader = Shader.Find("Project Droids/Droid HD");
+                        }
+                    }
+                }
+                yield return new WaitForSeconds(Time.deltaTime / 10);
+            }
+            foreach (Material mat in m_RenderTextures)
+            {
+                mat.SetFloat("_Cut", 0.0f);
+                //mat.SetFloat("_Opacity", 1.0f);
+                if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
+                {
+                    MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
+                    mat.shader = Shader.Find("Project Droids/Droid HD");
+                }
+            }
+
+            yield return null;
         }
         yield return null;
     }
@@ -232,7 +278,7 @@ public class CharacterAnimator : MonoBehaviour
         yield return null;
     }*/
 
-    void Cloaking()
+    /*void Cloaking()
     {
         for (float i = 0f; i <= 1.0f; i += (Time.fixedDeltaTime / 10))
         {
@@ -248,9 +294,9 @@ public class CharacterAnimator : MonoBehaviour
             m_RenderTextures[i].SetFloat("_Cut", 1.0f);
             m_RenderTextures[i].SetFloat("_Opacity", 0.0f);
         }
-    }
+    }*/
 
-    IEnumerator RestroreFromCloaking()
+    /*IEnumerator RestroreFromCloaking()
     {
         for (float i = 0f; i <= 1.0f; i += (Time.fixedDeltaTime / 10))
         {
@@ -281,5 +327,5 @@ public class CharacterAnimator : MonoBehaviour
         }
 
         yield return null;
-    }
+    }*/
 }

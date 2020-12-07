@@ -33,7 +33,6 @@ public class DeathCam : SingleToneComponent<DeathCam>
 
     void Start()
     {
-        gameObject.SetActive(false);
         PlayableDirector.gameObject.SetActive(false);
         ActiveDeathCamVirtualCameras();
     }
