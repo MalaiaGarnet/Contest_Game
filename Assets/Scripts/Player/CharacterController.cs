@@ -516,7 +516,7 @@ public class CharacterController : MonoBehaviour
             }
         }
     }
-
+    // TODO. 아이템 탐색 알고리즘 부분인데, 너무 급한 나머지 일단 코드가 개판입니다 ㅈㅅㅈㅅ
     /// <summary>
     /// 아이템을 탐색합니다.
     /// </summary>
@@ -537,22 +537,50 @@ public class CharacterController : MonoBehaviour
             {
                 if(m_Output.Interact)
                 {
-                    // 중간 장애물 없이 아이템을 정말 발견했고, 상호작용키를 눌렀을때
-                    if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
+                    if (dot > m_DotValue)
                     {
-                        //Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
-                        Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
-                        IsHit = false;
-                        return null;
+                        // 중간 장애물이 없을때
+                        if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
+                        {
+                            //Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                            Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
+                            IsHit = false;
+                            return null;
+                        }
+                        else
+                        {
+                            Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
+                            IsHit = true;
+                            Item item = hits.GetComponent<Item>();
+                            if (item == null)
+                            {
+                                item = hits.GetComponentInChildren<Item>();
+                                if (item == null)
+                                {
+                                    item = hits.GetComponentInParent<Item>();
+                                    return item;
+                                }
+                                return item;
+                            }
+                            else
+                                return item; // 해당 아이템 반환
+                        }
                     }
                     else
                     {
-                        Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
-                        IsHit = true;
-                        Item item = hits.gameObject.GetComponent<Item>();
+                        Item item = hits.GetComponent<Item>();
                         if (item == null)
-                            item = hits.gameObject.GetComponentInChildren<Item>();
-                        return item; // 해당 아이템 반환
+                        {
+                            item = hits.GetComponentInChildren<Item>();
+                            if (item == null)
+                            {
+                                item = hits.GetComponentInParent<Item>();
+                                return item;
+                            }
+                            return item;
+                        }
+                        else
+                            return item; // 해당 아이템 반환
                     }
                 }              
             }
@@ -591,16 +619,41 @@ public class CharacterController : MonoBehaviour
                     {
                         Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
                         IsHit = true;
-                        Item item = hits.gameObject.GetComponent<Item>();
+                        Item item = hits.GetComponent<Item>();
                         if (item == null)
-                            item = hits.gameObject.GetComponentInChildren<Item>();
-                        return item; // 해당 아이템 반환
+                        {
+                            item = hits.GetComponentInChildren<Item>();
+                            if (item == null)
+                            {
+                                item = hits.GetComponentInParent<Item>();
+                                return item;
+                            }
+                            return item;
+                        }
+                        else
+                            return item; // 해당 아이템 반환
                     }
+                }
+                else
+                {
+                    Item item = hits.GetComponent<Item>();
+                    if (item == null)
+                    {
+                        item = hits.GetComponentInChildren<Item>();
+                        if (item == null)
+                        {
+                            item = hits.GetComponentInParent<Item>();
+                            return item;
+                        }
+                        return item;
+                    }
+                    else
+                        return item; // 해당 아이템 반환
                 }
             }
         }
         return null;
-    }
+    }  
 
     
 

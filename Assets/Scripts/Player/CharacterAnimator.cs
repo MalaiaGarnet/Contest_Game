@@ -122,24 +122,21 @@ public class CharacterAnimator : MonoBehaviour
 
     void InvokeDeathCamera(Transform _Target)
     {
-        DeathCam.Instance.FindSetKillPlayer(GetAnimatedGuardAction());
+        DeathCam.Instance.FindSetKillPlayer(GetAnimatedGuardAction(_Target));
         DeathCam.Instance.FindSetDeathPlayer(_Target);
         DeathCam.Instance.StartCam();
     }
 
-    Transform GetAnimatedGuardAction()
+    Transform GetAnimatedGuardAction(Transform _Target)
     {
-        if (pc.m_MyProfile.Role_Index == 2)
-        {
-            Collider[] colliders = Physics.OverlapSphere(pc.m_MyProfile.Current_Pos, float.PositiveInfinity, playerLayer.value);
+            Collider[] colliders = Physics.OverlapSphere(_Target.localPosition, float.PositiveInfinity, playerLayer.value);
             foreach (Collider collider in colliders)
             {
-                if (collider.gameObject.GetComponentInParent<CharacterController>().IsGuard())
+                if (collider.GetComponentInParent<CharacterController>().IsGuard())
                 {
-                    return collider.gameObject.transform;
+                    return collider.transform;
                 }
             }
-        }
         return m_CamAxis.transform;
     }
 
@@ -206,7 +203,8 @@ public class CharacterAnimator : MonoBehaviour
                 {
                     mat.shader = Shader.Find("Custom/Cloaking");
                     MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-                    mat.SetFloat("_Cut", i);                    
+                   // mat.SetFloat("_CutRender", i);
+                    Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), i);
                     // mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
                 }
                 yield return new WaitForSeconds(Time.deltaTime / 10);
@@ -215,8 +213,9 @@ public class CharacterAnimator : MonoBehaviour
             {
                 mat.shader = Shader.Find("Custom/Cloaking");
                 MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-                mat.SetFloat("_Cut", 1.0f);
-               // mat.SetFloat("_Opacity", 0.0f);
+              //  mat.SetFloat("_CutRender", 1.0f);
+                Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), 1.0f);
+                // mat.SetFloat("_Opacity", 0.0f);
             }
 
             yield return null;
@@ -228,9 +227,10 @@ public class CharacterAnimator : MonoBehaviour
             {
                 foreach (Material mat in m_RenderTextures)
                 {
-                    mat.SetFloat("_Cut", Mathf.Max(1.0f - i));
+                    //mat.SetFloat("_CutRender", Mathf.Max(1.0f - i));
+                    Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), i);
                     //mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
-                    if (mat.GetFloat("_Cut") <= 0.0f)
+                    if (mat.GetFloat("_CutRender") <= 0.0f)
                     {
                         if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                         {
@@ -243,7 +243,8 @@ public class CharacterAnimator : MonoBehaviour
             }
             foreach (Material mat in m_RenderTextures)
             {
-                mat.SetFloat("_Cut", 0.0f);
+                //mat.SetFloat("_CutRender", 0.0f);
+                Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), 1.0f);
                 //mat.SetFloat("_Opacity", 1.0f);
                 if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                 {

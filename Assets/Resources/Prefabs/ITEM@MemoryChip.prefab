@@ -103,8 +103,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4506230158345141982}
   - component: {fileID: 8073635839899109095}
+  - component: {fileID: 1044133593013824408}
   m_Layer: 13
-  m_Name: ITEM@MemoryChip
+  m_Name: Item@MemoryChip
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,6 +139,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28f0ab19e046684587cbaacaa2b30b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_data:
+    IID: 0
+    OID: 0
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
   itemID: 0
   itemType: 0
   itemName: 
@@ -146,6 +152,19 @@ MonoBehaviour:
   itemCount: 0
   itemEnergy: 0
   isActive: 0
+--- !u!135 &1044133593013824408
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4992579584432111209}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1670951
+  m_Center: {x: 0, y: -0.19933239, z: 0}
 --- !u!1 &6506815746865069805
 GameObject:
   m_ObjectHideFlags: 0
