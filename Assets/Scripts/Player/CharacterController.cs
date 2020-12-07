@@ -269,6 +269,9 @@ public class CharacterController : MonoBehaviour
             e_RoleSkill_Toggle.Invoke(_new_profile.m_Using_Skill);
 
         m_MyProfile = _new_profile;
+        if (Manager_Ingame.Instance.m_Client_Profile.Session_ID == m_MyProfile.Session_ID)
+            Manager_Ingame.Instance.m_Client_Profile = m_MyProfile;
+
         m_Output = _new_profile.User_Input;
     }
 
