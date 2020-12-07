@@ -1,8 +1,10 @@
 ﻿using System;
+using Network.Data;
 
 [Serializable]
 public abstract class Item : Tool
 {
+    public Item_Data item_data;
     public ushort itemID;
     public ItemType itemType;
     public string itemName;

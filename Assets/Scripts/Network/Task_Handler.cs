@@ -117,6 +117,14 @@ public class Task_Handler
             Debug.Log("인게임 시작");
             _manager.e_GameStart.Invoke(1);
         }
+        if ((_protocol & (UInt64)PROTOCOL_INGAME.END) > 0)
+        {
+            Debug.Log("인게임 끝");
+            ushort end_reason_byte = 0;
+            Packet_Unpacker.UnPackPacket(_task.buffer, ref end_reason_byte);
+            SESSION_END_REASON end_reason = (SESSION_END_REASON)end_reason_byte;
+            _manager.e_GameEnd.Invoke(end_reason);
+        }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.SESSION) > 0) // 세션
         {
             if ((_protocol & (UInt64)PROTOCOL_INGAME.SS_ROUND_READY) > 0) // 준비 명령
@@ -142,6 +150,15 @@ public class Task_Handler
                 Item_Data[] datas = null;
                 Packet_Unpacker.UnPackPacket(_task.buffer, ref datas);
                 _manager.e_ItemSpawn.Invoke(datas);
+            }
+        }
+        if ((_protocol & (UInt64)PROTOCOL_INGAME.ITEM) > 0) // 아이템
+        {
+            if ((_protocol & (UInt64)PROTOCOL_INGAME.ITEM_GET) > 0) // 아이템 획득
+            {
+                int instance_id = 0;
+                Packet_Unpacker.UnPackPacket(_task.buffer, ref instance_id);
+                _manager.e_ItemGet.Invoke(instance_id);
             }
         }
         if ((_protocol & (UInt64)PROTOCOL_INGAME.INPUT) > 0)

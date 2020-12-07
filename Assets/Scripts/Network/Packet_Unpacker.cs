@@ -33,10 +33,19 @@ public class Packet_Unpacker
     {
         int place = 0;
 
-        place += sizeof(UInt16);
+        place += sizeof(UInt64);
 
         _short = BitConverter.ToUInt16(_data, place);
         place += sizeof(UInt16);
+    }
+    public static void UnPackPacket(byte[] _data, ref int _int)
+    {
+        int place = 0;
+
+        place += sizeof(UInt64);
+
+        _int = BitConverter.ToInt32(_data, place);
+        place += sizeof(int);
     }
     public static void UnPackPacket(byte[] _data, ref UInt64 _int)
     {
