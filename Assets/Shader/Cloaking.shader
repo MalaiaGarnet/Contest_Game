@@ -20,7 +20,7 @@
 		[HDR]_OutColor("OutColor", Color) = (1,1,1,1)
 		_NoiseTex("Noise Texture", 2D) = "white"{}
 		_OutThinkness("OutThinkness", Range(0, 2.0)) = 1.15
-		_Cut("Cut", Range(0.0, 1.0)) = 0.0
+		_CutRender("_CutRender", Range(0.0, 1.0)) = 0.0
 	}
 
 	SubShader {
@@ -58,7 +58,7 @@
 		sampler2D _NoiseTex;
 		float4	  _OutColor;
 		float	  _OutThinkness;
-		float	  _Cut;
+		float	  _CutRender;
 
 
 		struct Input {
@@ -104,8 +104,8 @@
             o.Normal = UnpackNormal(tex2D (_BumpMap, IN.uv_MainTex));
 #endif
 			float4 noise = tex2D(_NoiseTex, IN.uv_NoiseTex);
-			float alpha = step(_Cut, noise.r);
-			float outline = step(noise.r, _Cut * _OutThinkness);
+			float alpha = step(_CutRender, noise.r);
+			float outline = step(noise.r, _CutRender * _OutThinkness);
 
 			o.Albedo = col.rgb;
 			o.Emission = (outline * _OutColor.rgb) + (col.rgb * mask.rgb) + (clamp((_GlowColor.rgb * mask.a * _GlowColor.a + _DamageColor.rgb * _DamageColor.a), fixed3(0,0,0), fixed3(1,1,1)) * (1 - _BurnLevel)) * _Opacity;
