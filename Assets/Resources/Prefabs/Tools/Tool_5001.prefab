@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8248394010474033556}
   - component: {fileID: 1581647979307722140}
   - component: {fileID: 4475346997255325414}
+  - component: {fileID: -9014416752801932569}
   m_Layer: 0
   m_Name: Tool_5001
   m_TagString: Untagged
@@ -196,6 +197,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-9014416752801932569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216642987747593652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28f0ab19e046684587cbaacaa2b30b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item_data:
+    IID: 0
+    OID: 0
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+  itemID: 0
+  itemType: 0
+  itemName: 
+  itemDesc: 
+  isUseEnergy: 0
+  itemCount: 0
+  itemEnergy: 0
+  isActive: 0
 --- !u!1 &1433145787696777884
 GameObject:
   m_ObjectHideFlags: 0
