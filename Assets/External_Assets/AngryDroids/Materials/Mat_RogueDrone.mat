@@ -101,6 +101,7 @@ Material:
     - _BurnLevel: 0.159
     - _Cull: 2
     - _Cut: 0
+    - _CutRender: 0
     - _Cutoff: 0.5
     - _DeformIntense: 0
     - _DeformIntensity: 0

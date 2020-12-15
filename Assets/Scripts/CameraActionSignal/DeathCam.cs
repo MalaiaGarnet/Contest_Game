@@ -18,14 +18,6 @@ public class DeathCam : SingleToneComponent<DeathCam>
 
     public CinemachineBrain DeathCamBrain;
 
-    enum VCamIndex
-    {
-        BACK,
-        FRONT,
-        LEFT,
-        RIGHT
-    }
-
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -33,7 +25,7 @@ public class DeathCam : SingleToneComponent<DeathCam>
 
     void Start()
     {
-        PlayableDirector.gameObject.SetActive(false);
+        PlayableDirector.gameObject.SetActive(true);
         ActiveDeathCamVirtualCameras();
     }
 

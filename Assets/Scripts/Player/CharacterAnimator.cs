@@ -33,6 +33,10 @@ public class CharacterAnimator : MonoBehaviour
     Vector3 m_Cam_OriginPos;
 
     public LayerMask playerLayer;
+    Coroutine m_Routine_Cloaking;
+
+    Shader m_OriShader;
+    Shader m_CloakShader;
 
     [Header("임시 캐릭터 효과음")]
     public AudioSource CloakingSound;
@@ -45,18 +49,27 @@ public class CharacterAnimator : MonoBehaviour
 
         pc.e_ToolChanged.AddListener(When_Tool_Changed);
 
-        if (pc.m_MyProfile.Role_Index == 1)
-            pc.e_Stunned.AddListener(When_Stunned);
-        if (pc.m_MyProfile.Role_Index == 2)
+        switch(pc.m_MyProfile.Role_Index)
         {
-            pc.e_Damaged.AddListener(When_Damaged);
-            foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>())
-            {
-                if (mr.gameObject.layer == LayerMask.NameToLayer("Player"))
-                    m_RenderTextures.Add(mr.material);
-            }
+            case 1:
+                pc.e_Stunned.AddListener(When_Stunned);
+                break;
+            case 2:
+                pc.e_Damaged.AddListener(When_Damaged);
+                foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>())
+                {
+                    if (mr.gameObject.layer == LayerMask.NameToLayer("Player"))
+                        m_RenderTextures.Add(mr.material);
+                }
+                break;
+            default:
+                return;
         }
+
         pc.e_RoleSkill_Toggle.AddListener(When_Role_Skill_Toggle);
+
+        m_OriShader = Shader.Find("Project Droids/Droid HD");
+        m_CloakShader = Shader.Find("Custom/Cloaking");
     }
 
     void FixedUpdate()
@@ -178,19 +191,86 @@ public class CharacterAnimator : MonoBehaviour
     void When_Role_Skill_Toggle(bool _enable)
     {
         m_Use_Role_Skill = _enable;
-        if (pc.m_MyProfile.Role_Index == 1)
-            StartCoroutine(Role_Skill_Process_Guard());
-        else
-            StartCoroutine(Role_Skill_Process_Rogue());
+
+        switch (pc.m_MyProfile.Role_Index)
+        {
+            case 1:
+                Role_Skill_Process_Guard();
+                break;
+            case 2:
+                Role_Skill_Process_Rogue();
+                break;
+            default:
+                return;
+        }
     }
 
-    IEnumerator Role_Skill_Process_Guard()
+    void Role_Skill_Process_Guard()
     {
         Debug.Log("가드 스킬 토글 - " + m_Use_Role_Skill);
-        yield return null;
     }
 
-    IEnumerator Role_Skill_Process_Rogue()
+    void Role_Skill_Process_Rogue()
+    {
+        Debug.Log("로그 스킬 토글 - " + m_Use_Role_Skill);
+
+        if (m_Routine_Cloaking != null)
+        {
+            StopCoroutine(StartCloaking(0.0f));
+            StopCoroutine(RestoreCloaking(3.0f));
+        }
+
+        if (m_Use_Role_Skill)
+        {
+            CloakingSound.PlayOneShot(CloakingSound.clip);
+            StartCoroutine(StartCloaking(0.0f));
+        }
+        else
+        {
+            CloakingSound.PlayOneShot(CloakingSound.clip);
+            StartCoroutine(RestoreCloaking(3.0f));            
+        }
+    }
+
+    IEnumerator StartCloaking(float _FirstTime)
+    {
+        while (_FirstTime < 3.0f)
+        {
+            yield return new WaitForEndOfFrame();
+            _FirstTime += Time.deltaTime;
+            foreach (Material mat in m_RenderTextures)
+            {
+                mat.shader = m_CloakShader;
+                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
+                Shader.SetGlobalFloat("_CutRender", Mathf.Lerp(0.0f, 1.0f, _FirstTime / 3.0f));
+            }
+        }
+
+        m_Routine_Cloaking = null;
+    }
+
+    IEnumerator RestoreCloaking(float _FirstTime)
+    {      
+        while (_FirstTime > 0.0f)
+        {
+            yield return new WaitForEndOfFrame();
+            _FirstTime -= Time.deltaTime;
+            foreach (Material mat in m_RenderTextures)
+            {
+                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
+                Shader.SetGlobalFloat("_CutRender", Mathf.Lerp(1.0f, 0.0f, _FirstTime / 3.0f));
+                if (Shader.GetGlobalFloat("_CutRender") >= 0.0f)
+                {
+                    mat.shader = m_OriShader;
+                }
+            }
+        }
+
+        m_Routine_Cloaking = null;
+    }
+
+    /*
+     *  IEnumerator Role_Skill_Process_Rogue()
     {
         Debug.Log("로그 스킬 토글 - " + m_Use_Role_Skill);
 
@@ -203,9 +283,7 @@ public class CharacterAnimator : MonoBehaviour
                 {
                     mat.shader = Shader.Find("Custom/Cloaking");
                     MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-                    // mat.SetFloat("_CutRender", i);
                     Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), i);
-                    // mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
                 }
                 yield return new WaitForEndOfFrame();
             }
@@ -213,9 +291,7 @@ public class CharacterAnimator : MonoBehaviour
             {
                 mat.shader = Shader.Find("Custom/Cloaking");
                 MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Transparent, "Transparent");
-                // mat.SetFloat("_CutRender", 1.0f);
                 Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), 1.0f);
-                // mat.SetFloat("_Opacity", 0.0f);
             }
 
             yield return null;
@@ -223,14 +299,12 @@ public class CharacterAnimator : MonoBehaviour
         else
         {
             CloakingSound.PlayOneShot(CloakingSound.clip);
-            for (float i = 0f; i <= 1.0f; i += Time.deltaTime)
+            for (float i = 1.0f; i <= 0.0f; i -= Time.deltaTime)
             {
                 foreach (Material mat in m_RenderTextures)
                 {
-                    //mat.SetFloat("_CutRender", Mathf.Max(1.0f - i));
-                    Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), i);
-                    //mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
-                    if (mat.GetFloat("_CutRender") <= 0.0f)
+                    Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), i);                    
+                    if (Shader.GetGlobalFloat("_CutRender") <= 0.0f)
                     {
                         if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                         {
@@ -243,9 +317,7 @@ public class CharacterAnimator : MonoBehaviour
             }
             foreach (Material mat in m_RenderTextures)
             {
-                //mat.SetFloat("_CutRender", 0.0f);
                 Shader.SetGlobalFloat(Shader.PropertyToID("_CutRender"), 1.0f);
-                //mat.SetFloat("_Opacity", 1.0f);
                 if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
                 {
                     MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
@@ -257,76 +329,5 @@ public class CharacterAnimator : MonoBehaviour
         }
         yield return null;
     }
-
-    /*IEnumerator Cloaking()
-    {
-        for (float i = 0f; i <= 1.0f; i += (Time.fixedDeltaTime / 10))
-        {
-            foreach (Material mat in m_RenderTextures)
-            {
-                mat.shader = Shader.Find("Custom/Cloaking");
-                mat.SetFloat("_Cut", Mathf.Min(1.0f, i));
-                mat.SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        foreach (Material mat in m_RenderTextures)
-        {
-            mat.shader = Shader.Find("Custom/Cloaking");
-            mat.SetFloat("_Opacity", 0.0f);
-        }
-
-        yield return null;
-    }*/
-
-    /*void Cloaking()
-    {
-        for (float i = 0f; i <= 1.0f; i += (Time.fixedDeltaTime / 10))
-        {
-            for (int j = 0; j < m_RenderTextures.Count; j++)
-            {
-                m_RenderTextures[j].shader = Shader.Find("Custom/Cloaking");
-                m_RenderTextures[j].SetFloat("_Cut", Mathf.Min(1.0f, i));
-                m_RenderTextures[j].SetFloat("_Opacity", Mathf.Max(0.0f, 1.0f - i));
-            }           
-        }
-        for (int i = 0; i < m_RenderTextures.Count; i++)
-        {
-            m_RenderTextures[i].SetFloat("_Cut", 1.0f);
-            m_RenderTextures[i].SetFloat("_Opacity", 0.0f);
-        }
-    }*/
-
-    /*IEnumerator RestroreFromCloaking()
-    {
-        for (float i = 0f; i <= 1.0f; i += (Time.fixedDeltaTime / 10))
-        {
-            foreach (Material mat in m_RenderTextures)
-            {
-                mat.SetFloat("_Cut", Mathf.Max(0.0f, 1.0f - i));
-                mat.SetFloat("_Opacity", Mathf.Min(1.0f, i));
-                if (mat.GetFloat("_Cut") <= 0.0f)
-                {
-                    if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
-                    {
-                        MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
-                        mat.shader = Shader.Find("Project Droids/Droid HD");
-                    }
-                }
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        foreach (Material mat in m_RenderTextures)
-        {
-            mat.SetFloat("_Cut", 0.0f);
-            mat.SetFloat("_Opacity", 1.0f);
-            if (mat.shader.GetInstanceID() != Shader.Find("Project Droids/Droid HD").GetInstanceID())
-            {
-                MatShaderModifyr.ChangeBlendRenderType(mat, BlendMode.Opaque, "Opaque");
-                mat.shader = Shader.Find("Project Droids/Droid HD");
-            }
-        }
-
-        yield return null;
-    }*/
+     */
 }

@@ -617,7 +617,8 @@ MonoBehaviour:
   - {fileID: 3013838585057821812}
   - {fileID: 3013838586188700539}
   - {fileID: 3013838585052473152}
-  DeathCamBrain: {fileID: 0}
+  DeathCamBrain: {fileID: 6802654435512717992, guid: abb172bec81558d4ab358035f60b895d,
+    type: 3}
 --- !u!1 &3013838586188700541
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,15 +2,14 @@
 
 public class TestAbility : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+        float _FirstTime = 3.0f;
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        while (_FirstTime > 0.0f)
+        {
+            _FirstTime -= Time.deltaTime;
+            Debug.Log(Mathf.Lerp(1.0f, 0.0f, _FirstTime / 3.0f));
+        }
     }
 }
