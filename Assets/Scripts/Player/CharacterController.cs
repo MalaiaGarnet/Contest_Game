@@ -525,90 +525,16 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     Item FindViewInItem()
-    {
-        m_DotValue = Mathf.Cos(Mathf.Deg2Rad * (m_ViewAngle / 2)); // Dot값 부채꼴 형태로 구하기
-
+    {   
         Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, ItemLayer); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
         foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
         {
             Vector3 hitPos = hits.transform.position;
             Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized; 
 
-            float dot = Vector3.Dot(dir, m_CameraAxis.forward);
-
-            if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
+            if (dir.sqrMagnitude < acquireDist) // 범위안에 들어왔을때
             {
                 if(m_Output.Interact)
-                {
-                    if (dot > m_DotValue)
-                    {
-                        // 중간 장애물이 없을때
-                        if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
-                        {
-                            //Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
-                            Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
-                            IsHit = false;
-                            return null;
-                        }
-                        else
-                        {
-                            Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
-                            IsHit = true;
-                            Item item = hits.GetComponent<Item>();
-                            if (item == null)
-                            {
-                                item = hits.GetComponentInChildren<Item>();
-                                if (item == null)
-                                {
-                                    item = hits.GetComponentInParent<Item>();
-                                    return item;
-                                }
-                                return item;
-                            }
-                            else
-                                return item; // 해당 아이템 반환
-                        }
-                    }
-                    else
-                    {
-                        Item item = hits.GetComponent<Item>();
-                        if (item == null)
-                        {
-                            item = hits.GetComponentInChildren<Item>();
-                            if (item == null)
-                            {
-                                item = hits.GetComponentInParent<Item>();
-                                return item;
-                            }
-                            return item;
-                        }
-                        else
-                            return item; // 해당 아이템 반환
-                    }
-                }              
-            }
-            IsHit = false;
-        }
-        return null;
-    }
-
-    private List<Collider> hitTargets = new List<Collider>();
-
-    Item FindViewInNoPressItem()
-    {
-        m_DotValue = Mathf.Cos(Mathf.Deg2Rad * (m_ViewAngle / 2)); // Dot값 부채꼴 형태로 구하기
-        Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, ItemLayer.value); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
-        foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
-        {
-            Vector3 hitPos = hits.transform.localPosition;
-            Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized;
-
-            float dot = Vector3.Dot(dir, this.transform.forward);
-            Debug.Log(hitPos + "<-- 히트스피어 || 플레이어 위치--->" + m_MyProfile.Current_Pos);
-            Debug.Log("dot : " + dot + " 맞은 물체" + hits.name);
-            if (dir.magnitude < acquireDist) // 범위안에 들어왔을때
-            {
-                if (dot > m_DotValue)
                 {
                     // 중간 장애물이 없을때
                     if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
@@ -623,35 +549,39 @@ public class CharacterController : MonoBehaviour
                         Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
                         IsHit = true;
                         Item item = hits.GetComponent<Item>();
-                        if (item == null)
-                        {
-                            item = hits.GetComponentInChildren<Item>();
-                            if (item == null)
-                            {
-                                item = hits.GetComponentInParent<Item>();
-                                return item;
-                            }
-                            return item;
-                        }
-                        else
-                            return item; // 해당 아이템 반환
+                        return item;
                     }
+                }              
+            }
+        }
+        return null;
+    }
+
+    private List<Collider> hitTargets = new List<Collider>();
+
+    Item FindViewInNoPressItem()
+    {
+        Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, ItemLayer.value); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
+        foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
+        {
+            Vector3 hitPos = hits.transform.localPosition;
+            Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized;
+
+            if (dir.sqrMagnitude < acquireDist) // 범위안에 들어왔을때
+            {
+                if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
+                {
+                    //Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                    Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
+                    IsHit = false;
+                    return null;
                 }
                 else
                 {
+                    Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
+                    IsHit = true;
                     Item item = hits.GetComponent<Item>();
-                    if (item == null)
-                    {
-                        item = hits.GetComponentInChildren<Item>();
-                        if (item == null)
-                        {
-                            item = hits.GetComponentInParent<Item>();
-                            return item;
-                        }
-                        return item;
-                    }
-                    else
-                        return item; // 해당 아이템 반환
+                    return item; // 해당 아이템 반환
                 }
             }
         }
@@ -686,11 +616,4 @@ public class CharacterController : MonoBehaviour
         Handles.DrawSolidArc(m_CameraAxis.position, Vector3.up, m_CameraAxis.forward, -m_ViewAngle / 2, acquireDist);
      }
 #endif
-}
-
-public enum RoleType : ushort
-{
-    None,
-    Guard,
-    Thief
 }
