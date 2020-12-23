@@ -9,9 +9,6 @@ public class GUI_Widget_Radar : GUI_Widget_Base
     public RectTransform m_Circle;
     public List<RectTransform> m_Markers = new List<RectTransform>();
 
-    float radius = 400f;
-
-
     private void Update()
     {
         if (m_Player == null)

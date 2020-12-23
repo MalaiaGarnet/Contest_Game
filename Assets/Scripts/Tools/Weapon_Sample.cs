@@ -73,10 +73,9 @@ public class Weapon_Sample : Tool, I_IK_Shotable
             Vector3 temp_dir = dir + new Vector3(Random.Range(-range, range),
                 Random.Range(-range, range), Random.Range(-range, range));
             Ray ray = new Ray(cc.m_CameraAxis.position + temp_dir * 2f, temp_dir);
-            RaycastHit hit;
 
             session_ids.Add(0);
-            if (Physics.Raycast(ray, out hit, 100f))
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f))
             {
                 CharacterController hit_user = hit.collider.gameObject.GetComponentInParent<CharacterController>();
                 if (hit_user != null)
@@ -117,6 +116,5 @@ public class Weapon_Sample : Tool, I_IK_Shotable
 
     public override void onInteract(bool _pressed)
     {
-        Debug.Log(gameObject.name + " 사용 - " + _pressed);
     }
 }

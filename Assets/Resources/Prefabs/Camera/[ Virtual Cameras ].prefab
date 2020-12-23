@@ -610,14 +610,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166f989e8832f1f46846ed5b9ae2ee99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayableDirector: {fileID: 5767496677265246164, guid: 59ab3202892240a49a80937b4f86b026,
+  DeathCamTimeline: {fileID: 5767496677265246165, guid: 59ab3202892240a49a80937b4f86b026,
     type: 3}
   VCams:
   - {fileID: 3013838586604751399}
   - {fileID: 3013838585057821812}
   - {fileID: 3013838586188700539}
   - {fileID: 3013838585052473152}
-  DeathCamBrain: {fileID: 6802654435512717992, guid: abb172bec81558d4ab358035f60b895d,
+  DeathCamBrainObject: {fileID: 6802654435512717995, guid: abb172bec81558d4ab358035f60b895d,
     type: 3}
 --- !u!1 &3013838586188700541
 GameObject:

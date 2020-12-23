@@ -1,9 +1,9 @@
-﻿using Boo.Lang;
-using Network.Data;
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Network.Data;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -71,8 +71,6 @@ public class CharacterController : MonoBehaviour
     public float itemSearchDuration = 1.0f;
     public LayerMask ItemLayer;
 
-    private float m_DotValue = 0f;
-    private float m_ViewAngle = 45f;
     private bool IsHit = false;
 
     Renderer[] m_Renderers;
@@ -146,9 +144,8 @@ public class CharacterController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(itemSearchDuration);
-            e_SerachItem.Invoke();          
+            e_SerachItem.Invoke();    
         }
-        yield return null;
     }
     private void Update()
     {
@@ -328,19 +325,22 @@ public class CharacterController : MonoBehaviour
 
     public void Update_Render(bool _enable)
     {
-        if (m_Renderers == null)
+        if (m_MyProfile.Role_Index == 1)
         {
-            List<Renderer> renderlist = new List<Renderer>();
-            foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            if (m_Renderers == null)
             {
-                if (r.gameObject.CompareTag("RenderingPart")) // 렌더 대상인지 체크
-                    renderlist.Add(r);
+                List<Renderer> renderlist = new List<Renderer>();
+                foreach (Renderer r in GetComponentsInChildren<Renderer>())
+                {
+                    if (r.gameObject.CompareTag("RenderingPart")) // 렌더 대상인지 체크
+                        renderlist.Add(r);
+                }
+                m_Renderers = renderlist.ToArray();
             }
-            m_Renderers = renderlist.ToArray();
-        }
 
-        foreach (Renderer rd in m_Renderers)
-            rd.gameObject.layer = LayerMask.NameToLayer(_enable ? "Player" : "NotRender");
+            foreach (Renderer rd in m_Renderers)
+                rd.gameObject.layer = LayerMask.NameToLayer(_enable ? "Player" : "NotRender");
+        }
     }
 
     Vector3 Calculate_Direction()
@@ -515,9 +515,11 @@ public class CharacterController : MonoBehaviour
                 // TODO : 캐릭터가 발견한 아이템정보를 서버에 보내서, 습득 완료 및 캐릭터에 종속시키는 부분이 들어오면 될거같아요.
                 Packet_Sender.Send_Item_Get(item.item_data.IID);
                 
-                //TooltipManager.Instance.tooltip_ScreenMsg.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, item.name + "을/를" + "습득");
+                TooltipManager.Instance.tooltip_ScreenMsg.ShowMessage(MessageStyle.ON_SCREEN_UP_MSG, item.name + "을/를" + "습득");
             }
         }
+
+        return;
     }
     // TODO. 아이템 탐색 알고리즘 부분인데, 너무 급한 나머지 일단 코드가 개판입니다 ㅈㅅㅈㅅ
     /// <summary>
@@ -527,14 +529,14 @@ public class CharacterController : MonoBehaviour
     Item FindViewInItem()
     {   
         Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, ItemLayer); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
-        foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
+        for (int i = 0; i < colliders.Length; i++)
         {
-            Vector3 hitPos = hits.transform.position;
-            Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized; 
+            Vector3 hitPos = colliders[i].transform.position;
+            Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized;
 
             if (dir.sqrMagnitude < acquireDist) // 범위안에 들어왔을때
             {
-                if(m_Output.Interact)
+                if (m_MyProfile.User_Input.Interact)
                 {
                     // 중간 장애물이 없을때
                     if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
@@ -548,30 +550,28 @@ public class CharacterController : MonoBehaviour
                     {
                         Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
                         IsHit = true;
-                        Item item = hits.GetComponent<Item>();
+                        Item item = colliders[i].GetComponent<Item>();
                         return item;
                     }
-                }              
+                }
             }
         }
         return null;
     }
-
-    private List<Collider> hitTargets = new List<Collider>();
 
     Item FindViewInNoPressItem()
     {
         Collider[] colliders = Physics.OverlapSphere(m_MyProfile.Current_Pos, acquireDist, ItemLayer.value); // O자형태로, 탐색거리만큼 아이템 콜라이더 취득
         foreach (var hits in colliders) // 취득한 콜라이더들을 확인해보자.
         {
-            Vector3 hitPos = hits.transform.localPosition;
+            Vector3 hitPos = hits.transform.position;
             Vector3 dir = (hitPos - m_MyProfile.Current_Pos).normalized;
 
             if (dir.sqrMagnitude < acquireDist) // 범위안에 들어왔을때
             {
                 if (Physics.Raycast(m_MyProfile.Current_Pos, dir, out RaycastHit hitinfo, acquireDist, ~ItemLayer.value))
                 {
-                    //Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
+                    Debug.Log("해당 장소엔 아이템이 존재하지 않습니다.");
                     Debug.DrawLine(m_MyProfile.Current_Pos, hitinfo.point, Color.red);
                     IsHit = false;
                     return null;
@@ -580,15 +580,12 @@ public class CharacterController : MonoBehaviour
                 {
                     Debug.DrawLine(m_MyProfile.Current_Pos, hitPos, Color.blue);
                     IsHit = true;
-                    Item item = hits.GetComponent<Item>();
-                    return item; // 해당 아이템 반환
+                    return hits.GetComponent<Item>(); // 해당 아이템 반환
                 }
             }
         }
         return null;
-    }  
-
-    
+    }    
 
     void FindOnFieldItem()
     {   
@@ -612,8 +609,8 @@ public class CharacterController : MonoBehaviour
         FindViewInItem();
 
         Handles.color = IsHit ? Color.cyan : Color.green;
-        Handles.DrawSolidArc(m_CameraAxis.position, Vector3.up, m_CameraAxis.forward, m_ViewAngle / 2, acquireDist);
-        Handles.DrawSolidArc(m_CameraAxis.position, Vector3.up, m_CameraAxis.forward, -m_ViewAngle / 2, acquireDist);
+        Handles.DrawSolidArc(m_CameraAxis.position, Vector3.up, m_CameraAxis.forward, 45 / 2, acquireDist);
+        Handles.DrawSolidArc(m_CameraAxis.position, Vector3.up, m_CameraAxis.forward, -45 / 2, acquireDist);
      }
 #endif
 }

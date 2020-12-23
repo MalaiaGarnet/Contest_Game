@@ -49841,7 +49841,6 @@ GameObject:
   - component: {fileID: 2488525614447900988}
   - component: {fileID: 195727838215249485}
   - component: {fileID: 1552959463891024039}
-  - component: {fileID: 2899441770116662089}
   m_Layer: 0
   m_Name: Rogue_DeadEffect
   m_TagString: Untagged
@@ -50015,22 +50014,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d72410a123138a42ba5c4f1651e848a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2899441770116662089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2488525614444690760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 166f989e8832f1f46846ed5b9ae2ee99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayableDirector: {fileID: 0}
-  VirtualCameraLeft: {fileID: 0}
-  VirtualCameraFront: {fileID: 0}
-  Guaurd: {fileID: 0}
 --- !u!1 &2488525614444693628
 GameObject:
   m_ObjectHideFlags: 0
