@@ -15,7 +15,7 @@
         Tags { "Queue" = "Transparent" "RenderType"="Transparent" }
 
         CGPROGRAM
-        #pragma surface surf invisible noambienta alpha:fade  
+        #pragma surface surf invisible noambient alpha:fade  
         
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
@@ -33,7 +33,7 @@
         {
             float2 uv_NormalMap;
 
-            float4 viewDir;    
+            float3 viewDir;    
             float3 worldPos; // 카메라방향
         };
 
@@ -47,7 +47,7 @@
           o.Alpha = rim * _Opacity;
         }
 
-        float4 LightingCloakingLight(SurfaceOutput s, float3 _LightDir, float _Brightness)
+        float4 Lightinginvisible(SurfaceOutput s, float3 _LightDir, float _Brightness)
         {
             //return fixed4(s.Albedo * _Opacity * _LightColor0, 1);
             return float4(0, 0, 0, s.Alpha);

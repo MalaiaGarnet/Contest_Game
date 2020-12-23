@@ -2,11 +2,11 @@
 {
     Properties
     {
-        [Header("텍스쳐")]
+        [Header(TextureMenu)]
         _MainTex("메인텍스쳐", 2D) = "bump" {}
         _Opacity("Opacity", Range(0, 1)) = 0.1 // 투명도
 
-        [Header("외곽선 색깔")]
+        [Header(RimMenu)]
         _RimPow("Rim Power", int) = 3 // 외곽
         _RimHeight("Rim Height", float) = 5.0
         _RimColor("Rim Color", Color) = (0,1,1,1) // RGBA, 외곽 색깔
@@ -23,7 +23,8 @@
         #pragma surface surf DisableLight noambient noforwardadd nolightmap novertexlights noshadow
         struct Input
         {
-        }
+            float4 color:COLOR;
+        };
 
         void surf(Input _In, inout SurfaceOutput _Out)
         {
@@ -51,15 +52,16 @@
         struct Input
         {
             float2 uv_MainTex;
-            float4 viewDir;
-        }
+            float3 worldPos;
+            float3 viewDir;
+        };
 
         void surf(Input _In, inout SurfaceOutput _Out)
         {
             fixed4 col = tex2D(_MainTex, _In.uv_MainTex);
 
-            _Out.Emission = _HoloColor.rgb * _Opacity;
-            float rim = saturate(dot(_Out.uv_MainTex, _In.viewDir));
+            _Out.Emission = _RimColor.rgb * _Opacity;
+            float rim = saturate(dot(_Out.Normal, _In.viewDir));
             rim = saturate(pow(1 - rim, _RimPow) + pow(frac(_In.worldPos.g * _RimPow - _Time.y), _RimHeight) * 0.1);
             _Out.Alpha = rim * _Opacity;
 
